@@ -85,7 +85,7 @@ class Route extends Component {
    */
   get transitionType() {
     const currentAction = Conductor.getCurrentAction();
-    
+
     if (this.props.isOpen) {
       return this.props.transition.backward;
     } else if (currentAction === 'REPLACE') {

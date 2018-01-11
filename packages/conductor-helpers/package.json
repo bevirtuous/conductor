@@ -1,7 +1,7 @@
 {
-  "name": "@virtuous/react-conductor-transitions",
-  "version": "0.1.1",
-  "description": "",
+  "name": "@virtuous/conductor-helpers",
+  "version": "0.0.1",
+  "description": "Helpers for the conductor.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -10,22 +10,25 @@
   "bugs": {
     "url": "https://github.com/bevirtuous/conductor/issues"
   },
-  "homepage": "https://github.com/bevirtuous/conductor/tree/master/packages/react-conductor-transitions",
+  "homepage": "https://github.com/bevirtuous/conductor/tree/master/packages/conductor-helpers",
   "keywords": [
-    "react",
     "conductor",
+    "javascript",
     "router",
+    "route",
     "routing",
-    "redux"
+    "virtuous",
+    "history"
   ],
   "contributors": [
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)"
   ],
+  "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/mocha",
-    "prebuild": "../../node_modules/.bin/rimraf ./android ./ios ./constants.js",
-    "build": "../../node_modules/.bin/babel src --out-dir .",
+    "prebuild": "../../node_modules/.bin/rimraf ./dist",
+    "build": "../../node_modules/.bin/babel src --out-dir dist",
     "version": "npm run build && git add -A"
   }
 }

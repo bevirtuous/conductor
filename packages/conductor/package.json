@@ -2,26 +2,15 @@
   "name": "@virtuous/conductor",
   "version": "0.0.1",
   "description": "A javascript router",
-  "main": "index.js",
-  "scripts": {
-    "test": "NODE_ENV=test mocha",
-    "cover": "rimraf ./build ./.nyc_output && NODE_ENV=test nyc mocha",
-    "prebuild": "rimraf ./dist",
-    "build": "NODE_ENV=production babel src --out-dir dist",
-    "postbuild": "git add -A",
-    "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js .",
-    "lint-staged": "lint-staged",
-    "preversion": "npm test",
-    "version": "npm run build && git add -A",
-    "postversion": "git push && git push --tags"
-  },
-  "lint-staged": {
-    "*.js": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js ."
-  },
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/virtuous/conductor.git"
+    "url": "git+ssh://git@github.com:bevirtuous/conductor.git"
   },
+  "bugs": {
+    "url": "https://github.com/bevirtuous/conductor/issues"
+  },
+  "homepage": "https://github.com/bevirtuous/conductor/tree/master/packages/conductor",
   "keywords": [
     "conductor",
     "javascript",
@@ -35,58 +24,15 @@
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)"
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://gitlab.com/virtuous/conductor/issues"
-  },
-  "homepage": "https://gitlab.com/virtuous/conductor#README",
-  "devDependencies": {
-    "@virtuous/eslint-config": "^1.3.2",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-export-extensions": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-runtime": "^6.26.0",
-    "coveralls": "^3.0.0",
-    "jsdom": "^11.5.1",
-    "jsdom-global": "^3.0.2",
-    "lint-staged": "^5.0.0",
-    "mocha": "^4.1.0",
-    "mock-require": "^2.0.2",
-    "nyc": "^11.4.1",
-    "pre-commit": "^1.2.2",
-    "proxyquire": "^1.8.0",
-    "rimraf": "^2.6.2",
-    "sinon": "^4.1.3"
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test ../../node_modules/.bin/mocha",
+    "prebuild": "../../node_modules/.bin/rimraf ./dist",
+    "build": "../../node_modules/.bin/babel src --out-dir dist",
+    "version": "npm run build && git add -A"
   },
   "dependencies": {
     "history": "^4.7.2",
     "path-match": "^1.2.4"
-  },
-  "pre-commit": [
-    "lint-staged",
-    "build"
-  ],
-  "nyc": {
-    "include": [
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "build",
-      "test",
-      "dist",
-      ".nyc_output",
-      "node_modules"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary"
-    ],
-    "all": true,
-    "report-dir": "build"
   }
 }

@@ -42,11 +42,5 @@ build/
 # dotenv environment variables file
 .env
 
-# WebPack Cache
-.cache-loader
-
 # Project
-/config/local.json
-/public/
-/extensions/**
-!/extensions/.gitkeep
+dist/
