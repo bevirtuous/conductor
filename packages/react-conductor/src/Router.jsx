@@ -26,12 +26,12 @@ class Router extends Component {
     super(props);
 
     this.state = {
-      action: 'push',
+      action: 'push', // eslint-disable-line react/no-unused-state
       routeStack: [{
         path: props.initialPath,
         pattern: props.initialPattern,
       }],
-      currentPath: props.initialPath,
+      currentPath: props.initialPath, // eslint-disable-line react/no-unused-state
     };
 
     // Setup some listeners for router events.
@@ -50,7 +50,7 @@ class Router extends Component {
    * @param {Object} nextState The next state.
    * @returns {boolean}
    */
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate() {
     return true;
     // TODO: Add some sort of check.
   }
@@ -78,8 +78,8 @@ class Router extends Component {
    */
   handleRouteChange = (action, currentPath, prevPath, routeStack) => {
     this.setState({
-      action,
-      currentPath,
+      action, // eslint-disable-line react/no-unused-state
+      currentPath, // eslint-disable-line react/no-unused-state
       routeStack,
     });
   }

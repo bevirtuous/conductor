@@ -34,6 +34,13 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx ."
-  }
+    "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx .",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "npm run lint"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ]
 }
