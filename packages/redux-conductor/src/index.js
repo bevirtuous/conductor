@@ -1,43 +1,33 @@
-import emitter from '@virtuous/conductor/emitter';
+import events from '@virtuous/conductor-events';
 import history from '@virtuous/conductor/history';
-import {
-  EVENT_PUSH,
-  EVENT_PUSHED,
-  EVENT_POP,
-  EVENT_POPPED,
-  EVENT_REPLACE,
-  EVENT_REPLACED,
-  EVENT_RESET,
-} from '@virtuous/conductor/constants';
-import {
-  conductorPush,
-  conductorPushed,
-  conductorPop,
-  conductorPopped,
-  conductorReplace,
-  conductorReplaced,
-  conductorReset,
-} from './action-creators';
+import * as actions from './action-creators';
 
 export default ({ dispatch }) => {
-  emitter.on(EVENT_PUSH, (action, pathname, prevPathname, stack) =>
-    dispatch(conductorPush(history.location, stack)));
+  events.onPush((action, pathname, prevPathname, stack) => {
+    dispatch(actions.conductorPush(history.location, stack));
+  });
 
-  emitter.on(EVENT_PUSHED, () =>
-    dispatch(conductorPushed(history.location.pathname)));
+  events.onPushed(() => {
+    dispatch(actions.conductorPushed(history.location.pathname));
+  });
 
-  emitter.on(EVENT_POP, (action, pathname, prevPathname, stack) =>
-    dispatch(conductorPop(history.location, stack)));
+  events.onPop((action, pathname, prevPathname, stack) => {
+    dispatch(actions.conductorPop(history.location, stack));
+  });
 
-  emitter.on(EVENT_POPPED, () =>
-    dispatch(conductorPopped(history.location.pathname)));
+  events.onPopped(() => {
+    dispatch(actions.conductorPopped(history.location.pathname));
+  });
 
-  emitter.on(EVENT_REPLACE, (action, pathname, prevPathname, stack) =>
-    dispatch(conductorReplace(history.location, stack)));
+  events.onReplace((action, pathname, prevPathname, stack) => {
+    dispatch(actions.conductorReplace(history.location, stack));
+  });
 
-  emitter.on(EVENT_REPLACED, () =>
-    dispatch(conductorReplaced(history.location.pathname)));
+  events.onReplaced(() => {
+    dispatch(actions.conductorReplaced(history.location.pathname));
+  });
 
-  emitter.on(EVENT_RESET, () =>
-    dispatch(conductorReset(history.location.pathname)));
+  events.onReset(() => {
+    dispatch(actions.conductorReset(history.location.pathname));
+  });
 };

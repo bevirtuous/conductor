@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import uuid from 'uuid/v4';
-import Conductor from '@virtuous/conductor';
+import conductor from '@virtuous/conductor';
 
 /**
  * The Route component.
@@ -43,7 +43,7 @@ class Route extends Component {
     this.id = uuid();
 
     // Register this route with the router.
-    Conductor.register(this.id, this.props.pattern);
+    conductor.register(this.id, this.props.pattern);
   }
 
   /**
@@ -73,7 +73,7 @@ class Route extends Component {
    * Fire the enter callback when this is the new active route.
    */
   componentDidUpdate() {
-    const currentRoute = Conductor.getCurrentRoute();
+    const currentRoute = conductor.getCurrentRoute();
     if (!this.props.transition && this.props.path === currentRoute.pathname) {
       this.routeDidEnter();
     }
@@ -84,7 +84,7 @@ class Route extends Component {
    * @returns {Object}
    */
   get transitionType() {
-    const currentAction = Conductor.getCurrentAction();
+    const currentAction = conductor.getCurrentAction();
 
     if (this.props.isOpen) {
       return this.props.transition.backward;
@@ -99,17 +99,17 @@ class Route extends Component {
    * Inform the Conductor that the route has entered.
    */
   routeDidEnter = () => {
-    const currentAction = Conductor.getCurrentAction();
+    const currentAction = conductor.getCurrentAction();
 
     switch (currentAction) {
       case 'POP':
-        Conductor.popped(this.id, this.props.path);
+        conductor.popped(this.id, this.props.path);
         break;
       case 'REPLACE':
-        Conductor.replaced(this.id, this.props.path);
+        conductor.replaced(this.id, this.props.path);
         break;
       default:
-        Conductor.pushed(this.id, this.props.path);
+        conductor.pushed(this.id, this.props.path);
         break;
     }
   }

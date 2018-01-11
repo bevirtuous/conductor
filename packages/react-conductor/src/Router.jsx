@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Conductor from '@virtuous/conductor';
-import emitter from '@virtuous/conductor/emitter';
-import {
-  EVENT_PUSH,
-  EVENT_POP,
-  EVENT_REPLACE,
-} from '@virtuous/conductor/constants';
+import conductor from '@virtuous/conductor';
+import events from '@virtuous/conductor-events';
 
 /**
  * The Router component.
@@ -26,6 +21,7 @@ class Router extends Component {
     super(props);
 
     this.state = {
+      // TODO: Handle these disabled eslint problems.
       action: 'push', // eslint-disable-line react/no-unused-state
       routeStack: [{
         path: props.initialPath,
@@ -35,12 +31,12 @@ class Router extends Component {
     };
 
     // Setup some listeners for router events.
-    emitter.on(EVENT_PUSH, this.handleRouteChange);
-    emitter.on(EVENT_POP, this.handleRouteChange);
-    emitter.on(EVENT_REPLACE, this.handleRouteChange);
+    events.onPush(this.handleRouteChange);
+    events.onPop(this.handleRouteChange);
+    events.onReplace(this.handleRouteChange);
 
     // Add an initial open route.
-    setTimeout(() => Conductor.push(props.initialPath), 0);
+    setTimeout(() => conductor.push(props.initialPath), 0);
   }
 
   /**
@@ -78,6 +74,7 @@ class Router extends Component {
    */
   handleRouteChange = (action, currentPath, prevPath, routeStack) => {
     this.setState({
+      // TODO: Handle these disabled eslint problems.
       action, // eslint-disable-line react/no-unused-state
       currentPath, // eslint-disable-line react/no-unused-state
       routeStack,
