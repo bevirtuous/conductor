@@ -1,0 +1,6 @@
+android/
+!src/android/
+ios/
+!src/ios/
+constants.js
+!src/constants.js
