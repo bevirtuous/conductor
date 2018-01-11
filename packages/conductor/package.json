@@ -27,6 +27,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/mocha",
+    "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/mocha",
     "prebuild": "../../node_modules/.bin/rimraf ./dist",
     "build": "../../node_modules/.bin/babel src --out-dir dist",
     "version": "npm run build && git add -A"
@@ -34,5 +35,23 @@
   "dependencies": {
     "history": "^4.7.2",
     "path-match": "^1.2.4"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "build",
+      "test",
+      "dist",
+      ".nyc_output",
+      "node_modules"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "all": true,
+    "report-dir": "build"
   }
 }

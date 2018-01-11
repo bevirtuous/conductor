@@ -34,6 +34,8 @@
     "packages/*"
   ],
   "scripts": {
+    "test": "lerna run test",
+    "cover": "lerna run cover",
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx .",
     "lint-staged": "lint-staged"
   },
