@@ -1,24 +1,8 @@
 import sinon from 'sinon';
 import assert from 'assert';
 import emitter from '@virtuous/conductor/emitter';
-import {
-  EVENT_PUSH,
-  EVENT_PUSHED,
-  EVENT_POP,
-  EVENT_POPPED,
-  EVENT_REPLACE,
-  EVENT_REPLACED,
-  EVENT_RESET,
-} from '@virtuous/conductor/constants';
-import {
-  CONDUCTOR_PUSH,
-  CONDUCTOR_PUSHED,
-  CONDUCTOR_POP,
-  CONDUCTOR_POPPED,
-  CONDUCTOR_REPLACE,
-  CONDUCTOR_REPLACED,
-  CONDUCTOR_RESET,
-} from '../src/action-creators';
+import * as constants from '@virtuous/conductor/constants';
+import * as actions from '../src/action-creators';
 import conductorMiddleware from '../src/index';
 
 let result = null;
@@ -38,52 +22,52 @@ const mockStack = [
 
 describe('index', () => {
   beforeEach(() => {
-    dispatch.reset();
+    dispatch.resetHistory();
     result = null;
   });
 
   it('should perform the conductorPush action', () => {
-    emitter.emit(EVENT_PUSH, 'push', mockPathname, mockPrevPathname, mockStack);
+    emitter.emit(constants.EVENT_PUSH, 'push', mockPathname, mockPrevPathname, mockStack);
     sinon.assert.calledOnce(dispatch);
-    assert.equal(result.type, CONDUCTOR_PUSH);
+    assert.equal(result.type, actions.CONDUCTOR_PUSH);
     assert.equal(result.stack, mockStack);
   });
 
   it('should perform the conductorPushed action', () => {
-    emitter.emit(EVENT_PUSHED);
+    emitter.emit(constants.EVENT_PUSHED);
     sinon.assert.calledOnce(dispatch);
-    assert.equal(result.type, CONDUCTOR_PUSHED);
+    assert.equal(result.type, actions.CONDUCTOR_PUSHED);
   });
 
   it('should perform the conductorPop action', () => {
-    emitter.emit(EVENT_POP, 'pop', mockPathname, mockPrevPathname, mockStack);
+    emitter.emit(constants.EVENT_POP, 'pop', mockPathname, mockPrevPathname, mockStack);
     sinon.assert.calledOnce(dispatch);
-    assert.equal(result.type, CONDUCTOR_POP);
+    assert.equal(result.type, actions.CONDUCTOR_POP);
     assert.equal(result.stack, mockStack);
   });
 
   it('should perform the conductorPopped action', () => {
-    emitter.emit(EVENT_POPPED);
+    emitter.emit(constants.EVENT_POPPED);
     sinon.assert.calledOnce(dispatch);
-    assert.equal(result.type, CONDUCTOR_POPPED);
+    assert.equal(result.type, actions.CONDUCTOR_POPPED);
   });
 
   it('should perform the conductorReplace action', () => {
-    emitter.emit(EVENT_REPLACE, 'replace', mockPathname, mockPrevPathname, mockStack);
+    emitter.emit(constants.EVENT_REPLACE, 'replace', mockPathname, mockPrevPathname, mockStack);
     sinon.assert.calledOnce(dispatch);
-    assert.equal(result.type, CONDUCTOR_REPLACE);
+    assert.equal(result.type, actions.CONDUCTOR_REPLACE);
     assert.equal(result.stack, mockStack);
   });
 
   it('should perform the conductorReplaced action', () => {
-    emitter.emit(EVENT_REPLACED);
+    emitter.emit(constants.EVENT_REPLACED);
     sinon.assert.calledOnce(dispatch);
-    assert.equal(result.type, CONDUCTOR_REPLACED);
+    assert.equal(result.type, actions.CONDUCTOR_REPLACED);
   });
 
   it('should perform the conductorReset action', () => {
-    emitter.emit(EVENT_RESET);
+    emitter.emit(constants.EVENT_RESET);
     sinon.assert.calledOnce(dispatch);
-    assert.equal(result.type, CONDUCTOR_RESET);
+    assert.equal(result.type, actions.CONDUCTOR_RESET);
   });
 });

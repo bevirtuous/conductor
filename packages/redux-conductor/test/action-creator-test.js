@@ -1,35 +1,20 @@
 import assert from 'assert';
-import {
-  CONDUCTOR_PUSH,
-  conductorPush,
-  CONDUCTOR_PUSHED,
-  conductorPushed,
-  CONDUCTOR_POP,
-  conductorPop,
-  CONDUCTOR_POPPED,
-  conductorPopped,
-  CONDUCTOR_REPLACE,
-  conductorReplace,
-  CONDUCTOR_REPLACED,
-  conductorReplaced,
-  CONDUCTOR_RESET,
-  conductorReset,
-} from '../src/action-creators';
+import * as actions from '../src/action-creators';
 
 describe('Action Creators', () => {
   let action;
 
   describe('conductorPush()', () => {
     beforeEach(() => {
-      action = conductorPush('/some', []);
+      action = actions.conductorPush('/some', []);
     });
 
     it('should have 3 properties', () => {
       assert.equal(Object.keys(action).length, 3);
     });
 
-    it(`should have action type ${CONDUCTOR_PUSH}`, () => {
-      assert.equal(action.type, CONDUCTOR_PUSH);
+    it(`should have action type ${actions.CONDUCTOR_PUSH}`, () => {
+      assert.equal(action.type, actions.CONDUCTOR_PUSH);
     });
 
     it('should have location /some', () => {
@@ -43,15 +28,15 @@ describe('Action Creators', () => {
 
   describe('conductorPushed()', () => {
     beforeEach(() => {
-      action = conductorPushed('/some');
+      action = actions.conductorPushed('/some');
     });
 
     it('should have 2 properties', () => {
       assert.equal(Object.keys(action).length, 2);
     });
 
-    it(`should have action type ${CONDUCTOR_PUSHED}`, () => {
-      assert.equal(action.type, CONDUCTOR_PUSHED);
+    it(`should have action type ${actions.CONDUCTOR_PUSHED}`, () => {
+      assert.equal(action.type, actions.CONDUCTOR_PUSHED);
     });
 
     it('should have location /some', () => {
@@ -61,15 +46,15 @@ describe('Action Creators', () => {
 
   describe('conductorPop()', () => {
     beforeEach(() => {
-      action = conductorPop('/some', []);
+      action = actions.conductorPop('/some', []);
     });
 
     it('should have 3 properties', () => {
       assert.equal(Object.keys(action).length, 3);
     });
 
-    it(`should have action type ${CONDUCTOR_POP}`, () => {
-      assert.equal(action.type, CONDUCTOR_POP);
+    it(`should have action type ${actions.CONDUCTOR_POP}`, () => {
+      assert.equal(action.type, actions.CONDUCTOR_POP);
     });
 
     it('should have location /some', () => {
@@ -83,15 +68,15 @@ describe('Action Creators', () => {
 
   describe('conductorPopped()', () => {
     beforeEach(() => {
-      action = conductorPopped('/some');
+      action = actions.conductorPopped('/some');
     });
 
     it('should have 2 properties', () => {
       assert.equal(Object.keys(action).length, 2);
     });
 
-    it(`should have action type ${CONDUCTOR_POPPED}`, () => {
-      assert.equal(action.type, CONDUCTOR_POPPED);
+    it(`should have action type ${actions.CONDUCTOR_POPPED}`, () => {
+      assert.equal(action.type, actions.CONDUCTOR_POPPED);
     });
 
     it('should have location /some', () => {
@@ -101,15 +86,15 @@ describe('Action Creators', () => {
 
   describe('conductorReplace()', () => {
     beforeEach(() => {
-      action = conductorReplace('/some', []);
+      action = actions.conductorReplace('/some', []);
     });
 
     it('should have 3 properties', () => {
       assert.equal(Object.keys(action).length, 3);
     });
 
-    it(`should have action type ${CONDUCTOR_REPLACE}`, () => {
-      assert.equal(action.type, CONDUCTOR_REPLACE);
+    it(`should have action type ${actions.CONDUCTOR_REPLACE}`, () => {
+      assert.equal(action.type, actions.CONDUCTOR_REPLACE);
     });
 
     it('should have location /some', () => {
@@ -123,15 +108,15 @@ describe('Action Creators', () => {
 
   describe('conductorReplaced()', () => {
     beforeEach(() => {
-      action = conductorReplaced('/some');
+      action = actions.conductorReplaced('/some');
     });
 
     it('should have 2 properties', () => {
       assert.equal(Object.keys(action).length, 2);
     });
 
-    it(`should have action type ${CONDUCTOR_REPLACED}`, () => {
-      assert.equal(action.type, CONDUCTOR_REPLACED);
+    it(`should have action type ${actions.CONDUCTOR_REPLACED}`, () => {
+      assert.equal(action.type, actions.CONDUCTOR_REPLACED);
     });
 
     it('should have location /some', () => {
@@ -141,15 +126,15 @@ describe('Action Creators', () => {
 
   describe('conductorReset()', () => {
     beforeEach(() => {
-      action = conductorReset('/some');
+      action = actions.conductorReset('/some');
     });
 
     it('should have 2 properties', () => {
       assert.equal(Object.keys(action).length, 2);
     });
 
-    it(`should have action type ${CONDUCTOR_RESET}`, () => {
-      assert.equal(action.type, CONDUCTOR_RESET);
+    it(`should have action type ${actions.CONDUCTOR_RESET}`, () => {
+      assert.equal(action.type, actions.CONDUCTOR_RESET);
     });
 
     it('should have location /some', () => {

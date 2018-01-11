@@ -1,10 +1,6 @@
 import assert from 'assert';
 import reducer from '../src/reducer';
-import {
-  CONDUCTOR_PUSH,
-  CONDUCTOR_POP,
-  CONDUCTOR_REPLACE,
-} from '../src/action-creators';
+import * as actions from '../src/action-creators';
 
 const mockState = {
   location: '/some',
@@ -25,8 +21,8 @@ describe('reducer', () => {
   it('should handle the CONDUCTOR_PUSH action', () => {
     const action = {
       ...mockAction,
-      type: CONDUCTOR_PUSH,
-      location: `/${CONDUCTOR_PUSH}`,
+      type: actions.CONDUCTOR_PUSH,
+      location: `/${actions.CONDUCTOR_PUSH}`,
     };
     const state = reducer(mockState, action);
     assert.equal(state.location, action.location);
@@ -35,8 +31,8 @@ describe('reducer', () => {
   it('should handle the CONDUCTOR_POP action', () => {
     const action = {
       ...mockAction,
-      type: CONDUCTOR_POP,
-      location: `/${CONDUCTOR_POP}`,
+      type: actions.CONDUCTOR_POP,
+      location: `/${actions.CONDUCTOR_POP}`,
     };
     const state = reducer(mockState, action);
     assert.equal(state.location, action.location);
@@ -45,8 +41,8 @@ describe('reducer', () => {
   it('should handle the CONDUCTOR_REPLACE action', () => {
     const action = {
       ...mockAction,
-      type: CONDUCTOR_REPLACE,
-      location: `/${CONDUCTOR_REPLACE}`,
+      type: actions.CONDUCTOR_REPLACE,
+      location: `/${actions.CONDUCTOR_REPLACE}`,
     };
     const state = reducer(mockState, action);
     assert.equal(state.location, action.location);
