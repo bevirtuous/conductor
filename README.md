@@ -3,14 +3,22 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/bevirtuous/conductor"><img alt="Travis CI Build" src="https://travis-ci.org/bevirtuous/conductor.svg?branch=master"></a>
-  <a href="https://coveralls.io/github/bevirtuous/conductor?branch=master"><img alt="Coverage Status" src="https://coveralls.io/repos/github/bevirtuous/conductor/badge.svg?branch=master"></a>
-  <a href="https://github.com/bevirtuous/conductor/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/bevirtuous/conductor.svg"></a>
-  <a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+  <a href="https://travis-ci.org/bevirtuous/conductor">
+    <img alt="Travis CI Build" src="https://travis-ci.org/bevirtuous/conductor.svg?branch=master">
+  </a>
+  <a href='https://coveralls.io/github/bevirtuous/conductor?branch=%28HEAD+detached+at+048517b%29'>
+    <img src='https://coveralls.io/repos/github/bevirtuous/conductor/badge.svg?branch=%28HEAD+detached+at+048517b%29' alt='Coverage Status' />
+  </a>
+  <a href="https://github.com/bevirtuous/conductor/releases">
+    <img alt="GitHub release" src="https://img.shields.io/github/release/bevirtuous/conductor.svg">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg">
+  </a>
 </p>
 
 <p align="center">
-Conductor is a JavaScript router intended to be used in single-page applications.
+  Conductor is a JavaScript router intended to be used in single-page applications.
 </p>
 
 ## Contents
