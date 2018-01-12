@@ -3,7 +3,7 @@ node_js:
   - '8'
 script: "npm run cover"
 # Send coverage report to coveralls.io
-after_script: "./sendReports.js"
+after_script: "npm run cover:send"
 notifications:
   slack: virtuous-coding:qsxYU1TMf0AAzcCALg4C8t17
   email: false
