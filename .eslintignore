@@ -1,8 +1,9 @@
 dist/
 build/
-android/*
-!src/android/*
-ios/*
-!src/ios/*
-constants.js
-!src/constants.js
+
+packages/react-conductor-transitions/android/
+!packages/react-conductor-transitions/src/android/
+packages/react-conductor-transitions/ios/
+!packages/react-conductor-transitions/src/ios/
+packages/react-conductor-transitions/constants.js
+!packages/react-conductor-transitions/src/constants.js
