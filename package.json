@@ -3,7 +3,7 @@
   "devDependencies": {
     "@sourceallies/coveralls-merge": "^1.0.0",
     "@virtuous/eslint-config": "^1.3.2",
-    "@virtuous/react-unit-test-suite": "^1.0.2",
+    "@virtuous/react-unit-test-suite": "^1.1.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",

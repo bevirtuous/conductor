@@ -1,5 +1,6 @@
 dist/
 build/
+coverage/
 
 packages/react-conductor-transitions/android/
 !packages/react-conductor-transitions/src/android/
