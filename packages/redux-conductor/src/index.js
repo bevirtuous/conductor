@@ -1,5 +1,5 @@
-import events from '@virtuous/conductor-events';
 import history from '@virtuous/conductor/history';
+import * as events from '@virtuous/conductor-events';
 import * as actions from './action-creators';
 
 export default ({ dispatch }) => {
