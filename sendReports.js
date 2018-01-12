@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const coveralls = require('@sourceallies/coveralls-merge');
 const { existsSync } = require('fs');
 
