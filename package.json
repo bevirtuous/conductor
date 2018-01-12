@@ -36,6 +36,7 @@
   "scripts": {
     "test": "lerna run test",
     "cover": "lerna run cover",
+    "build": "lerna run build",
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx .",
     "lint-staged": "lint-staged"
   },
