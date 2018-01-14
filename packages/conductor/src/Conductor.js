@@ -50,6 +50,8 @@ class Conductor {
      */
     this.isRouterAction = false;
 
+    this.currentAction = 'POP';
+
     history.listen(this.handleHistoryEvent);
   }
 
@@ -127,6 +129,7 @@ class Conductor {
       return;
     }
 
+    this.currentAction = 'PUSH';
     this.setIsRouterAction();
     this.doMatchLoop(pathname, route => this.handlePush(pathname, options, route));
   }
@@ -185,7 +188,13 @@ class Conductor {
    * @param {boolean} [useHistory=true] Whether or not to call the history action.
    */
   pop(num = 1, useHistory = true) {
+    this.currentAction = 'POP';
     this.setIsRouterAction();
+
+    // Call the history action.
+    if (useHistory) {
+      history.go(num * -1);
+    }
 
     const prevPath = this.cacheStack[this.cacheLength - 1].pathname;
 
@@ -199,11 +208,6 @@ class Conductor {
     }
 
     this.sendEvent(constants.EVENT_DID_ENTER, this.cacheStack[this.cacheLength - 1].id);
-
-    // Call the history action.
-    if (useHistory) {
-      history.go(num * -1);
-    }
 
     this.sendEvent(
       constants.EVENT_POP,
@@ -232,6 +236,7 @@ class Conductor {
    * @param {string} options History options.
    */
   replace(pathname, options) {
+    this.currentAction = 'REPLACE';
     this.setIsRouterAction();
     this.doMatchLoop(pathname, route => this.handleReplace(pathname, options, route));
   }
@@ -385,14 +390,6 @@ class Conductor {
    * @returns {string}
    */
   getCurrentAction = () => history.action;
-
-  /**
-   * Gets last opened route.
-   * @returns {Object|null}
-   */
-  getCurrentRoute() {
-    return (this.cacheStack.length) ? this.cacheStack.slice(-1)[0] : null;
-  }
 }
 
 export default new Conductor();

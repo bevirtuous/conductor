@@ -32,6 +32,9 @@
     "build": "../../node_modules/.bin/babel src --out-dir dist",
     "version": "npm run build && git add -A"
   },
+  "dependencies": {
+    "@virtuous/conductor": "^0.0.1"
+  },
   "nyc": {
     "include": [
       "src/**/*.js"

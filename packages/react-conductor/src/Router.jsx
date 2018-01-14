@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import conductor from '@virtuous/conductor';
-import events from '@virtuous/conductor-events';
+import * as events from '@virtuous/conductor-events';
 
 /**
  * The Router component.

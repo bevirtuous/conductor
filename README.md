@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  Conductor is a JavaScript router intended to be used in single-page applications.
+  "Conductor" is a JavaScript router intended to be used in single-page applications.
 </p>
 
 ## Contents
@@ -28,6 +28,6 @@
 | `@virtuous/conductor`  | The base implementation of the router. This can be used in any single page application.  |
 | `@virtuous/conductor-events` | The events API. |
 | `@virtuous/conductor-helpers` | Provides helper function that are used within the packages. |
-| `@virtuous/react-conductor` | A react implementation of the base router. |
+| `@virtuous/react-conductor` | A React implementation of the base router. |
 | `@virtuous/react-conductor-transitions` | Some pre-defined transitions for the react router implementation. |
-| `@virtuous/redux-conductor` | A redux bridge connect the conductor with your redux store. |
+| `@virtuous/redux-conductor` | A Redux bridge connect the conductor with your redux store. |

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import uuid from 'uuid/v4';
 import conductor from '@virtuous/conductor';
+import getCurrentRoute from '@virtuous/conductor-helpers/src/getCurrentRoute';
+import getCurrentAction from '@virtuous/conductor-helpers/src/getCurrentAction';
 
 /**
  * The Route component.
@@ -73,9 +75,13 @@ class Route extends Component {
    * Fire the enter callback when this is the new active route.
    */
   componentDidUpdate() {
-    const currentRoute = conductor.getCurrentRoute();
-    if (!this.props.transition && this.props.path === currentRoute.pathname) {
-      this.routeDidEnter();
+    const currentRoute = getCurrentRoute();
+
+    if (
+      !this.props.transition
+      && this.props.path === currentRoute.pathname
+    ) {
+      setTimeout(this.routeDidEnter);
     }
   }
 
@@ -84,7 +90,7 @@ class Route extends Component {
    * @returns {Object}
    */
   get transitionType() {
-    const currentAction = conductor.getCurrentAction();
+    const currentAction = getCurrentAction();
 
     if (this.props.isOpen) {
       return this.props.transition.backward;
@@ -99,7 +105,7 @@ class Route extends Component {
    * Inform the Conductor that the route has entered.
    */
   routeDidEnter = () => {
-    const currentAction = conductor.getCurrentAction();
+    const currentAction = getCurrentAction();
 
     switch (currentAction) {
       case 'POP':

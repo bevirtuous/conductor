@@ -32,7 +32,7 @@ addReport('redux-conductor');
 try {
   if (reports.length) {
     coveralls.sendReports(reports);
-    console.log('Reports send!');
+    console.log('Reports sent!');
   }
 } catch (err) {
   console.error(err);
