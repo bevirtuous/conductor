@@ -177,7 +177,9 @@ class Conductor {
    */
   pushed(id, pathname) {
     const previousRoute = this.cacheStack[this.cacheLength - 2];
-    this.sendEvent(constants.EVENT_DID_LEAVE, previousRoute.id);
+    if (previousRoute) {
+      this.sendEvent(constants.EVENT_DID_LEAVE, previousRoute.id);
+    }
     this.sendEvent(constants.EVENT_DID_ENTER, id);
     this.sendEvent(constants.EVENT_PUSHED, pathname);
   }

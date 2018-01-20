@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import conductor from '@virtuous/conductor';
 import * as events from '@virtuous/conductor-events';
+import getRouteStack from '@virtuous/conductor-helpers/src/getRouteStack';
 
 /**
  * The Router component.
@@ -35,8 +36,11 @@ class Router extends Component {
     events.onPop(this.handleRouteChange);
     events.onReplace(this.handleRouteChange);
 
-    // Add an initial open route.
-    setTimeout(() => conductor.push(props.initialPath), 0);
+    // Push the first route.
+    setTimeout(() => {
+      conductor.push(props.initialPath);
+      conductor.pushed(getRouteStack()[0].id, props.initialPath);
+    }, 0);
   }
 
   /**
