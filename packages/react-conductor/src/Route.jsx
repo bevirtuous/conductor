@@ -102,25 +102,6 @@ class Route extends Component {
   }
 
   /**
-   * Inform the Conductor that the route has entered.
-   */
-  routeDidEnter = () => {
-    const currentAction = getCurrentAction();
-
-    switch (currentAction) {
-      case 'POP':
-        conductor.popped(this.id, this.props.path);
-        break;
-      case 'REPLACE':
-        conductor.replaced(this.id, this.props.path);
-        break;
-      default:
-        conductor.pushed(this.id, this.props.path);
-        break;
-    }
-  }
-
-  /**
    * Renders the component.
    * @returns {JSX}
    */
@@ -156,7 +137,6 @@ class Route extends Component {
       <Transition
         in={isVisible}
         timeout={transitionType.duration}
-        onEntered={this.routeDidEnter}
       >
         {state => (
           <Wrapper
