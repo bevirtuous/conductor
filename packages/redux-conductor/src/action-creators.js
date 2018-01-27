@@ -6,45 +6,35 @@ export const CONDUCTOR_RESET = 'CONDUCTOR_RESET';
 /**
  * Creates the CONDUCTOR_PUSH action object.
  * @param {Object} location The location being pushed.
- * @param {Array} cacheStack The new cache stack.
+ * @param {Array} stack The new stack.
  * @return {Object} A Redux action.
  */
-export const conductorPush = (location, cacheStack) => ({
+export const conductorPush = (location, stack) => ({
   type: CONDUCTOR_PUSH,
   location,
-  stack: cacheStack,
+  stack,
 });
 
 /**
  * Creates the CONDUCTOR_POP action object.
  * @param {Object} location The location being popped.
- * @param {Array} cacheStack The new cache stack.
+ * @param {Array} stack The new stack.
  * @return {Object} A Redux action.
  */
-export const conductorPop = (location, cacheStack) => ({
+export const conductorPop = (location, stack) => ({
   type: CONDUCTOR_POP,
   location,
-  stack: cacheStack,
+  stack,
 });
 
 /**
  * Creates the CONDUCTOR_REPLACE action object.
  * @param {Object} location The location being replaced.
- * @param {Array} cacheStack The new cache stack.
+ * @param {Array} stack The new stack.
  * @return {Object} A Redux action.
  */
-export const conductorReplace = (location, cacheStack) => ({
+export const conductorReplace = (location, stack) => ({
   type: CONDUCTOR_REPLACE,
   location,
-  stack: cacheStack,
-});
-
-/**
- * Creates the CONDUCTOR_RESET action object.
- * @param {Object} location The location that was reset to.
- * @return {Object} A Redux action.
- */
-export const conductorReset = location => ({
-  type: CONDUCTOR_RESET,
-  location,
+  stack,
 });
