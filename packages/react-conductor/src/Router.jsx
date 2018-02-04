@@ -22,13 +22,10 @@ class Router extends Component {
     super(props);
 
     this.state = {
-      // TODO: Handle these disabled eslint problems.
-      action: 'push', // eslint-disable-line react/no-unused-state
       routeStack: [{
         path: props.initialPath,
         pattern: props.initialPattern,
       }],
-      currentPath: props.initialPath, // eslint-disable-line react/no-unused-state
     };
 
     // Setup some listeners for router events.
@@ -39,7 +36,6 @@ class Router extends Component {
     // Push the first route.
     setTimeout(() => {
       conductor.push(props.initialPath);
-      conductor.pushed(getRouteStack()[0].id, props.initialPath);
     }, 0);
   }
 
@@ -51,8 +47,8 @@ class Router extends Component {
    * @returns {boolean}
    */
   shouldComponentUpdate() {
-    return true;
     // TODO: Add some sort of check.
+    return true;
   }
 
   /**
@@ -76,13 +72,9 @@ class Router extends Component {
    * @param {string} prevPath The previous path.
    * @param {string} routeStack The open routes.
    */
-  handleRouteChange = (action, currentPath, prevPath, routeStack) => {
-    this.setState({
-      // TODO: Handle these disabled eslint problems.
-      action, // eslint-disable-line react/no-unused-state
-      currentPath, // eslint-disable-line react/no-unused-state
-      routeStack,
-    });
+  handleRouteChange = () => {
+    const routeStack = getRouteStack();
+    this.setState({ routeStack });
   }
 
   /**
@@ -94,6 +86,7 @@ class Router extends Component {
      * We need to apply some props to the children based on
      * the current router state.
      */
+    // TODO: Move this code to another function.
     return React.Children.map(this.props.children, (route, index) => {
       // Get the index of this route.
       const routeIndex = this.getRouteIndex(route.props.pattern);
