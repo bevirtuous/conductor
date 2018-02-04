@@ -95,7 +95,7 @@ class Conductor {
    * @param {string} pathname The pathname of the new route.
    * @param {string} options History options.
    */
-  push(pathname, options) {
+  push(pathname, options = {}) {
     this.doMatchLoop(pathname, route => this.willPush(pathname, options, route));
   }
 
@@ -110,7 +110,7 @@ class Conductor {
     this.sendEvent(constants.EVENT_WILL_PUSH, route.id);
 
     // Cache the new route.
-    this.addToStack(pathname, route);
+    this.addToStack(pathname, route, options);
 
     // Call the history action.
     history.push(pathname, {
@@ -153,7 +153,7 @@ class Conductor {
    * @param {string} pathname The pathname of the new route.
    * @param {string} options History options.
    */
-  replace(pathname, options) {
+  replace(pathname, options = {}) {
     this.doMatchLoop(pathname, route => this.willReplace(pathname, options, route));
   }
 
@@ -172,6 +172,7 @@ class Conductor {
       id,
       pathname,
       pattern,
+      options,
     };
 
     // Call the history action.
@@ -213,12 +214,14 @@ class Conductor {
    * Adds a new element to the cache stack.
    * @param {string} pathname The new pathname
    * @param {Object} route The route definition to store.
+   * @param {Object} state The state for this route.
    */
-  addToStack(pathname, { id, pattern }) {
+  addToStack(pathname, { id, pattern }, state) {
     this.cacheStack.push({
       id,
       pathname,
       pattern,
+      state,
     });
   }
 }

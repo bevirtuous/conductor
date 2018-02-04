@@ -5,7 +5,7 @@ import * as actions from './action-creators';
  * @type {Object}
  */
 const defaultState = {
-  location: {},
+  routing: false,
   stack: [],
 };
 
@@ -15,13 +15,13 @@ const defaultState = {
  * @param {Object} action The action object.
  * @returns {Object} The new state.
  */
-export default (state = defaultState, { type, location, stack }) => {
+export default (state = defaultState, { type, stack }) => {
   switch (type) {
     case actions.CONDUCTOR_PUSH:
     case actions.CONDUCTOR_POP:
     case actions.CONDUCTOR_REPLACE:
       return {
-        location,
+        routing: state.routing,
         stack,
       };
     default:
