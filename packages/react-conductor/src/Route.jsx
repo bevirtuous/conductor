@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import uuid from 'uuid/v4';
 import conductor from '@virtuous/conductor';
-import getCurrentRoute from '@virtuous/conductor-helpers/src/getCurrentRoute';
 import getCurrentAction from '@virtuous/conductor-helpers/src/getCurrentAction';
 
 /**
@@ -18,6 +17,7 @@ class Route extends Component {
     isOpen: PropTypes.bool,
     isVisible: PropTypes.bool,
     path: PropTypes.string,
+    state: PropTypes.shape(),
     transition: PropTypes.shape(),
   };
 
@@ -27,6 +27,7 @@ class Route extends Component {
     isOpen: false,
     isVisible: false,
     path: null,
+    state: {},
     transition: null,
   };
 
@@ -72,20 +73,6 @@ class Route extends Component {
   }
 
   /**
-   * Fire the enter callback when this is the new active route.
-   */
-  componentDidUpdate() {
-    const currentRoute = getCurrentRoute();
-
-    if (
-      !this.props.transition
-      && this.props.path === currentRoute.pathname
-    ) {
-      setTimeout(this.routeDidEnter);
-    }
-  }
-
-  /**
    * Returns a transition object based on the state of the route.
    * @returns {Object}
    */
@@ -117,6 +104,7 @@ class Route extends Component {
     if (!transition) {
       return (
         <Wrapper
+          {...this.props.state}
           style={{
             ...(index !== null) && { zIndex: index },
             ...(!isVisible) && { display: 'none' },
@@ -140,6 +128,7 @@ class Route extends Component {
       >
         {state => (
           <Wrapper
+            {...this.props.state}
             style={{
               ...(index !== null) && { zIndex: index },
               ...transitionType.default,

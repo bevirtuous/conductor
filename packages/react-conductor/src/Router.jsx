@@ -88,6 +88,8 @@ class Router extends Component {
      */
     // TODO: Move this code to another function.
     return React.Children.map(this.props.children, (route, index) => {
+
+      // TODO: This is not the correct way to get the index.
       // Get the index of this route.
       const routeIndex = this.getRouteIndex(route.props.pattern);
 
@@ -99,12 +101,14 @@ class Router extends Component {
 
       // If this route is open then pass the pathname as a prop.
       const path = isOpen ? this.state.routeStack[routeIndex].pathname : null;
+      const state = isOpen ? this.state.routeStack[routeIndex].state : null;
 
       return React.cloneElement(route, {
         index,
         isOpen,
         isVisible,
         path,
+        state,
       });
     });
   }
