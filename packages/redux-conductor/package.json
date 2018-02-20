@@ -56,5 +56,8 @@
     ],
     "all": true,
     "report-dir": "build"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
