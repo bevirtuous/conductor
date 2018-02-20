@@ -1,10 +1,11 @@
 import conductor from '@virtuous/conductor';
+import getRouteStack from './getRouteStack';
 
 /**
- * Returns true if a route is found with the given pathname.
- * @param {string} pathname - The pathname to find.
+ * Returns true if a route is found with the given pattern.
+ * @param {string} pattern - The pattern of the route to find.
  * @returns {boolean}
  */
-const isRouteOpen = pathname => conductor.cacheStack.some(route => pathname === route.pathname);
+const isRouteOpen = pattern => getRouteStack().some(route => pattern === route.pattern);
 
 export default isRouteOpen;
