@@ -1,8 +1,9 @@
 {
   "name": "@virtuous/react-conductor-transitions",
-  "version": "0.1.1",
+  "version": "1.0.0-beta.2",
   "description": "",
   "license": "MIT",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:bevirtuous/conductor.git"
