@@ -31,7 +31,7 @@ describe('Conductor', () => {
       assert.ok(conductor instanceof Conductor);
       assert.equal(conductor.error, null);
       assert.ok(isObject(conductor.routes));
-      assert.ok(Array.isArray(conductor.cacheStack));
+      assert.ok(Array.isArray(conductor.stack));
       assert.equal(conductor.isRouterAction, false);
       sinon.assert.calledOnce(history.listen);
     });
@@ -81,7 +81,7 @@ describe('Conductor', () => {
       const spy2 = sinon.spy(conductor, 'setIsRouterAction');
       const spy3 = sinon.spy(conductor, 'doMatchLoop');
       const spy4 = sinon.spy(conductor, 'handlePush');
-      conductor.cacheStack.push({ pathname: '/something/else' });
+      conductor.stack.push({ pathname: '/something/else' });
       conductor.routes[mockPattern] = {
         id: mockId,
         pattern: mockPattern,
@@ -99,7 +99,7 @@ describe('Conductor', () => {
       const spy2 = sinon.spy(conductor, 'setIsRouterAction');
       const spy3 = sinon.spy(conductor, 'doMatchLoop');
       const spy4 = sinon.spy(conductor, 'handlePush');
-      conductor.cacheStack.push({ pathname: mockPathname });
+      conductor.stack.push({ pathname: mockPathname });
       conductor.push(mockPathname, {});
       sinon.assert.calledOnce(spy1);
       sinon.assert.notCalled(spy2);
@@ -111,11 +111,11 @@ describe('Conductor', () => {
   describe.skip('handlePush()', () => {
     it('should send willLeave event', () => {
       const spy = sinon.stub(conductor, 'sendEvent');
-      conductor.cacheStack.push({
+      conductor.stack.push({
         id: '123',
         pathname: '/something/else',
       });
-      conductor.cacheStack.push({
+      conductor.stack.push({
         id: mockId,
         pathname: mockPathname,
       });

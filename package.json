@@ -46,6 +46,5 @@
     "*.js": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx ."
   },
   "pre-commit": [
-    "lint-staged"
   ]
 }

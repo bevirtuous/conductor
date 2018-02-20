@@ -1,4 +1,5 @@
 import conductor from '@virtuous/conductor';
+import getRouteStack from './getRouteStack';
 
 /**
  * Returns a route that is found with the given id.
@@ -6,7 +7,7 @@ import conductor from '@virtuous/conductor';
  * @returns {Object|null}
  */
 const getRouteById = id => (
-  conductor.cacheStack.find(element => id === element.id) || null
+  getRouteStack().find(element => id === element.id) || null
 );
 
 export default getRouteById;

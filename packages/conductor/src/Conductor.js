@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import matcher from './matcher';
 import history from './history';
 import emitter from './emitter';
@@ -9,7 +10,7 @@ import * as constants from './constants';
  */
 class Conductor {
   /**
-   * Conductor.
+   * Constructor
    */
   constructor() {
     /**
@@ -29,7 +30,9 @@ class Conductor {
      * Contains the cached routes matching the route templates.
      * @type {Array}
      */
-    this.cacheStack = [];
+    this.stack = [];
+
+    this.conductorEvent = false;
 
     history.listen(this.handleHistoryEvent);
   }
@@ -57,7 +60,13 @@ class Conductor {
    * @param {string} action The executed action.
    */
   handleHistoryEvent = (location, action) => {
+    const { conductorEvent } = this;
+    this.conductorEvent = false;
+
     if (action === constants.ACTION_POP) {
+      if (!conductorEvent) {
+        this.pop(false);
+      }
       this.didPop(location);
     } else if (action === constants.ACTION_PUSH) {
       this.didPush(location);
@@ -69,24 +78,18 @@ class Conductor {
   /**
    * Registers a route with the router. Routed need to be registered
    * here to be considered when determining what the current route is.
-   * @param {string} id The route identifier.
    * @param {string} pattern The URL pattern.
    */
-  register(id, pattern) {
-    if (!id) {
-      this.throwError('You can\'t register a route without a route identifier!');
-      return;
-    }
-
+  register(pattern) {
     if (!pattern) {
       this.throwError('You can\'t register a route without a pattern!');
       return;
     }
 
     this.routes[pattern] = {
-      id,
-      pattern,
+      id: uuid(),
       match: matcher(pattern),
+      pattern,
     };
   }
 
@@ -106,16 +109,20 @@ class Conductor {
    * @param {Object} route The route definition.
    */
   willPush(pathname, options, route) {
+    const id = uuid();
     // Emit the willEnter life cycle event.
-    this.sendEvent(constants.EVENT_WILL_PUSH, route.id);
+    this.sendEvent(constants.EVENT_WILL_PUSH, id);
 
     // Cache the new route.
-    this.addToStack(pathname, route, options);
+    this.addToStack(pathname, route, id, options);
+
+    // Update internal flag.
+    this.conductorEvent = true;
 
     // Call the history action.
     history.push(pathname, {
       ...options,
-      id: route.id,
+      id,
     });
   }
 
@@ -129,15 +136,22 @@ class Conductor {
 
   /**
    * Go back in history. Remove the route entries from the stacks.
+   * @param {boolean} navigate Whether or not to perform the history action.
    */
-  pop() {
+  pop(navigate = true) {
     // Emit the willReplace life cycle event.
     this.sendEvent(constants.EVENT_WILL_POP);
 
-    this.cacheStack.pop();
+    // Pop the stack.
+    this.stack.pop();
+
+    // Update internal flag.
+    this.conductorEvent = true;
 
     // Call the history action.
-    history.go(-1);
+    if (navigate) {
+      history.go(-1);
+    }
   }
 
   /**
@@ -160,24 +174,29 @@ class Conductor {
   /**
    * Handles the replace action.
    * @param {string} pathname The pathname to push.
-   * @param {Object} options The push state options.
+   * @param {Object} state The push state.
    * @param {Object} route The route definition.
    */
-  willReplace(pathname, options, { id, pattern }) {
+  willReplace(pathname, state, { pattern }) {
+    const id = uuid();
+
     // Emit the willReplace life cycle event.
     this.sendEvent(constants.EVENT_WILL_REPLACE, id);
 
     // Replace the last cache entry with the given values.
-    this.cacheStack[this.cacheStack.length - 1] = {
+    this.stack[this.stack.length - 1] = {
       id,
       pathname,
       pattern,
-      options,
+      state,
     };
+
+    // Update internal flag.
+    this.conductorEvent = true;
 
     // Call the history action.
     history.replace(pathname, {
-      ...options,
+      ...state,
       id,
     });
   }
@@ -214,10 +233,11 @@ class Conductor {
    * Adds a new element to the cache stack.
    * @param {string} pathname The new pathname
    * @param {Object} route The route definition to store.
+   * @param {Object} id The id for this route.
    * @param {Object} state The state for this route.
    */
-  addToStack(pathname, { id, pattern }, state) {
-    this.cacheStack.push({
+  addToStack(pathname, { pattern }, id, state) {
+    this.stack.push({
       id,
       pathname,
       pattern,
