@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.1",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {
@@ -53,8 +53,5 @@
     ],
     "all": true,
     "report-dir": "build"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor-events",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.1",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {
@@ -33,7 +33,7 @@
     "version": "npm run build && git add -A"
   },
   "dependencies": {
-    "@virtuous/conductor": "^1.0.0-beta.4"
+    "@virtuous/conductor": "^1.0.0-beta.1"
   },
   "nyc": {
     "include": [
@@ -52,8 +52,5 @@
     ],
     "all": true,
     "report-dir": "build"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
