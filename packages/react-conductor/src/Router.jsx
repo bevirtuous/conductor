@@ -41,9 +41,9 @@ class Router extends Component {
     props.children.forEach(child => this.registerChild(child.props));
 
     // Setup the callbacks for routing events.
-    events.onPush(this.handleRouteChange);
-    events.onPop(this.handleRouteChange);
-    events.onReplace(this.handleRouteChange);
+    events.onDidPush(this.handleRouteChange);
+    events.onDidPop(this.handleRouteChange);
+    events.onDidReplace(this.handleRouteChange);
   }
 
   /**
@@ -73,9 +73,9 @@ class Router extends Component {
   }
 
   /**
-   * 
-   * @param {*} stack 
-   * @param {*} pattern 
+   *
+   * @param {*} stack
+   * @param {*} pattern
    */
   getlastOccurence = (stack, pattern) => {
     for (let i = stack.length - 1; i >= 0; --i) {

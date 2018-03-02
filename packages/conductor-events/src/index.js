@@ -10,25 +10,49 @@ export const onError = (callback) => {
 };
 
 /**
- * Registers a callback to the push event.
+ * Registers a callback to execute before the push event.
  * @param {Function} callback The callback to register.
  */
-export const onPush = (callback) => {
+export const onWillPush = (callback) => {
+  addCallback(constants.EVENT_WILL_PUSH, callback);
+};
+
+/**
+ * Registers a callback to execute after the push event.
+ * @param {Function} callback The callback to register.
+ */
+export const onDidPush = (callback) => {
   addCallback(constants.EVENT_DID_PUSH, callback);
 };
 
 /**
- * Registers a callback to the pop event.
+ * Registers a callback to execute before the pop event.
  * @param {Function} callback The callback to register.
  */
-export const onPop = (callback) => {
+export const onWillPop = (callback) => {
+  addCallback(constants.EVENT_WILL_POP, callback);
+};
+
+/**
+ * Registers a callback to execute after the pop event.
+ * @param {Function} callback The callback to register.
+ */
+export const onDidPop = (callback) => {
   addCallback(constants.EVENT_DID_POP, callback);
 };
 
 /**
- * Registers a callback to the replace event.
+ * Registers a callback to execute before the push event.
  * @param {Function} callback The callback to register.
  */
-export const onReplace = (callback) => {
+export const onWillReplace = (callback) => {
+  addCallback(constants.EVENT_WILL_REPLACE, callback);
+};
+
+/**
+ * Registers a callback to execute after the replace event.
+ * @param {Function} callback The callback to register.
+ */
+export const onDidReplace = (callback) => {
   addCallback(constants.EVENT_DID_REPLACE, callback);
 };

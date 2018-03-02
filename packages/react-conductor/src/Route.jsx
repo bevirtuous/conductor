@@ -60,7 +60,6 @@ class Route extends Component {
 
     return (
       <Wrapper
-        {...this.props.state}
         style={{
           ...(!isVisible) && {
             pointerEvents: 'none',
@@ -68,7 +67,7 @@ class Route extends Component {
           },
         }}
       >
-        <Content />
+        <Content {...this.props.state} />
       </Wrapper>
     );
   }

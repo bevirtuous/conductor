@@ -1,4 +1,3 @@
-import conductor from '@virtuous/conductor';
 import getRouteStack from './getRouteStack';
 
 /**
@@ -7,7 +6,7 @@ import getRouteStack from './getRouteStack';
  */
 const getPreviousRoute = () => {
   const stack = getRouteStack();
-  return (stact.length > 1) ? stact.slice(-2)[0] : null
+  return (stack.length > 1) ? stack.slice(-2)[0] : null;
 };
 
 export default getPreviousRoute;
