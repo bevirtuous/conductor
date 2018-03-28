@@ -38,7 +38,7 @@
     "test": "lerna run test",
     "cover": "lerna run cover",
     "cover:send": "node ./sendReports.js",
-    "build": "lerna run build",
+    "release": "make release",
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx .",
     "lint-staged": "lint-staged"
   },

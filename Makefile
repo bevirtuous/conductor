@@ -22,6 +22,7 @@ build:
 		make build-lerna
 		$(foreach package, $(PACKAGES), $(call do-build, $(package)))
 		make build-copypkg
+		make publish
 
 build-clean:
 		$(foreach package, $(PACKAGES), $(call do-build-clean, $(package)))
@@ -31,6 +32,12 @@ build-lerna:
 
 build-copypkg:
 		$(foreach package, $(PACKAGES), $(call do-copypkg, $(package)))
+
+publish:
+		$(eval VERSION=$(shell cat ./lerna.json | grep version | head -1 | awk -F: '{ print $$2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'))
+		$(eval SUBSTR=$(findstring beta, $(VERSION)))
+		$(foreach package, $(PACKAGES), $(call do-publish, $(package), $(SUBSTR)))
+		make build-clean
 
 define do-build
 		BABEL_ENV=production ./node_modules/.bin/babel ./packages/$(strip $(1))/src/ --out-dir ./packages/$(strip $(1))/dist --ignore tests,spec.js,spec.jsx,__snapshots__,.eslintrc.js,jest.config.js,dist,coverage,node_modules
@@ -45,5 +52,14 @@ endef
 define do-copypkg
 		cp ./packages/$(strip $(1))/package.json ./packages/$(strip $(1))/dist/
 		cp ./packages/$(strip $(1))/README.md ./packages/$(strip $(1))/dist/
+
+endef
+
+define do-publish
+		@if [ "$(strip $(2))" == "beta" ]; \
+			then npm publish ./packages/$(strip $(1))/dist/ --access public --tag beta; \
+			else npm publish ./packages/$(strip $(1))/dist/ --access public; \
+		fi;
+
 
 endef
