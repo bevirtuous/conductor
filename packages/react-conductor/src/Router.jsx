@@ -7,6 +7,8 @@ import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import getRouteStack from '@virtuous/conductor-helpers/getRouteStack';
 import Route from './Route';
 
+export const RouterContext = React.createContext();
+
 /**
  * The Router component.
  */
@@ -160,6 +162,7 @@ class Router extends Component {
 
   /**
    * TODO:
+   * @returns {JSX}
    */
   renderOpenRoutes() {
     const ignoredSingletons = [];
@@ -170,6 +173,7 @@ class Router extends Component {
         {this.routeStack.map((item, index) => {
           let pathname = null;
           let isVisible = false;
+          let id = null;
           let state = {};
 
           const { component, pattern, preload } = this.routes[item];
@@ -191,6 +195,7 @@ class Router extends Component {
             });
 
             if (match) {
+              id = match.pathname;
               pathname = match.pathname;
               state = match.state;
             }
@@ -209,6 +214,7 @@ class Router extends Component {
             );
 
             if (this.state.stack[lastOccurence]) {
+              id = this.state.stack[lastOccurence].id;
               pathname = this.state.stack[lastOccurence].pathname;
               state = this.state.stack[lastOccurence].state;
             }
@@ -220,6 +226,7 @@ class Router extends Component {
 
           return (
             <Route
+              id={id}
               content={component}
               isVisible={isVisible}
               key={key}
@@ -233,12 +240,20 @@ class Router extends Component {
     );
   }
 
+  get currentRouteId() {
+    return this.state.stack.length ? this.state.stack[this.state.stack.length - 1].id : null;
+  }
+
   /**
    * The render method.
    * @returns {JSX}
    */
   render() {
-    return this.renderOpenRoutes();
+    return (
+      <RouterContext.Provider value={{ id: this.currentRouteId }}>
+        {this.renderOpenRoutes()}
+      </RouterContext.Provider>
+    );
   }
 }
 

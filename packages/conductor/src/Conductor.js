@@ -42,6 +42,7 @@ class Conductor {
    * @param {string} message The error message.
    */
   throwError(message) {
+    // TODO: Probably doesn't have to be a class variable
     this.error = new Error(message);
     logger.error(this.error);
     emitter.emit(constants.EVENT_ERROR, this.error);
@@ -80,14 +81,14 @@ class Conductor {
    * here to be considered when determining what the current route is.
    * @param {string} pattern The URL pattern.
    */
-  register(pattern) {
+  register = (pattern) => {
     if (!pattern) {
       this.throwError('You can\'t register a route without a pattern!');
       return;
     }
 
     this.routes[pattern] = {
-      id: uuid(),
+      id: uuid(), // TODO: Do I need this?
       match: matcher(pattern),
       pattern,
     };

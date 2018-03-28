@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/react-conductor",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "A redux bridge for Conductor",
   "license": "MIT",
   "repository": {
@@ -31,9 +31,11 @@
     "version": "npm run build && git add -A"
   },
   "dependencies": {
-    "@virtuous/conductor": "^1.0.0-beta.5",
-    "@virtuous/conductor-events": "^1.0.0-beta.5",
-    "@virtuous/conductor-helpers": "^1.0.0-beta.5",
+    "@virtuous/conductor": "^1.0.0-beta.6",
+    "@virtuous/conductor-events": "^1.0.0-beta.6",
+    "@virtuous/conductor-helpers": "^1.0.0-beta.6",
+    "react": "^16.3.0-alpha.3",
+    "react-dom": "^16.3.0-alpha.3",
     "react-transition-group": "^2.2.1",
     "uuid": "^3.1.0"
   }

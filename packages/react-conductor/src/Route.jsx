@@ -9,6 +9,7 @@ class Route extends Component {
     content: PropTypes.func.isRequired,
     pattern: PropTypes.string.isRequired,
     component: PropTypes.string,
+    id: PropTypes.string,
     isVisible: PropTypes.bool,
     path: PropTypes.string,
     state: PropTypes.shape(),
@@ -16,25 +17,11 @@ class Route extends Component {
 
   static defaultProps = {
     component: 'div',
+    id: null,
     isVisible: false,
     path: null,
     state: null,
   };
-
-  static childContextTypes = {
-    route: PropTypes.shape(),
-  };
-
-  /**
-   * @returns {Object}
-   */
-  getChildContext() {
-    return {
-      route: {
-        id: this.id,
-      },
-    };
-  }
 
   /**
    * @param {Object} nextProps The next set of props.
