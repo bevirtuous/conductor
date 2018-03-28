@@ -20,8 +20,8 @@ clean-logs:
 build:
 		make build-clean
 		make build-lerna
-		make build-copypkg
 		$(foreach package, $(PACKAGES), $(call do-build, $(package)))
+		make build-copypkg
 
 build-clean:
 		$(foreach package, $(PACKAGES), $(call do-build-clean, $(package)))
