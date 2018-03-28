@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor-events",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {
@@ -27,13 +27,10 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/mocha",
-    "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/mocha",
-    "prebuild": "../../node_modules/.bin/rimraf ./dist",
-    "build": "../../node_modules/.bin/babel src --out-dir dist",
-    "version": "npm run build && git add -A"
+    "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/mocha"
   },
   "dependencies": {
-    "@virtuous/conductor": "^1.0.0-beta.6"
+    "@virtuous/conductor": "^1.0.0-beta.7"
   },
   "nyc": {
     "include": [

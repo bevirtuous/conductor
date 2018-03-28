@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/react-conductor-transitions",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "description": "",
   "license": "MIT",
   "private": true,
@@ -25,10 +25,7 @@
   ],
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/mocha",
-    "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/mocha",
-    "prebuild": "../../node_modules/.bin/rimraf ./android ./ios ./constants.js",
-    "build": "../../node_modules/.bin/babel src --out-dir .",
-    "version": "npm run build && git add -A"
+    "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/mocha"
   },
   "nyc": {
     "include": [
