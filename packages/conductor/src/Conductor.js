@@ -62,7 +62,6 @@ class Conductor {
    */
   handleHistoryEvent = (location, action) => {
     const { conductorEvent } = this;
-    this.conductorEvent = false;
 
     if (action === constants.ACTION_POP) {
       if (!conductorEvent) {
@@ -74,6 +73,8 @@ class Conductor {
     } else if (action === constants.ACTION_REPLACE) {
       this.didReplace(location);
     }
+
+    this.conductorEvent = false;
   }
 
   /**
