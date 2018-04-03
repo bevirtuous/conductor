@@ -6,22 +6,33 @@ import PropTypes from 'prop-types';
  */
 class Route extends Component {
   static propTypes = {
-    content: PropTypes.func.isRequired,
+    component: PropTypes.func.isRequired,
     pattern: PropTypes.string.isRequired,
-    component: PropTypes.string,
     id: PropTypes.string,
     isVisible: PropTypes.bool,
     path: PropTypes.string,
     state: PropTypes.shape(),
+    tag: PropTypes.string,
   };
 
   static defaultProps = {
-    component: 'div',
     id: null,
     isVisible: false,
     path: null,
     state: null,
+    tag: 'div',
   };
+
+  static childContextTypes = {
+    routeId: PropTypes.func,
+  };
+
+  /**
+   * 
+   */
+  getChildContext() {
+    return { routeId: this.getRouteId };
+  }
 
   /**
    * @param {Object} nextProps The next set of props.
@@ -35,13 +46,20 @@ class Route extends Component {
   }
 
   /**
+   * 
+   */
+  getRouteId = () => {
+    return this.props.id;
+  }
+
+  /**
    * Renders the component.
    * @returns {JSX}
    */
   render() {
     const {
-      component: Wrapper,
-      content: Content,
+      tag: Wrapper,
+      component: Content,
       isVisible,
     } = this.props;
 

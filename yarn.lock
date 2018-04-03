@@ -4687,15 +4687,6 @@ react-dom@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-dom@^16.3.0-alpha.3:
-  version "16.3.0-rc.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.3.0-rc.0.tgz#18282bcc98496197877b9365467362caf74b8e45"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
-
 react-reconciler@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
@@ -4727,15 +4718,6 @@ react-transition-group@^2.2.1:
 react@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
-
-react@^16.3.0-alpha.3:
-  version "16.3.0-rc.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.3.0-rc.0.tgz#07ddbe3ef14b910038576ef4afb29793d9e20f84"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"

@@ -7,19 +7,12 @@ import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import getRouteStack from '@virtuous/conductor-helpers/getRouteStack';
 import Route from './Route';
 
-export const RouterContext = React.createContext();
-
 /**
  * The Router component.
  */
 class Router extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    start: PropTypes.string,
-  };
-
-  static defaultProps = {
-    start: null,
   };
 
   /**
@@ -40,7 +33,7 @@ class Router extends Component {
     this.routeStack = [];
 
     // Register the routes with Conductor.
-    props.children.forEach(child => this.registerChild(child.props));
+    React.Children.forEach(props.children, child => this.registerChild(child.props));
 
     // Setup the callbacks for routing events.
     events.onDidPush(this.handleRouteChange);
@@ -49,24 +42,17 @@ class Router extends Component {
   }
 
   /**
-   * Push an initial route if the prop is present.
-   */
-  componentDidMount() {
-    if (this.props.start) {
-      conductor.push(this.props.start);
-    }
-  }
-
-  /**
    * @param {Object} nextProps The next props.
    * @param {Object} nextState The next state.
    * @returns {boolean}
    */
   shouldComponentUpdate(nextProps, nextState) {
+    // Render if the stacks are different sizes.
     if (this.state.stack.length !== nextState.stack.length) {
       return true;
     }
 
+    // Render if the history action was a replace.
     if (getCurrentAction() === constants.ACTION_REPLACE) {
       return true;
     }
@@ -75,9 +61,10 @@ class Router extends Component {
   }
 
   /**
-   *
-   * @param {*} stack
-   * @param {*} pattern
+   * Determines the last occurence of a path in the stack of open routes.
+   * @param {Array} stack The open routes stack.
+   * @param {string} pattern The pattern to look for.
+   * @returns {number|null}
    */
   getlastOccurence = (stack, pattern) => {
     for (let i = stack.length - 1; i >= 0; --i) {
@@ -152,7 +139,7 @@ class Router extends Component {
     conductor.register(props.pattern);
 
     this.routes[props.pattern] = {
-      component: props.content,
+      component: props.component,
       pattern: props.pattern,
       preload: props.preload,
     };
@@ -227,7 +214,7 @@ class Router extends Component {
           return (
             <Route
               id={id}
-              content={component}
+              component={component}
               isVisible={isVisible}
               key={key}
               path={pathname}
@@ -240,20 +227,12 @@ class Router extends Component {
     );
   }
 
-  get currentRouteId() {
-    return this.state.stack.length ? this.state.stack[this.state.stack.length - 1].id : null;
-  }
-
   /**
    * The render method.
    * @returns {JSX}
    */
   render() {
-    return (
-      <RouterContext.Provider value={{ id: this.currentRouteId }}>
-        {this.renderOpenRoutes()}
-      </RouterContext.Provider>
-    );
+    return this.renderOpenRoutes();
   }
 }
 

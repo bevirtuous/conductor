@@ -6,6 +6,10 @@ import * as events from '@virtuous/conductor-events';
  * The ConductorComponent component.
  */
 class ConductorComponent extends React.Component {
+  static contextTypes = {
+    routeId: PropTypes.func,
+  };
+
   /**
    * @param {Object} props The component props.
    */
@@ -14,20 +18,32 @@ class ConductorComponent extends React.Component {
 
     this.entered = false;
 
-    events.onWillPush(this.handleRouteChange);
-    events.onWillPop(this.handleRouteChange);
+    events.onDidPush(this.handleRouteChange);
+    events.onDidPop(this.handleRouteChange);
+    events.onDidReplace(this.handleRouteChange);
   }
 
   /**
-   * 
+   * @param {string} routeId The current route id.
    */
   handleRouteChange = (routeId) => {
+    const pageId = this.context.routeId();
 
+    // Check if component is not entered and the context id matches the new current route id.
+    if (!this.entered && pageId === routeId) {
+      this.entered = true;
+      this.componentDidEnter();
+      return;
+    }
+
+    // Check if component is not entered and the context id matches the new current route id.
+    if (this.entered && pageId !== routeId) {
+      this.entered = false;
+      this.componentDidLeave();
+    }
   }
 
-  componentWillEnter = () => {}
   componentDidEnter = () => {}
-  componentWillLeave = () => {}
   componentDidLeave = () => {}
 }
 

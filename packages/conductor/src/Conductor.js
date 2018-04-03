@@ -88,7 +88,6 @@ class Conductor {
     }
 
     this.routes[pattern] = {
-      id: uuid(), // TODO: Do I need this?
       match: matcher(pattern),
       pattern,
     };
@@ -140,6 +139,10 @@ class Conductor {
    * @param {boolean} navigate Whether or not to perform the history action.
    */
   pop(navigate = true) {
+    if (!this.stack.length) {
+      return;
+    }
+
     // Emit the willReplace life cycle event.
     this.sendEvent(constants.EVENT_WILL_POP);
 
