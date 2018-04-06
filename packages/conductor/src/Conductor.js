@@ -111,6 +111,7 @@ class Conductor {
    */
   willPush(pathname, options, route) {
     const id = uuid();
+
     // Emit the willEnter life cycle event.
     this.sendEvent(constants.EVENT_WILL_PUSH, id);
 
