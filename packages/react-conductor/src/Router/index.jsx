@@ -5,7 +5,7 @@ import * as constants from '@virtuous/conductor/constants';
 import * as events from '@virtuous/conductor-events';
 import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import getRouteStack from '@virtuous/conductor-helpers/getRouteStack';
-import Route from './Route';
+import Route from '../Route';
 
 /**
  * The Router component.
