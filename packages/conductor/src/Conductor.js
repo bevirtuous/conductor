@@ -145,8 +145,11 @@ class Conductor {
       return;
     }
 
+    // Grab the id from the last route in the stack.
+    const { id } = this.stack[this.stack.length - 1];
+
     // Emit the willReplace life cycle event.
-    this.sendEvent(constants.EVENT_WILL_POP);
+    this.sendEvent(constants.EVENT_WILL_POP, id);
 
     // Pop the stack.
     this.stack.pop();

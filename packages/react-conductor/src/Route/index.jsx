@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
+import Transition from 'react-transition-group/Transition';
+import { TweenLite } from 'gsap';
+import transition from './transition';
 
 /**
  * The Route component.
@@ -29,6 +33,15 @@ class Route extends Component {
 
   /**
    * 
+   * @param {*} props 
+   */
+  constructor(props) {
+    super(props);
+    this.node = React.createRef();
+  }
+
+  /**
+   * 
    */
   getChildContext() {
     return { routeId: this.getRouteId };
@@ -48,8 +61,44 @@ class Route extends Component {
   /**
    * 
    */
-  getRouteId = () => {
-    return this.props.id;
+  componentDidMount() {
+    // console.warn(this.node);
+    // TweenLite.to(this.node.current, 5, { css: { backgroundColor: "#F19939", height: '100vh' } });
+  }
+
+  /**
+   * 
+   */
+  componentDidUpdate() {
+    if (!transition && this.props.path === this.context.router.path) {
+      this.routeDidEnter();
+    }
+  }
+
+  /**
+   * 
+   */
+  get transitionType() {
+    if (this.props.path && !this.props.isVisible) {
+      return transition.backward;
+    } else if (getCurrentAction() === 'replace') {
+      return transition.replace;
+    }
+
+    return transition.forward;
+  }
+
+  /**
+   * 
+   */
+  getRouteId = () => this.props.id;
+
+  /**
+   * 
+   */
+  routeDidEnter = () => {
+    console.warn('RouteDidEnter');
+    return;
   }
 
   /**
@@ -57,24 +106,55 @@ class Route extends Component {
    * @returns {JSX}
    */
   render() {
+    const { transitionType } = this;
     const {
-      tag: Wrapper,
       component: Content,
       isVisible,
     } = this.props;
 
+    // return (
+    //   <div ref={this.node}>
+    //     <Content />
+    //   </div>
+    // );
     return (
-      <Wrapper
-        style={{
-          ...(!isVisible) && {
-            pointerEvents: 'none',
-            transform: 'translateX(-100%)',
-          },
-        }}
+      <Transition
+        in={isVisible}
+        timeout={transitionType.duration}
+        onEntered={this.routeDidEnter}
       >
-        <Content {...this.props.state} />
-      </Wrapper>
+        {state => (
+          <div
+            style={{
+              // ...(index !== null) && { zIndex: index },
+              ...transitionType.default,
+              ...transitionType[state],
+            }}
+          >
+            <Content />
+          </div>
+        )}
+      </Transition>
     );
+
+    // const {
+    //   tag: Wrapper,
+    //   component: Content,
+    //   isVisible,
+    // } = this.props;
+
+    // return (
+    //   <Wrapper
+    //     style={{
+    //       ...(!isVisible) && {
+    //         pointerEvents: 'none',
+    //         transform: 'translateX(-100%)',
+    //       },
+    //     }}
+    //   >
+    //     <Content {...this.props.state} />
+    //   </Wrapper>
+    // );
   }
 }
 

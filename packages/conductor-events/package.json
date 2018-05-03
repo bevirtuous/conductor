@@ -30,7 +30,9 @@
     "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/mocha"
   },
   "dependencies": {
-    "@virtuous/conductor": "^1.0.0-beta.12"
+    "@virtuous/conductor": "^1.0.0-beta.12",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
   },
   "nyc": {
     "include": [

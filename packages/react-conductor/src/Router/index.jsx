@@ -182,7 +182,7 @@ class Router extends Component {
             });
 
             if (match) {
-              id = match.pathname;
+              id = match.id;
               pathname = match.pathname;
               state = match.state;
             }
