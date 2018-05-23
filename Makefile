@@ -28,7 +28,7 @@ build-clean:
 		$(foreach package, $(PACKAGES), $(call do-build-clean, $(package)))
 
 build-lerna:
-		lerna publish --skip-npm
+		lerna publish --exact --skip-npm
 
 build-copypkg:
 		$(foreach package, $(PACKAGES), $(call do-copypkg, $(package)))
