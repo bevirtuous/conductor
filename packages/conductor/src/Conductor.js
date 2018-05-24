@@ -1,4 +1,5 @@
 import uuid from 'uuid/v4';
+import queryString from 'query-string';
 import UrlPattern from 'url-pattern';
 import matcher from './matcher';
 import history from './history';
@@ -193,11 +194,16 @@ class Conductor {
     // Emit the willReplace life cycle event.
     this.sendEvent(constants.EVENT_WILL_REPLACE, id);
 
+    const urlPattern = new UrlPattern(pattern);
+    const query = queryString.parse(queryString.extract(pathname));
+
     // Replace the last cache entry with the given values.
     this.stack[this.stack.length - 1] = {
       id,
+      params: urlPattern.match(pathname) || {},
       pathname,
       pattern,
+      query,
       state,
     };
 
@@ -248,12 +254,14 @@ class Conductor {
    */
   addToStack(pathname, { pattern }, id, state) {
     const urlPattern = new UrlPattern(pattern);
+    const query = queryString.parse(queryString.extract(pathname));
 
     this.stack.push({
       id,
-      params: urlPattern.match(pathname),
+      params: urlPattern.match(pathname) || {},
       pathname,
       pattern,
+      query,
       state,
     });
   }
