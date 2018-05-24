@@ -1,4 +1,5 @@
 import uuid from 'uuid/v4';
+import UrlPattern from 'url-pattern';
 import matcher from './matcher';
 import history from './history';
 import emitter from './emitter';
@@ -246,8 +247,11 @@ class Conductor {
    * @param {Object} state The state for this route.
    */
   addToStack(pathname, { pattern }, id, state) {
+    const urlPattern = new UrlPattern(pattern);
+
     this.stack.push({
       id,
+      params: urlPattern.match(pathname),
       pathname,
       pattern,
       state,
