@@ -4,6 +4,7 @@ import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import Transition from 'react-transition-group/Transition';
 import { TweenLite } from 'gsap';
 import transition from './transition';
+import { RouteContext } from '../Router';
 
 /**
  * The Route component.
@@ -14,7 +15,9 @@ class Route extends Component {
     pattern: PropTypes.string.isRequired,
     id: PropTypes.string,
     isVisible: PropTypes.bool,
+    params: PropTypes.shape(),
     path: PropTypes.string,
+    query: PropTypes.shape(),
     state: PropTypes.shape(),
     tag: PropTypes.string,
   };
@@ -22,13 +25,11 @@ class Route extends Component {
   static defaultProps = {
     id: null,
     isVisible: false,
+    params: {},
     path: null,
-    state: null,
+    query: {},
+    state: {},
     tag: 'div',
-  };
-
-  static childContextTypes = {
-    routeId: PropTypes.func,
   };
 
   /**
@@ -38,13 +39,6 @@ class Route extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
-  }
-
-  /**
-   * 
-   */
-  getChildContext() {
-    return { routeId: this.getRouteId };
   }
 
   /**
@@ -88,15 +82,6 @@ class Route extends Component {
 
   //   TweenLite.fromTo(this.node.current, 300 / 1000, start, end);
   // }
-
-  /**
-   * 
-   */
-  componentDidUpdate() {
-    if (!transition && this.props.path === this.context.router.path) {
-      this.routeDidEnter();
-    }
-  }
 
   /**
    * 
@@ -150,68 +135,48 @@ class Route extends Component {
   }
 
   /**
-   * 
-   */
-  getRouteId = () => this.props.id;
-
-  /**
-   * 
-   */
-  routeDidEnter = () => {
-
-  }
-
-  /**
    * Renders the component.
    * @returns {JSX}
    */
   render() {
-    const { component: Content } = this.props;
-    // return (
-    //   <div ref={this.node}>
-    //     <Content />
-    //   </div>
-    // );
+    const {
+      component: Content,
+      id,
+      params,
+      path,
+      pattern,
+      query,
+      state: routeState,
+    } = this.props;
 
     const { transitionType } = this;
+    const route = {
+      id,
+      pathname: path,
+      pattern,
+      params,
+      query,
+      state: routeState,
+    };
     return (
-      <Transition
-        in={this.props.isVisible}
-        timeout={transitionType.duration}
-        onEntered={this.routeDidEnter}
-      >
-        {state => (
-          <div
-            style={{
-              // ...(index !== null) && { zIndex: index },
-              ...transitionType.default,
-              ...transitionType[state],
-            }}
-          >
-            <Content />
-          </div>
-        )}
-      </Transition>
+      <RouteContext.Provider value={route}>
+        <Transition
+          in={this.props.isVisible}
+          timeout={0}
+        >
+          {state => (
+            <div
+              style={{
+                ...transitionType.default,
+                ...transitionType[state],
+              }}
+            >
+              <Content />
+            </div>
+          )}
+        </Transition>
+      </RouteContext.Provider>
     );
-
-    // const {
-    //   tag: Wrapper,
-    //   component: Content,
-    //   isVisible,
-    // } = this.props;
-
-    // return (
-    //   <Wrapper
-    //     style={{
-    //       ...(!isVisible) && {
-    //         pointerEvents: 'none',
-    //         transform: 'translateX(-100%)',
-    //       },
-    //     }}
-    //   >
-    //     <Content {...this.props.state} />
-    //   </Wrapper>
-    // );
   }
 }
 

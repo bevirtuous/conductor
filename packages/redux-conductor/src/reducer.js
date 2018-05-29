@@ -24,6 +24,11 @@ export default (state = defaultState, { type, stack }) => {
         routing: state.routing,
         stack,
       };
+    case actions.CONDUCTOR_RESET:
+      return {
+        routing: state.routing,
+        stack: [stack[0]],
+      };
     default:
       return state;
   }

@@ -35,6 +35,7 @@ class Conductor {
     this.stack = [];
 
     this.conductorEvent = false;
+    this.silentMode = false;
 
     history.listen(this.handleHistoryEvent);
   }
@@ -63,19 +64,20 @@ class Conductor {
    * @param {string} action The executed action.
    */
   handleHistoryEvent = (location, action) => {
-    const { conductorEvent } = this;
-
     if (action === constants.ACTION_POP) {
-      if (!conductorEvent) {
-        this.pop(false);
+      if (!this.conductorEvent) {
+        this.pop(1, false);
       }
-      this.didPop(location);
+      if (!this.silentMode) {
+        this.didPop(location);
+      }
     } else if (action === constants.ACTION_PUSH) {
       this.didPush(location);
     } else if (action === constants.ACTION_REPLACE) {
       this.didReplace(location);
     }
 
+    this.silentMode = false;
     this.conductorEvent = false;
   }
 
@@ -99,7 +101,7 @@ class Conductor {
   /**
    * Push a path into the history stack.
    * @param {string} pathname The pathname of the new route.
-   * @param {string} options History options.
+   * @param {string} options A state object to associate with this history entry..
    */
   push(pathname, options = {}) {
     this.doMatchLoop(pathname, route => this.willPush(pathname, options, route));
@@ -140,9 +142,11 @@ class Conductor {
 
   /**
    * Go back in history. Remove the route entries from the stacks.
+   * @param {number} steps The number of steps to pop.
    * @param {boolean} navigate Whether or not to perform the history action.
+   * @param {boolean} silentMode A settings to disable events from emitting.
    */
-  pop(navigate = true) {
+  pop(steps = 1, navigate = true, silentMode = false) {
     if (!this.stack.length) {
       return;
     }
@@ -151,17 +155,20 @@ class Conductor {
     const { id } = this.stack[this.stack.length - 1];
 
     // Emit the willReplace life cycle event.
-    this.sendEvent(constants.EVENT_WILL_POP, id);
+    if (!silentMode) {
+      this.sendEvent(constants.EVENT_WILL_POP, id);
+    }
 
     // Pop the stack.
-    this.stack.pop();
+    this.stack.length = this.stack.length - steps;
 
-    // Update internal flag.
+    // Update internal flags.
     this.conductorEvent = true;
+    this.silentMode = silentMode;
 
     // Call the history action.
     if (navigate) {
-      history.go(-1);
+      history.go(-steps);
     }
   }
 
@@ -235,7 +242,7 @@ class Conductor {
     Object.keys(this.routes).some((definition) => {
       const route = this.routes[definition];
 
-      // If there is no match, do no further actions.
+      // If there is no match then do nothing.
       if (!route.match(pathname)) {
         return false;
       }
@@ -264,6 +271,22 @@ class Conductor {
       query,
       state,
     });
+  }
+
+  reset = () => {
+    // Don't reset if we are already on the first route.
+    if (this.stack.length === 1) {
+      return;
+    }
+
+    const { id } = this.stack[0];
+
+    this.sendEvent(constants.EVENT_WILL_RESET, id);
+
+    // Pop everything except for the first route.
+    this.pop(this.stack.length - 1, false, true);
+
+    this.sendEvent(constants.EVENT_DID_RESET, id);
   }
 }
 

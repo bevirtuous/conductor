@@ -1,15 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import * as events from '@virtuous/conductor-events';
 
 /**
  * The ConductorComponent component.
  */
 class ConductorComponent extends React.Component {
-  static contextTypes = {
-    routeId: PropTypes.func,
-  };
-
   /**
    * @param {Object} props The component props.
    */
@@ -27,20 +22,21 @@ class ConductorComponent extends React.Component {
    * @param {string} routeId The current route id.
    */
   handleRouteChange = (routeId) => {
-    const pageId = this.context.routeId();
+    return;
+    // const pageId = this.context.routeId();
 
-    // Check if component is not entered and the context id matches the new current route id.
-    if (!this.entered && pageId === routeId) {
-      this.entered = true;
-      this.componentDidEnter();
-      return;
-    }
+    // // Check if component is not entered and the context id matches the new current route id.
+    // if (!this.entered && pageId === routeId) {
+    //   this.entered = true;
+    //   this.componentDidEnter();
+    //   return;
+    // }
 
-    // Check if component is not entered and the context id matches the new current route id.
-    if (this.entered && pageId !== routeId) {
-      this.entered = false;
-      this.componentDidLeave();
-    }
+    // // Check if component is not entered and the context id matches the new current route id.
+    // if (this.entered && pageId !== routeId) {
+    //   this.entered = false;
+    //   this.componentDidLeave();
+    // }
   }
 
   componentDidEnter = () => {}

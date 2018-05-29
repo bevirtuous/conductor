@@ -33,7 +33,7 @@ const backward = {
     left: '0',
     position: 'absolute',
     top: '0',
-    transform: 'translate3d(-50%, 0, 0)',
+    transform: 'translate3d(-100%, 0, 0)',
     // transition: 'opacity 375ms cubic-bezier(0.25, 0.1, 0.25, 1), transform 375ms cubic-bezier(0.25, 0.1, 0.25, 1)',
     width: '100%',
     willChange: 'transform',
@@ -46,14 +46,14 @@ const backward = {
     transform: 'none',
   },
   exiting: {
-    // opacity: '0.2',
+    opacity: '0',
     pointerEvents: 'none',
-    transform: 'translate3d(-50%, 0, 0)',
+    transform: 'translate3d(-100%, 0, 0)',
   },
   exited: {
-    // opacity: 0,
+    opacity: 0,
     pointerEvents: 'none',
-    transform: 'translate3d(-50%, 0, 0)',
+    transform: 'translate3d(-100%, 0, 0)',
   },
 };
 

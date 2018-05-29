@@ -7,6 +7,9 @@ import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import getRouteStack from '@virtuous/conductor-helpers/getRouteStack';
 import Route from '../Route';
 
+const Context = React.createContext();
+export const RouteContext = Context;
+
 /**
  * The Router component.
  */
@@ -36,9 +39,10 @@ class Router extends Component {
     React.Children.forEach(props.children, child => this.registerChild(child.props));
 
     // Setup the callbacks for routing events.
-    events.onDidPush(this.handleRouteChange);
-    events.onDidPop(this.handleRouteChange);
-    events.onDidReplace(this.handleRouteChange);
+    events.onDidPush(() => this.handleRouteChange(constants.ACTION_PUSH));
+    events.onDidPop(() => this.handleRouteChange(constants.ACTION_POP));
+    events.onDidReplace(() => this.handleRouteChange(constants.ACTION_REPLACE));
+    events.onDidReset(() => this.handleRouteChange(constants.ACTION_RESET));
   }
 
   /**
@@ -80,8 +84,7 @@ class Router extends Component {
    * Update the state based on the router changes.
    * TODO:
    */
-  handleRouteChange = () => {
-    const action = getCurrentAction();
+  handleRouteChange = (action) => {
     const stack = getRouteStack();
 
     switch (action) {
@@ -122,6 +125,24 @@ class Router extends Component {
         if (this.routes[newPattern].preload) {
           this.routeStack.push(this.routes[newPattern].pattern);
         }
+
+        break;
+      }
+
+      case constants.ACTION_RESET: {
+        const { pattern, preload } = this.state.stack[0];
+
+        // Set the routeStack back to it's initial state.
+        this.routeStack.length = this.props.children.length;
+
+        /**
+         * Check if the initial entry is the stack is a preload route.
+         * If so then immediately push another to the route stack.
+         */
+        if (preload) {
+          this.routeStack.push(pattern);
+        }
+
         break;
       }
 
