@@ -182,6 +182,8 @@ class Router extends Component {
           let pathname = null;
           let isVisible = false;
           let id = null;
+          let params = {};
+          let query = {};
           let state = {};
 
           const { component, pattern, preload } = this.routes[item];
@@ -205,6 +207,8 @@ class Router extends Component {
             if (match) {
               id = match.id;
               pathname = match.pathname;
+              params = match.params;
+              query = match.query;
               state = match.state;
             }
           } else {
@@ -224,6 +228,8 @@ class Router extends Component {
             if (this.state.stack[lastOccurence]) {
               id = this.state.stack[lastOccurence].id;
               pathname = this.state.stack[lastOccurence].pathname;
+              params = this.state.stack[lastOccurence].params;
+              query = this.state.stack[lastOccurence].query;
               state = this.state.stack[lastOccurence].state;
             }
 
