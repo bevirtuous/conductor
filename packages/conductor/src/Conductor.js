@@ -202,12 +202,12 @@ class Conductor {
     this.sendEvent(constants.EVENT_WILL_REPLACE, id);
 
     const urlPattern = new UrlPattern(pattern);
-    const query = queryString.parse(queryString.extract(pathname));
+    const { url, query } = queryString.parseUrl(pathname);
 
     // Replace the last cache entry with the given values.
     this.stack[this.stack.length - 1] = {
       id,
-      params: urlPattern.match(pathname) || {},
+      params: urlPattern.match(url) || {},
       pathname,
       pattern,
       query,
@@ -261,11 +261,11 @@ class Conductor {
    */
   addToStack(pathname, { pattern }, id, state) {
     const urlPattern = new UrlPattern(pattern);
-    const query = queryString.parse(queryString.extract(pathname));
+    const { url, query } = queryString.parseUrl(pathname);
 
     this.stack.push({
       id,
-      params: urlPattern.match(pathname) || {},
+      params: urlPattern.match(url) || {},
       pathname,
       pattern,
       query,
