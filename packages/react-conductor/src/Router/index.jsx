@@ -244,8 +244,10 @@ class Router extends Component {
               component={component}
               isVisible={isVisible}
               key={key}
+              params={params}
               path={pathname}
               pattern={pattern}
+              query={query}
               state={state}
             />
           );
