@@ -3,8 +3,18 @@ import PropTypes from 'prop-types';
 import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import Transition from 'react-transition-group/Transition';
 import { TweenLite } from 'gsap';
-import transition from './transition';
+// Import transition from './transition';
 import { RouteContext } from '../Router';
+
+const transition = {
+  duration: 375,
+  default: {
+    left: '0',
+    position: 'absolute',
+    top: '0',
+    width: '100%',
+  },
+};
 
 /**
  * The Route component.
@@ -20,6 +30,7 @@ class Route extends Component {
     query: PropTypes.shape(),
     state: PropTypes.shape(),
     tag: PropTypes.string,
+    transition: PropTypes.shape(),
   };
 
   static defaultProps = {
@@ -30,11 +41,16 @@ class Route extends Component {
     query: {},
     state: {},
     tag: 'div',
+    transition: {
+      forward: transition,
+      backward: transition,
+      replace: transition,
+    },
   };
 
   /**
-   * 
-   * @param {*} props 
+   *
+   * @param {*} props
    */
   constructor(props) {
     super(props);
@@ -53,68 +69,68 @@ class Route extends Component {
   }
 
   /**
-   * 
+   *
    */
   componentDidMount() {
-    // const start = transition.push.out;
+    // Const start = this.props.transition.push.out;
     // TweenLite.to(this.node.current, 0, start);
   }
 
   /**
-   * 
-   * @param {*} nextProps 
+   *
+   * @param {*} nextProps
    */
-  // componentWillReceiveProps(nextProps) {
+  // ComponentWillReceiveProps(nextProps) {
   //   //
-  //   if (this.props.isVisible === nextProps.isVisible) {
-  //     return;
+  //   If (this.props.isVisible === nextProps.isVisible) {
+  //     Return;
   //   }
 
   //   // Then find out which history action was just fired (use helper)
-  //   const action = getCurrentAction();
+  //   Const action = getCurrentAction();
 
-  //   const position = this.props.isVisible ? 'in' : 'out';
-  //   const newPosition = nextProps.isVisible ? 'in' : 'out';
-  //   console.warn(position, newPosition, action);
+  //   Const position = this.props.isVisible ? 'in' : 'out';
+  //   Const newPosition = nextProps.isVisible ? 'in' : 'out';
+  //   Console.warn(position, newPosition, action);
 
-  //   const start = transition[action.toLowerCase()][position];
-  //   const end = transition[action.toLowerCase()][newPosition];
+  //   Const start = transition[action.toLowerCase()][position];
+  //   Const end = transition[action.toLowerCase()][newPosition];
 
   //   TweenLite.fromTo(this.node.current, 300 / 1000, start, end);
   // }
 
   /**
-   * 
+   *
    */
   get transitionType() {
     if (this.props.path && !this.props.isVisible) {
-      return transition.backward;
+      return this.props.transition.backward;
     } else if (getCurrentAction() === 'REPLACE') {
-      return transition.replace;
+      return this.props.transition.replace;
     }
 
-    return transition.forward;
+    return this.props.transition.forward;
   }
 
-  setPosition = (props, duration = transition.duration) => {
+  setPosition = (props, duration = this.props.transition.duration) => {
     const start = this.getStartPosition(props);
-    // let position;
+    // Let position;
 
-    // if (props.path) {
-    //   if (props.isVisible) {
-    //     position = transition.visible;
+    // If (props.path) {
+    //   If (props.isVisible) {
+    //     Position = this.props.transition.visible;
     //   } else {
-    //     position = transition.post;
+    //     Position = this.props.transition.post;
     //   }
     // } else {
-    //   position = transition.pre;
+    //   Position = this.props.transition.pre;
     // }
 
     TweenLite.to(this.node.current, duration / 1000, start);
   }
 
   /**
-   * 
+   *
    */
   getStartPosition = (isVisible, isNew) => {
     // First, find out if we are animating in (isVisible = true)
@@ -127,12 +143,11 @@ class Route extends Component {
   }
 
   /**
-   * 
+   *
    */
-  getEndPosition = () => {
+  getEndPosition = () =>
     // Determine the end position of the element
-    return transition.in.push;
-  }
+    this.props.transition.in.push
 
   /**
    * Renders the component.
@@ -158,6 +173,7 @@ class Route extends Component {
       query,
       state: routeState,
     };
+
     return (
       <RouteContext.Provider value={route}>
         <Transition
