@@ -17,11 +17,7 @@
   <img width="300" alt="conductor" src="https://user-images.githubusercontent.com/2123279/32792787-92996cdc-c964-11e7-96c6-ffd86f4ee087.png" />
 </p>
 
-<br />
-
-**Conductor** is a powerful JavaScript router for single-page applications.
-
-<br />
+Conductor is a powerful JavaScript router for single-page applications.
 
 ### Packages
 
