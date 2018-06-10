@@ -14,17 +14,17 @@ Usage:
 ```js
 import { onDidPush } from '@virtuous/conductor-events';
 
-const myFunc = id => {
+const myCallback = id => {
   // do stuff
 };
 
-onDidPush(myFunc);
+onDidPush(myCallback);
 
 ```
 
 ## API
 
-_Note:_ Each function receives an `id` parameter representing the route that is in context i.e. the route that is being popped or pushed.
+_Note:_ Each acallback receives an `id` parameter representing the route that is in context i.e. the route that is being popped or pushed.
 
 **onWillPush**
 
