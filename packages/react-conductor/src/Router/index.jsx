@@ -7,8 +7,8 @@ import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import getRouteStack from '@virtuous/conductor-helpers/getRouteStack';
 import Route from '../Route';
 
-const Context = React.createContext();
-export const RouteContext = Context;
+export const RouteContext = React.createContext();
+export const RouterContext = React.createContext();
 
 /**
  * The Router component.
@@ -261,7 +261,13 @@ class Router extends Component {
    * @returns {JSX}
    */
   render() {
-    return this.renderOpenRoutes();
+    const current = this.state.stack[this.state.stack.length - 1];
+
+    return (
+      <RouterContext.Provider value={current}>
+        {this.renderOpenRoutes()}
+      </RouterContext.Provider>
+    );
   }
 }
 

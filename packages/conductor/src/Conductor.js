@@ -104,7 +104,8 @@ class Conductor {
    * @param {string} options A state object to associate with this history entry..
    */
   push(pathname, options = {}) {
-    this.doMatchLoop(pathname, route => this.willPush(pathname, options, route));
+    const { url } = queryString.parseUrl(pathname);
+    this.doMatchLoop(url, route => this.willPush(pathname, options, route));
   }
 
   /**
@@ -186,7 +187,8 @@ class Conductor {
    * @param {string} options History options.
    */
   replace(pathname, options = {}) {
-    this.doMatchLoop(pathname, route => this.willReplace(pathname, options, route));
+    const { url } = queryString.parseUrl(pathname);
+    this.doMatchLoop(url, route => this.willReplace(pathname, options, route));
   }
 
   /**
