@@ -3,18 +3,8 @@ import PropTypes from 'prop-types';
 import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import Transition from 'react-transition-group/Transition';
 import { TweenLite } from 'gsap';
-// Import transition from './transition';
+import transition from './transition';
 import { RouteContext } from '../Router';
-
-const transition = {
-  duration: 375,
-  default: {
-    left: '0',
-    position: 'absolute',
-    top: '0',
-    width: '100%',
-  },
-};
 
 /**
  * The Route component.
@@ -41,11 +31,7 @@ class Route extends Component {
     query: {},
     state: {},
     tag: 'div',
-    transition: {
-      forward: transition,
-      backward: transition,
-      replace: transition,
-    },
+    transition,
   };
 
   /**
