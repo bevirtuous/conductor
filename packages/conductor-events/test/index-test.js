@@ -25,58 +25,43 @@ describe('Events', () => {
     sinon.assert.calledWith(spy, constants.EVENT_ERROR, eventCallback);
   });
 
-  it('registers for onWillEnter event', () => {
-    events.onWillEnter(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_WILL_ENTER, eventCallback);
+  it('registers for onWillPush event', () => {
+    events.onWillPush(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_WILL_PUSH, eventCallback);
   });
 
-  it('registers for onDidEnter event', () => {
-    events.onDidEnter(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_DID_ENTER, eventCallback);
+  it('registers for onDidPush event', () => {
+    events.onDidPush(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_DID_PUSH, eventCallback);
   });
 
-  it('registers for onWillLeave event', () => {
-    events.onWillLeave(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_WILL_LEAVE, eventCallback);
+  it('registers for onWillPop event', () => {
+    events.onWillPop(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_WILL_POP, eventCallback);
   });
 
-  it('registers for onDidLeave event', () => {
-    events.onDidLeave(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_DID_LEAVE, eventCallback);
+  it('registers for onDidPop event', () => {
+    events.onDidPop(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_DID_POP, eventCallback);
   });
 
-  it('registers for onPop event', () => {
-    events.onPop(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_POP, eventCallback);
+  it('registers for onWillReplace event', () => {
+    events.onWillReplace(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_WILL_REPLACE, eventCallback);
   });
 
-  it('registers for onPopped event', () => {
-    events.onPopped(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_POPPED, eventCallback);
+  it('registers for onDidReplace event', () => {
+    events.onDidReplace(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_DID_REPLACE, eventCallback);
   });
 
-  it('registers for onPush event', () => {
-    events.onPush(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_PUSH, eventCallback);
+  it('registers for onWillReset event', () => {
+    events.onWillReset(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_WILL_RESET, eventCallback);
   });
 
-  it('registers for onPushed event', () => {
-    events.onPushed(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_PUSHED, eventCallback);
-  });
-
-  it('registers for onReplace event', () => {
-    events.onReplace(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_REPLACE, eventCallback);
-  });
-
-  it('registers for onReplaced event', () => {
-    events.onReplaced(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_REPLACED, eventCallback);
-  });
-
-  it('registers for onReset event', () => {
-    events.onReset(eventCallback);
-    sinon.assert.calledWith(spy, constants.EVENT_RESET, eventCallback);
+  it('registers for onDidReset event', () => {
+    events.onDidReset(eventCallback);
+    sinon.assert.calledWith(spy, constants.EVENT_DID_RESET, eventCallback);
   });
 });
