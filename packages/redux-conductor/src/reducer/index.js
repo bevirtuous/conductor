@@ -1,4 +1,4 @@
-import * as actions from '../action-creators';
+import * as constants from '../constants';
 
 /**
  * The default state definition.
@@ -17,14 +17,14 @@ const defaultState = {
  */
 export default (state = defaultState, { type, stack }) => {
   switch (type) {
-    case actions.CONDUCTOR_PUSH:
-    case actions.CONDUCTOR_POP:
-    case actions.CONDUCTOR_REPLACE:
+    case constants.CONDUCTOR_PUSH:
+    case constants.CONDUCTOR_POP:
+    case constants.CONDUCTOR_REPLACE:
       return {
         routing: state.routing,
         stack,
       };
-    case actions.CONDUCTOR_RESET:
+    case constants.CONDUCTOR_RESET:
       return {
         routing: state.routing,
         stack: [stack[0]],

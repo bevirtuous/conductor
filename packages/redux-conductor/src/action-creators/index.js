@@ -1,7 +1,4 @@
-export const CONDUCTOR_PUSH = 'CONDUCTOR_PUSH';
-export const CONDUCTOR_POP = 'CONDUCTOR_POP';
-export const CONDUCTOR_REPLACE = 'CONDUCTOR_REPLACE';
-export const CONDUCTOR_RESET = 'CONDUCTOR_RESET';
+import * as constants from '../constants';
 
 /**
  * Creates the CONDUCTOR_PUSH action object.
@@ -9,7 +6,7 @@ export const CONDUCTOR_RESET = 'CONDUCTOR_RESET';
  * @return {Object} A Redux action.
  */
 export const conductorPush = stack => ({
-  type: CONDUCTOR_PUSH,
+  type: constants.CONDUCTOR_PUSH,
   stack,
 });
 
@@ -19,7 +16,7 @@ export const conductorPush = stack => ({
  * @return {Object} A Redux action.
  */
 export const conductorPop = stack => ({
-  type: CONDUCTOR_POP,
+  type: constants.CONDUCTOR_POP,
   stack,
 });
 
@@ -29,7 +26,7 @@ export const conductorPop = stack => ({
  * @return {Object} A Redux action.
  */
 export const conductorReplace = stack => ({
-  type: CONDUCTOR_REPLACE,
+  type: constants.CONDUCTOR_REPLACE,
   stack,
 });
 
@@ -39,6 +36,6 @@ export const conductorReplace = stack => ({
  * @return {Object} A Redux action.
  */
 export const conductorReset = stack => ({
-  type: CONDUCTOR_RESET,
+  type: constants.CONDUCTOR_RESET,
   stack,
 });

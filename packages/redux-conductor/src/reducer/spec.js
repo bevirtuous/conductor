@@ -1,62 +1,77 @@
 import reducer from '../reducer';
-import {
-  CONDUCTOR_PUSH,
-  CONDUCTOR_RESET,
-} from '../action-creators';
+import * as constants from '../constants';
 
 describe('Redux Conductor - Reducer', () => {
-  it('should handle a PUSH action', () => {
-    const mockState = {
+  it('should return the initial state', () => {
+    const state = reducer(undefined, {});
+
+    expect(state).toEqual({
       routing: false,
       stack: [],
-    };
+    });
+  });
 
-    const action = {
-      type: CONDUCTOR_PUSH,
-      stack: [
-        {
-          pathname: '/mypage',
-        },
-      ],
-    };
+  it('should handle a PUSH action', () => {
+    const state = reducer(undefined, {
+      type: constants.CONDUCTOR_PUSH,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
 
-    const state = reducer(mockState, action);
-    expect(state.stack.length).toEqual(1);
+    expect(state).toEqual({
+      routing: false,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
+  });
+
+  it('should handle a POP action', () => {
+    const state = reducer(undefined, {
+      type: constants.CONDUCTOR_POP,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
+
+    expect(state).toEqual({
+      routing: false,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
+  });
+
+  it('should handle a REPLACE action', () => {
+    const state = reducer(undefined, {
+      type: constants.CONDUCTOR_REPLACE,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
+
+    expect(state).toEqual({
+      routing: false,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
   });
 
   it('should handle a RESET action', () => {
-    const mockState = {
+    const state = reducer(undefined, {
+      type: constants.CONDUCTOR_RESET,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
+
+    expect(state).toEqual({
       routing: false,
-      stack: [
-        {
-          pathname: '/mypage',
-        }, {
-          pathname: '/mypage2',
-        },
-      ],
-    };
-
-    const action = {
-      type: CONDUCTOR_RESET,
-      stack: mockState.stack,
-    };
-
-    const { stack } = reducer(mockState, action);
-    expect(stack.length).toEqual(1);
-    expect(stack[stack.length - 1].pathname).toEqual('/mypage');
-  });
-
-  it('should handle any other action', () => {
-    const mockState = {
-      routing: false,
-      stack: [],
-    };
-
-    const action = {
-      type: 'MY_ACTION',
-    };
-
-    const state = reducer(mockState, action);
-    expect(state.stack.length).toEqual(0);
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
   });
 });
