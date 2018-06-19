@@ -34,6 +34,12 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ]
+  },
   "nyc": {
     "include": [
       "src/**/*.js"

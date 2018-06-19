@@ -1,4 +1,4 @@
-import getRouteStack from './getRouteStack';
+import getRouteStack from '../getRouteStack';
 
 /**
  * Returns the second last items in the history stack, null if there is no item.

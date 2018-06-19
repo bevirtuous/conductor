@@ -1,4 +1,4 @@
-import * as actions from './action-creators';
+import * as actions from '../action-creators';
 
 /**
  * The default state definition.

@@ -1,5 +1,4 @@
-import conductor from '@virtuous/conductor';
-import getRouteStack from './getRouteStack';
+import getRouteStack from '../getRouteStack';
 
 /**
  * Returns true if a route is found with the given pattern.

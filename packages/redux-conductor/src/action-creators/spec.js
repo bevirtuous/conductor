@@ -1,5 +1,5 @@
 import assert from 'assert';
-import * as actions from '../src/action-creators';
+import * as actions from '../action-creators';
 
 describe('Action Creators', () => {
   let action;
