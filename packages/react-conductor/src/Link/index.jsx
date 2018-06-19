@@ -12,8 +12,8 @@ import {
  */
 class Link extends React.Component {
   static propTypes = {
-    children: PropTypes.element.isRequired,
-    to: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    href: PropTypes.string.isRequired,
     action: PropTypes.oneOf([ACTION_PUSH, ACTION_POP, ACTION_REPLACE]),
     state: PropTypes.shape(),
     tag: PropTypes.string,
@@ -31,14 +31,14 @@ class Link extends React.Component {
   handleClick = (event) => {
     event.preventDefault();
 
-    const { action, state, to } = this.props;
+    const { action, state, href } = this.props;
 
     if (action === ACTION_PUSH) {
-      conductor.push(to, state);
+      conductor.push(href, state);
     } else if (action === ACTION_POP) {
       conductor.pop();
     } else {
-      conductor.replace(to, state);
+      conductor.replace(href, state);
     }
   }
 

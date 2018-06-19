@@ -19,8 +19,8 @@
     "redux"
   ],
   "contributors": [
-    "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
-    "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)"
+    "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
+    "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
   ],
   "main": "index.js",
   "scripts": {

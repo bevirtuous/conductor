@@ -64,7 +64,6 @@ class Conductor {
    * @param {string} action The executed action.
    */
   handleHistoryEvent = (location, action) => {
-    console.log('getting the action:', action);
     if (action === constants.ACTION_POP) {
       if (!this.conductorEvent) {
         this.pop(1, false);
