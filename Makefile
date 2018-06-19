@@ -1,4 +1,4 @@
-PACKAGES = conductor conductor-events conductor-helpers react-conductor react-conductor-transitions redux-conductor
+PACKAGES = conductor conductor-events conductor-helpers react-conductor redux-conductor
 
 release:
 		make clean

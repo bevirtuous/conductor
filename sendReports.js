@@ -26,7 +26,6 @@ addReport('conductor');
 addReport('conductor-events');
 addReport('conductor-helpers');
 addReport('react-conductor');
-addReport('react-conductor-transitions');
 addReport('redux-conductor');
 
 try {
