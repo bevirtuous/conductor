@@ -1,13 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Link /> should navigate when clicked 1`] = `
-<a
-  onClick={[Function]}
->
-  My Link
-</a>
-`;
-
 exports[`<Link /> should pop when clicked with prop action=POP 1`] = `
 <a
   onClick={[Function]}

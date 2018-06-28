@@ -1,5 +1,3 @@
-export const NAMESPACE = 'conductor';
-
 export const ACTION_PUSH = 'PUSH';
 export const ACTION_POP = 'POP';
 export const ACTION_REPLACE = 'REPLACE';

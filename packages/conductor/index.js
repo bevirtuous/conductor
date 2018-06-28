@@ -1,1 +1,1 @@
-module.exports = require('./src/Conductor');
+module.exports = require('./src');
