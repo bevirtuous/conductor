@@ -278,7 +278,7 @@ export class Conductor {
     this.sendEvent(constants.EVENT_WILL_RESET, id);
 
     // Pop everything except for the first route.
-    this.pop(this.stack.length - 1, false, true);
+    this.pop(this.stack.length - 1, true, true);
 
     this.sendEvent(constants.EVENT_DID_RESET, id);
   }
