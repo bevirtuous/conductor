@@ -14,24 +14,26 @@ class Route extends Component {
     component: PropTypes.func.isRequired,
     pattern: PropTypes.string.isRequired,
     id: PropTypes.string,
-    isVisible: PropTypes.bool,
+    open: PropTypes.bool,
     params: PropTypes.shape(),
     path: PropTypes.string,
     query: PropTypes.shape(),
     state: PropTypes.shape(),
     tag: PropTypes.string,
     transition: PropTypes.shape(),
+    visible: PropTypes.bool,
   };
 
   static defaultProps = {
     id: null,
-    isVisible: false,
+    open: false,
     params: {},
     path: null,
     query: {},
     state: {},
     tag: 'div',
     transition,
+    visible: false,
   };
 
   /**
@@ -49,7 +51,7 @@ class Route extends Component {
    */
   shouldComponentUpdate(nextProps) {
     return (
-      this.props.isVisible !== nextProps.isVisible ||
+      this.props.visible !== nextProps.visible ||
       this.props.path !== nextProps.path
     );
   }
@@ -89,7 +91,7 @@ class Route extends Component {
    *
    */
   get transitionType() {
-    if (this.props.path && !this.props.isVisible) {
+    if (this.props.path && !this.props.visible) {
       return this.props.transition.backward;
     } else if (getCurrentAction() === 'REPLACE') {
       return this.props.transition.replace;
@@ -163,11 +165,13 @@ class Route extends Component {
     return (
       <RouteContext.Provider value={route}>
         <Transition
-          in={this.props.isVisible}
+          in={this.props.visible}
           timeout={0}
         >
           {state => (
             <div
+              data-pattern={route.pattern}
+              data-pathname={route.pathname}
               style={{
                 ...transitionType.default,
                 ...transitionType[state],

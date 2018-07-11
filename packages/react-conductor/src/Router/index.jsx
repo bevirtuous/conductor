@@ -180,7 +180,8 @@ class Router extends Component {
       <Fragment>
         {this.routeStack.map((item, index) => {
           let pathname = null;
-          let isVisible = false;
+          let open = false;
+          let visible = false;
           let id = null;
           let params = {};
           let query = {};
@@ -194,11 +195,12 @@ class Router extends Component {
                 stackItem.pattern === pattern && !usedRoutes.includes(stackItemIndex);
 
               if (isMatch) {
+                open = true;
                 usedRoutes.push(stackItemIndex);
               }
 
               if (isMatch && stackItemIndex === this.state.stack.length - 1) {
-                isVisible = true;
+                visible = true;
               }
 
               return isMatch;
@@ -233,7 +235,8 @@ class Router extends Component {
               state = this.state.stack[lastOccurence].state;
             }
 
-            isVisible = lastOccurence === this.state.stack.length - 1;
+            open = !!pathname;
+            visible = lastOccurence === this.state.stack.length - 1;
           }
 
           const key = `route-${index}`;
@@ -242,13 +245,14 @@ class Router extends Component {
             <Route
               id={id}
               component={component}
-              isVisible={isVisible}
               key={key}
+              open={open}
               params={params}
               path={pathname}
               pattern={pattern}
               query={query}
               state={state}
+              visible={visible}
             />
           );
         })}
