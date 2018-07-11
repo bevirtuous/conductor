@@ -145,21 +145,25 @@ class Route extends Component {
     const {
       component: Content,
       id,
+      open,
       params,
       path,
       pattern,
       query,
       state: routeState,
+      visible,
     } = this.props;
 
     const { transitionType } = this;
     const route = {
       id,
+      open,
       pathname: path,
       pattern,
       params,
       query,
       state: routeState,
+      visible,
     };
 
     return (
