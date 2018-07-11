@@ -1,1 +1,0 @@
-// test that the node is correctly set
