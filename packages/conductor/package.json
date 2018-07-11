@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor",
-  "version": "1.0.0-beta.25",
+  "version": "1.0.0-beta.26",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {
@@ -33,8 +33,6 @@
     "history": "^4.7.2",
     "path-match": "^1.2.4",
     "query-string": "^6.1.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
     "url-pattern": "^1.0.3"
   },
   "nyc": {
