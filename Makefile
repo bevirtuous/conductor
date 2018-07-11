@@ -7,6 +7,7 @@ release:
 clean:
 		make clean-logs
 		make clean-modules
+		make build-clean
 		lerna bootstrap
 
 clean-modules:
@@ -20,7 +21,7 @@ clean-logs:
 build:
 		make build-clean
 		make build-lerna
-		$(foreach package, $(PACKAGES), $(call do-build, $(package)))
+		make build-packages
 		make build-copypkg
 		make publish
 
@@ -29,6 +30,9 @@ build-clean:
 
 build-lerna:
 		lerna publish --exact --skip-npm
+
+build-packages:
+		$(foreach package, $(PACKAGES), $(call do-build, $(package)))
 
 build-copypkg:
 		$(foreach package, $(PACKAGES), $(call do-copypkg, $(package)))

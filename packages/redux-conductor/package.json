@@ -33,11 +33,10 @@
   "dependencies": {
     "@virtuous/conductor": "1.0.0-beta.24",
     "@virtuous/conductor-events": "1.0.0-beta.24",
-    "@virtuous/conductor-helpers": "1.0.0-beta.24",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "@virtuous/conductor-helpers": "1.0.0-beta.24"
   },
   "peerDependencies": {
+    "react-redux": "^5.0.7",
     "redux": "^3.7.2"
   },
   "nyc": {
