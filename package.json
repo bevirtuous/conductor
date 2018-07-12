@@ -25,7 +25,6 @@
     "nyc": "^11.4.1",
     "pre-commit": "^1.2.2",
     "proxyquire": "^1.8.0",
-    "redux": "^3.7.2",
     "rimraf": "^2.6.2",
     "sinon": "^4.1.4"
   },
@@ -33,8 +32,8 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "lerna run test",
-    "cover": "lerna run cover",
+    "test": "jest",
+    "cover": "jest --coverage",
     "cover:send": "node ./sendReports.js",
     "release": "make release",
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx .",

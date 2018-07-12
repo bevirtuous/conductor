@@ -1,9 +1,9 @@
 language: node_js
 node_js:
-  - '8'
-script: "npm run cover"
+- 8.10.0
+script: yarn run cover --maxWorkers=4 --ci
 # Send coverage report to coveralls.io
-after_script: "npm run cover:send"
+after_script: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 notifications:
   slack: virtuous-coding:qsxYU1TMf0AAzcCALg4C8t17
   email: false

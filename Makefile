@@ -6,8 +6,9 @@ release:
 
 clean:
 		make clean-logs
-		make clean-modules
 		make build-clean
+		make clean-modules
+		rm -rf ./.cache-loader/
 		lerna bootstrap
 
 clean-modules:
