@@ -17,7 +17,6 @@ export const RouterContext = React.createContext();
  */
 const stateUpdated = (oldStack, newStack) => {
   return newStack.some((entry, index) => {
-    console.warn(entry.updated, oldStack[index].updated);
     return entry.updated !== oldStack[index].updated;
   });
 };
@@ -64,6 +63,9 @@ class Router extends Component {
    * @returns {boolean}
    */
   shouldComponentUpdate(nextProps, nextState) {
+    // TODO: Fix this check.
+    return true;
+
     // Render if the stacks are different sizes.
     if (this.state.stack.length !== nextState.stack.length) {
       return true;

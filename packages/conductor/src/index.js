@@ -1,14 +1,14 @@
 import uuid from 'uuid/v4';
 import queryString from 'query-string';
 import UrlPattern from 'url-pattern';
+import cloneDeep from 'lodash/cloneDeep';
 import matcher from './matcher';
 import history from './history';
 import emitter from './emitter';
 import * as constants from './constants';
-import cloneDeep from 'lodash/cloneDeep';
 
 /**
- * The Conductor class.
+ * The conductor class.
  */
 export class Conductor {
   /**
@@ -61,13 +61,18 @@ export class Conductor {
       if (!this.conductorEvent) {
         this.pop(1, false);
       }
+
       if (!this.silentMode) {
         this.didPop(location);
       }
     } else if (action === constants.ACTION_PUSH) {
-      this.didPush(location);
+      if (!this.silentMode) {
+        this.didPush(location);
+      }
     } else if (action === constants.ACTION_REPLACE) {
-      this.didReplace(location);
+      if (!this.silentMode) {
+        this.didReplace(location);
+      }
     }
 
     this.silentMode = false;
@@ -94,10 +99,14 @@ export class Conductor {
   /**
    * Push a path into the history stack.
    * @param {string} pathname The pathname of the new route.
-   * @param {string} options A state object to associate with this history entry..
+   * @param {string} options A state object to associate with this history entry.
+   * @param {boolean} silent Whather or not to navigate without emitting events.
    */
-  push(pathname, options = {}) {
+  push = (pathname, options = {}, silent = false) => {
+    this.silentMode = silent;
+
     const { url } = queryString.parseUrl(pathname);
+
     this.doMatchLoop(url, route => this.willPush(pathname, options, route));
   }
 
@@ -107,11 +116,13 @@ export class Conductor {
    * @param {Object} options The push state options.
    * @param {Object} route The route definition.
    */
-  willPush(pathname, options, route) {
+  willPush = (pathname, options, route) => {
     const id = uuid();
 
     // Emit the willEnter life cycle event.
-    this.sendEvent(constants.EVENT_WILL_PUSH, id);
+    if (!this.silentMode) {
+      this.sendEvent(constants.EVENT_WILL_PUSH, id);
+    }
 
     // Cache the new route.
     this.addToStack(pathname, route, id, options);
@@ -138,18 +149,20 @@ export class Conductor {
    * Go back in history. Remove the route entries from the stacks.
    * @param {number} steps The number of steps to pop.
    * @param {boolean} navigate Whether or not to perform the history action.
-   * @param {boolean} silentMode A settings to disable events from emitting.
+   * @param {boolean} silent Whather or not to navigate without emitting events.
    */
-  pop(steps = 1, navigate = true, silentMode = false) {
+  pop = (steps = 1, navigate = true, silent = false) => {
     if (!this.stack.length) {
       return;
     }
+
+    this.silentMode = silent;
 
     // Grab the id from the last route in the stack.
     const { id } = this.stack[this.stack.length - 1];
 
     // Emit the willReplace life cycle event.
-    if (!silentMode) {
+    if (!this.silentMode) {
       this.sendEvent(constants.EVENT_WILL_POP, id);
     }
 
@@ -158,7 +171,6 @@ export class Conductor {
 
     // Update internal flags.
     this.conductorEvent = true;
-    this.silentMode = silentMode;
 
     // Call the history action.
     if (navigate) {
@@ -170,7 +182,7 @@ export class Conductor {
    * Emits an event after a POP occured.
    * @param {Object} location The current history entry.
    */
-  didPop(location) {
+  didPop = (location) => {
     this.sendEvent(constants.EVENT_DID_POP, location.state.id);
   }
 
@@ -178,9 +190,13 @@ export class Conductor {
    * Replace a path in the history stack.
    * @param {string} pathname The pathname of the new route.
    * @param {string} options History options.
+   * @param {boolean} silent Whather or not to navigate without emitting events.
    */
-  replace(pathname, options = {}) {
+  replace = (pathname, options = {}, silent) => {
+    this.silentMode = silent;
+
     const { url } = queryString.parseUrl(pathname);
+
     this.doMatchLoop(url, route => this.willReplace(pathname, options, route));
   }
 
@@ -190,11 +206,13 @@ export class Conductor {
    * @param {Object} state The push state.
    * @param {Object} route The route definition.
    */
-  willReplace(pathname, state, { pattern }) {
+  willReplace = (pathname, state, { pattern }) => {
     const id = uuid();
 
     // Emit the willReplace life cycle event.
-    this.sendEvent(constants.EVENT_WILL_REPLACE, id);
+    if (!this.silentMode) {
+      this.sendEvent(constants.EVENT_WILL_REPLACE, id);
+    }
 
     const urlPattern = new UrlPattern(pattern);
     const { url, query } = queryString.parseUrl(pathname);
@@ -223,7 +241,7 @@ export class Conductor {
    * Emits an event after a REPLACE occured.
    * @param {Object} location The current history entry.
    */
-  didReplace(location) {
+  didReplace = (location) => {
     this.sendEvent(constants.EVENT_DID_REPLACE, location.state.id);
   }
 
@@ -232,8 +250,9 @@ export class Conductor {
    * the given pathname.
    * @param {string} pathname The pathname to match against.
    * @param {Function} callback The action to run when match.
+   * @returns {boolean}
    */
-  doMatchLoop(pathname, callback) {
+  doMatchLoop = (pathname, callback) => {
     return Object.keys(this.routes).some((definition) => {
       const route = this.routes[definition];
 
@@ -254,7 +273,7 @@ export class Conductor {
    * @param {Object} id The id for this route.
    * @param {Object} state The state for this route.
    */
-  addToStack(pathname, { pattern }, id, state) {
+  addToStack = (pathname, { pattern }, id, state) => {
     const urlPattern = new UrlPattern(pattern);
     const { url, query } = queryString.parseUrl(pathname);
 
@@ -286,6 +305,10 @@ export class Conductor {
     this.sendEvent(constants.EVENT_DID_RESET, id);
   }
 
+  /**
+   * @param {number} id The id of the route to update.
+   * @param {Object} state The new state for the route.
+   */
   update = (id, state) => {
     if (!id || !state) {
       return;
