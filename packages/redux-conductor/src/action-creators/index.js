@@ -39,3 +39,13 @@ export const conductorReset = stack => ({
   type: constants.CONDUCTOR_RESET,
   stack,
 });
+
+/**
+ * Creates the CONDUCTOR_UPDATE action object.
+ * @param {Array} stack The new stack.
+ * @return {Object} A Redux action.
+ */
+export const conductorUpdate = stack => ({
+  type: constants.CONDUCTOR_UPDATE,
+  stack,
+});

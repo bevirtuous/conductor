@@ -5,6 +5,7 @@ import matcher from './matcher';
 import history from './history';
 import emitter from './emitter';
 import * as constants from './constants';
+import cloneDeep from 'lodash/cloneDeep';
 
 /**
  * The Conductor class.
@@ -129,7 +130,7 @@ export class Conductor {
    * Emits an event after a PUSH occured.
    * @param {Object} location The current history entry.
    */
-  didPush(location) {
+  didPush = (location) => {
     this.sendEvent(constants.EVENT_DID_PUSH, location.state.id);
   }
 
@@ -264,6 +265,8 @@ export class Conductor {
       pattern,
       query,
       state,
+      created: Date.now(),
+      updated: null,
     });
   }
 
@@ -281,6 +284,33 @@ export class Conductor {
     this.pop(this.stack.length - 1, true, true);
 
     this.sendEvent(constants.EVENT_DID_RESET, id);
+  }
+
+  update = (id, state) => {
+    if (!id || !state) {
+      return;
+    }
+
+    // Find a matching route with the given id.
+    const match = this.stack.find(item => item.id === id);
+
+    if (!match) {
+      return;
+    }
+
+    // TODO: Check if state objects are different
+
+    const newState = {
+      ...match.state,
+      ...state,
+    };
+
+    match.state = newState;
+    match.updated = Date.now();
+
+    this.stack = cloneDeep(this.stack);
+
+    this.sendEvent(constants.EVENT_UPDATE, id);
   }
 }
 

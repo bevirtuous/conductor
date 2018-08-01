@@ -11,6 +11,18 @@ export const RouteContext = React.createContext();
 export const RouterContext = React.createContext();
 
 /**
+ * 
+ * @param {*} oldStack 
+ * @param {*} newStack 
+ */
+const stateUpdated = (oldStack, newStack) => {
+  return newStack.some((entry, index) => {
+    console.warn(entry.updated, oldStack[index].updated);
+    return entry.updated !== oldStack[index].updated;
+  });
+};
+
+/**
  * The Router component.
  */
 class Router extends Component {
@@ -43,6 +55,7 @@ class Router extends Component {
     events.onDidPop(() => this.handleRouteChange(constants.ACTION_POP));
     events.onDidReplace(() => this.handleRouteChange(constants.ACTION_REPLACE));
     events.onDidReset(() => this.handleRouteChange(constants.ACTION_RESET));
+    events.onUpdate(() => this.handleRouteChange());
   }
 
   /**
@@ -61,7 +74,7 @@ class Router extends Component {
       return true;
     }
 
-    return false;
+    return stateUpdated(this.state.stack, nextState.stack);
   }
 
   /**
@@ -186,6 +199,8 @@ class Router extends Component {
           let params = {};
           let query = {};
           let state = {};
+          let created;
+          let updated;
 
           const { component, pattern, preload } = this.routes[item];
 
@@ -212,6 +227,8 @@ class Router extends Component {
               params = match.params;
               query = match.query;
               state = match.state;
+              created = match.created;
+              updated = match.updated;
             }
           } else {
             // Skip this route if this pattern has already been handled.
@@ -233,6 +250,8 @@ class Router extends Component {
               params = this.state.stack[lastOccurence].params;
               query = this.state.stack[lastOccurence].query;
               state = this.state.stack[lastOccurence].state;
+              created = this.state.stack[lastOccurence].created;
+              updated = this.state.stack[lastOccurence].updated;
             }
 
             open = !!pathname;
@@ -253,6 +272,8 @@ class Router extends Component {
               query={query}
               state={state}
               visible={visible}
+              created={created}
+              updated={updated}
             />
           );
         })}

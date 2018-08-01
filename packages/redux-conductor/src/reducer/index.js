@@ -24,6 +24,10 @@ export default (state = defaultState, { type, stack }) => {
         routing: state.routing,
         stack,
       };
+    case constants.CONDUCTOR_UPDATE:
+      return {
+        stack,
+      };
     case constants.CONDUCTOR_RESET:
       return {
         routing: state.routing,

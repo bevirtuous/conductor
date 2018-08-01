@@ -13,6 +13,7 @@ class Route extends Component {
   static propTypes = {
     component: PropTypes.func.isRequired,
     pattern: PropTypes.string.isRequired,
+    created: PropTypes.number,
     id: PropTypes.string,
     open: PropTypes.bool,
     params: PropTypes.shape(),
@@ -21,10 +22,12 @@ class Route extends Component {
     state: PropTypes.shape(),
     tag: PropTypes.string,
     transition: PropTypes.shape(),
+    updated: PropTypes.number,
     visible: PropTypes.bool,
   };
 
   static defaultProps = {
+    created: null,
     id: null,
     open: false,
     params: {},
@@ -33,6 +36,7 @@ class Route extends Component {
     state: {},
     tag: 'div',
     transition,
+    updated: null,
     visible: false,
   };
 
@@ -43,17 +47,6 @@ class Route extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
-  }
-
-  /**
-   * @param {Object} nextProps The next set of props.
-   * @returns {boolean}
-   */
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.visible !== nextProps.visible ||
-      this.props.path !== nextProps.path
-    );
   }
 
   /**
@@ -144,6 +137,7 @@ class Route extends Component {
   render() {
     const {
       component: Content,
+      created,
       id,
       open,
       params,
@@ -151,7 +145,9 @@ class Route extends Component {
       pattern,
       query,
       state: routeState,
+      tag: Tag,
       visible,
+      updated,
     } = this.props;
 
     const { transitionType } = this;
@@ -164,6 +160,8 @@ class Route extends Component {
       query,
       state: routeState,
       visible,
+      created,
+      updated,
     };
 
     return (
@@ -173,7 +171,7 @@ class Route extends Component {
           timeout={0}
         >
           {state => (
-            <div
+            <Tag
               data-pattern={route.pattern}
               data-pathname={route.pathname}
               style={{
@@ -182,7 +180,7 @@ class Route extends Component {
               }}
             >
               <Content />
-            </div>
+            </Tag>
           )}
         </Transition>
       </RouteContext.Provider>

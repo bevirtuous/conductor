@@ -72,3 +72,11 @@ export const onWillReset = (callback) => {
 export const onDidReset = (callback) => {
   addCallback(events.EVENT_DID_RESET, callback);
 };
+
+/**
+ * Registers a callback to be executed after the update event.
+ * @param {Function} callback The callback to register.
+ */
+export const onUpdate = (callback) => {
+  addCallback(events.EVENT_UPDATE, callback);
+};

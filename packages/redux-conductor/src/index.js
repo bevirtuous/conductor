@@ -7,4 +7,5 @@ export default ({ dispatch }) => {
   events.onDidPop(() => dispatch(actions.conductorPop(getRouteStack())));
   events.onDidReplace(() => dispatch(actions.conductorReplace(getRouteStack())));
   events.onDidReset(() => dispatch(actions.conductorReset(getRouteStack())));
+  events.onUpdate(() => dispatch(actions.conductorUpdate(getRouteStack())));
 };
