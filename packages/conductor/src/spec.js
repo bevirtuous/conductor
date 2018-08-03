@@ -8,8 +8,14 @@ import {
 import emitter from './emitter';
 
 let conductor;
+let dateNowSpy;
 
 describe('Conductor', () => {
+  beforeAll(() => {
+    // Lock Time
+    dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => 123456);
+  });
+
   beforeEach(() => {
     conductor = new Conductor();
   });
@@ -107,6 +113,7 @@ describe('Conductor', () => {
       };
 
       const expected = {
+        created: 123456,
         id,
         params: {
           myParam: 'thing',
@@ -118,6 +125,7 @@ describe('Conductor', () => {
           b: '789',
         },
         state,
+        updated: null,
       };
 
       conductor.register(pattern);
