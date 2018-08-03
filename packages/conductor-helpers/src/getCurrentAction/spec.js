@@ -1,5 +1,5 @@
 import conductor from '@virtuous/conductor';
-import getCurrentAction from './';
+import getCurrentAction from './index';
 
 describe('Events', () => {
   beforeAll(() => {

@@ -1,5 +1,5 @@
 import conductor from '@virtuous/conductor';
-import getPreviousRoute from './';
+import getPreviousRoute from './index';
 
 describe('Helpers - getPreviousRoute', () => {
   beforeAll(() => {

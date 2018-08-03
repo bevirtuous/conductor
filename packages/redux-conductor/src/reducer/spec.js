@@ -1,4 +1,4 @@
-import reducer from '../reducer';
+import reducer from './index';
 import * as constants from '../constants';
 
 describe('Redux Conductor - Reducer', () => {

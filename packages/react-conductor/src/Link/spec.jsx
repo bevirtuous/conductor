@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import conductor from '../../../conductor';
-import Link from './';
+import Link from './index';
 
 describe('<Link />', () => {
   beforeAll(() => {
@@ -10,7 +10,9 @@ describe('<Link />', () => {
 
   it('should render correctly with given props', () => {
     const wrapper = shallow((
-      <Link href="/mypage">My Link</Link>
+      <Link href="/mypage">
+        My Link
+      </Link>
     ));
 
     expect(wrapper).toMatchSnapshot();
@@ -20,7 +22,9 @@ describe('<Link />', () => {
 
   it('should push when clicked with default action prop', () => {
     const wrapper = shallow((
-      <Link href="/mypage">My Link</Link>
+      <Link href="/mypage">
+        My Link
+      </Link>
     ));
 
     wrapper.simulate('click', { preventDefault() {} });
@@ -31,7 +35,9 @@ describe('<Link />', () => {
 
   it('should pop when clicked with prop action=REPLACE', () => {
     const wrapper = shallow((
-      <Link href="/mypage" action="REPLACE">My Link</Link>
+      <Link href="/mypage" action="REPLACE">
+        My Link
+      </Link>
     ));
 
     wrapper.simulate('click', { preventDefault() { } });
@@ -42,7 +48,9 @@ describe('<Link />', () => {
 
   it('should pop when clicked with prop action=POP', () => {
     const wrapper = shallow((
-      <Link href="/mypage" action="POP">My Link</Link>
+      <Link href="/mypage" action="POP">
+        My Link
+      </Link>
     ));
 
     wrapper.simulate('click', { preventDefault() { } });

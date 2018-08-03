@@ -1,5 +1,5 @@
 import conductor from '@virtuous/conductor';
-import getCurrentRoute from './';
+import getCurrentRoute from './index';
 
 describe('Helpers - getCurrentRoute', () => {
   describe('Error Cases', () => {

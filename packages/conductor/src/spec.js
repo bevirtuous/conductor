@@ -1,4 +1,4 @@
-import { Conductor } from './';
+import { Conductor } from './index';
 import {
   EVENT_WILL_RESET,
   EVENT_DID_RESET,
@@ -12,7 +12,6 @@ let dateNowSpy;
 
 describe('Conductor', () => {
   beforeAll(() => {
-    // Lock Time
     dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => 123456);
   });
 
@@ -113,7 +112,7 @@ describe('Conductor', () => {
       };
 
       const expected = {
-        created: 123456,
+        created: dateNowSpy(),
         id,
         params: {
           myParam: 'thing',

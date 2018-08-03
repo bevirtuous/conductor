@@ -1,5 +1,5 @@
 import conductor from '@virtuous/conductor';
-import getRouteById from './';
+import getRouteById from './index';
 
 describe('Helpers - getRouteById', () => {
   beforeAll(() => {

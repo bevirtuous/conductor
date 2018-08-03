@@ -1,5 +1,5 @@
 import conductor from '@virtuous/conductor';
-import isRouteOpen from './';
+import isRouteOpen from './index';
 
 describe('Helpers - isRouteOpen', () => {
   beforeAll(() => {

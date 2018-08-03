@@ -1,5 +1,5 @@
 import conductor from '@virtuous/conductor';
-import getRouteStack from './';
+import getRouteStack from './index';
 
 describe('Helpers - getRouteStack', () => {
   beforeAll(() => {

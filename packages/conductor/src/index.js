@@ -252,8 +252,8 @@ export class Conductor {
    * @param {Function} callback The action to run when match.
    * @returns {boolean}
    */
-  doMatchLoop = (pathname, callback) => {
-    return Object.keys(this.routes).some((definition) => {
+  doMatchLoop = (pathname, callback) => (
+    Object.keys(this.routes).some((definition) => {
       const route = this.routes[definition];
 
       // If there is no match then do nothing.
@@ -263,8 +263,8 @@ export class Conductor {
 
       callback(route);
       return true;
-    });
-  }
+    })
+  )
 
   /**
    * Adds a new element to the cache stack.
