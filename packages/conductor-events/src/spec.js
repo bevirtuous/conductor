@@ -62,4 +62,10 @@ describe('Events', () => {
     emitter.emit(constants.EVENT_DID_RESET);
     expect(mockCallback).toHaveBeenCalled();
   });
+
+  it('registers for onUpdate event', () => {
+    events.onUpdate(mockCallback);
+    emitter.emit(constants.EVENT_UPDATE);
+    expect(mockCallback).toHaveBeenCalled();
+  });
 });

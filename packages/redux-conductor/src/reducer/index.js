@@ -21,16 +21,17 @@ export default (state = defaultState, { type, stack }) => {
     case constants.CONDUCTOR_POP:
     case constants.CONDUCTOR_REPLACE:
       return {
-        routing: state.routing,
+        routing: false,
         stack,
       };
     case constants.CONDUCTOR_UPDATE:
       return {
+        routing: false,
         stack,
       };
     case constants.CONDUCTOR_RESET:
       return {
-        routing: state.routing,
+        routing: false,
         stack: [stack[0]],
       };
     default:

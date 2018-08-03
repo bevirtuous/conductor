@@ -74,4 +74,20 @@ describe('Redux Conductor - Reducer', () => {
       }],
     });
   });
+
+  it('should handle a UPDATE action', () => {
+    const state = reducer(undefined, {
+      type: constants.CONDUCTOR_UPDATE,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
+
+    expect(state).toEqual({
+      routing: false,
+      stack: [{
+        pathname: 'mypage',
+      }],
+    });
+  });
 });

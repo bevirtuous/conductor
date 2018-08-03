@@ -1,4 +1,4 @@
-import * as actions from '../action-creators';
+import * as actions from './index';
 import * as constants from '../constants';
 
 describe('Redux Conductor - Action Creators', () => {
@@ -40,5 +40,14 @@ describe('Redux Conductor - Action Creators', () => {
     };
 
     expect(actions.conductorReset(stack)).toEqual(expectedAction);
+  });
+
+  it('should create an action to UPDATE', () => {
+    const expectedAction = {
+      type: constants.CONDUCTOR_UPDATE,
+      stack,
+    };
+
+    expect(actions.conductorUpdate(stack)).toEqual(expectedAction);
   });
 });
