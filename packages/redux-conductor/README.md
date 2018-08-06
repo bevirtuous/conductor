@@ -12,17 +12,16 @@ Usage:
 
 ```js
 import { combineReducers, createStore } from 'redux';
-import syncRouter from '@virtuous/redux-conductor';
-import router from '@virtuous/redux-conductor/reducer';
+import syncRouter, { reducer } from '@virtuous/redux-conductor';
 
 const reducers = combineReducers({
-  router,
+  router: reducer,
   // other reducers
 });
 
 const store = createStore(
   reducers,
-  // middleware etc
+  // middleware, etc
 );
 
 syncRouter(store);

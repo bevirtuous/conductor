@@ -4,6 +4,11 @@ import {
   EVENT_DID_RESET,
   EVENT_WILL_PUSH,
   EVENT_DID_PUSH,
+  EVENT_WILL_POP,
+  EVENT_DID_POP,
+  EVENT_WILL_REPLACE,
+  EVENT_DID_REPLACE,
+  EVENT_UPDATE,
 } from './constants';
 import emitter from './emitter';
 
@@ -39,7 +44,7 @@ describe('Conductor', () => {
   });
 
   describe('push()', () => {
-    it('should reset to the first route in the stack', (done) => {
+    it('should push a route to the stack', (done) => {
       const callback = jest.fn();
 
       emitter.once(EVENT_WILL_PUSH, callback);
@@ -50,6 +55,72 @@ describe('Conductor', () => {
 
       expect(conductor.stack.length).toBe(1);
       expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage');
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(2);
+        done();
+      }, 1);
+    });
+  });
+
+  describe('pop()', () => {
+    it('should not pop when the stack is empty', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_WILL_POP, callback);
+
+      conductor.pop('/mypage');
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(0);
+        done();
+      }, 1);
+    });
+
+    it('should pop a route', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_WILL_POP, callback);
+
+      conductor.pop('/mypage');
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(0);
+        done();
+      }, 1);
+    });
+  });
+
+  describe('replace()', () => {
+    it('should not replace when the stack is empty', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_WILL_REPLACE, callback);
+
+      conductor.register('/mypage');
+      conductor.replace('/mypage');
+
+      expect(conductor.stack.length).toBe(0);
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(0);
+        done();
+      }, 1);
+    });
+
+    it('should replace a route', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_WILL_REPLACE, callback);
+      emitter.once(EVENT_DID_REPLACE, callback);
+
+      conductor.register('/mypage');
+      conductor.register('/mypage2');
+      conductor.push('/mypage');
+      conductor.replace('/mypage2');
+
+      expect(conductor.stack.length).toBe(1);
+      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
 
       setTimeout(() => {
         expect(callback).toHaveBeenCalledTimes(2);
@@ -95,6 +166,84 @@ describe('Conductor', () => {
 
       setTimeout(() => {
         expect(callback).not.toBeCalled();
+        done();
+      }, 1);
+    });
+  });
+
+  describe('update()', () => {
+    it('should not update with missing id param', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_UPDATE, callback);
+
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+      conductor.update();
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(0);
+        done();
+      }, 1);
+    });
+
+    it('should not update with missing state param', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_UPDATE, callback);
+
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+
+      const { id } = conductor.stack[conductor.stack.length - 1];
+      conductor.update(id);
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(0);
+        done();
+      }, 1);
+    });
+
+    it('should not update when no matching route found', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_UPDATE, callback);
+
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+
+      const { state } = conductor.stack[conductor.stack.length - 1];
+      conductor.update('missingId', { a: 1 });
+
+      expect(state).toEqual({});
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(0);
+        done();
+      }, 1);
+    });
+
+    it('should update a route', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_UPDATE, callback);
+
+      conductor.register('/mypage');
+      conductor.push('/mypage', { a: 1 });
+
+      const { id } = conductor.stack[conductor.stack.length - 1];
+
+      conductor.update(id, { b: 2 });
+
+      const { state } = conductor.stack[conductor.stack.length - 1];
+
+      expect(state).toEqual({
+        a: 1,
+        b: 2,
+      });
+
+      setTimeout(() => {
+        expect(callback).toHaveBeenCalledTimes(1);
         done();
       }, 1);
     });

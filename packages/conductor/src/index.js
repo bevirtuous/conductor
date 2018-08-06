@@ -207,6 +207,10 @@ export class Conductor {
    * @param {Object} route The route definition.
    */
   willReplace = (pathname, state, { pattern }) => {
+    if (this.stack.length === 0) {
+      return;
+    }
+
     const id = uuid();
 
     // Emit the willReplace life cycle event.
