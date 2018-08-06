@@ -11,7 +11,7 @@ Using npm:
 Usage:
 
 ```js
-import getCurrentRoute from '@virtuous/conductor-helpers/getCurrentRoute';
+import { getCurrentRoute } from '@virtuous/conductor-helpers';
 
 const route = getCurrentRoute();
 
