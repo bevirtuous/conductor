@@ -5,21 +5,19 @@ import * as constants from '@virtuous/conductor/constants';
 import * as events from '@virtuous/conductor-events';
 import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import getRouteStack from '@virtuous/conductor-helpers/getRouteStack';
+import { RouterContext } from './context';
 import Route from '../Route';
 
-export const RouteContext = React.createContext();
-export const RouterContext = React.createContext();
+export * from './context';
 
 /**
- * 
- * @param {*} oldStack 
- * @param {*} newStack 
+ *
+ * @param {*} oldStack
+ * @param {*} newStack
  */
-const stateUpdated = (oldStack, newStack) => {
-  return newStack.some((entry, index) => {
-    return entry.updated !== oldStack[index].updated;
-  });
-};
+function stateUpdated(oldStack, newStack) {
+  return newStack.some((entry, index) => entry.updated !== oldStack[index].updated);
+}
 
 /**
  * The Router component.
@@ -208,8 +206,7 @@ class Router extends Component {
 
           if (preload) {
             const match = this.state.stack.find((stackItem, stackItemIndex) => {
-              const isMatch =
-                stackItem.pattern === pattern && !usedRoutes.includes(stackItemIndex);
+              const isMatch = stackItem.pattern === pattern && !usedRoutes.includes(stackItemIndex);
 
               if (isMatch) {
                 open = true;
