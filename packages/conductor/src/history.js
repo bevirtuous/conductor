@@ -1,3 +1,5 @@
 import createHistory from 'history/createBrowserHistory';
+import createMemoryHistory from 'history/createMemoryHistory';
 
-export default createHistory();
+const history = (typeof window !== 'undefined') ? createHistory() : createMemoryHistory();
+export default history;
