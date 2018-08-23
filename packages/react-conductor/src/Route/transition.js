@@ -10,7 +10,6 @@ const forward = {
     willChange: 'transform',
   },
   entering: {
-    pointerEvents: 'none',
     transform: 'none',
   },
   entered: {
@@ -38,7 +37,6 @@ const backward = {
     willChange: 'transform',
   },
   entering: {
-    pointerEvents: 'none',
     transform: 'none',
   },
   entered: {
@@ -68,7 +66,6 @@ const replace = {
     willChange: 'transform',
   },
   entering: {
-    pointerEvents: 'none',
     transform: 'none',
   },
   entered: {
