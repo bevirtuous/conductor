@@ -81,13 +81,35 @@ describe('Conductor', () => {
       const callback = jest.fn();
 
       emitter.once(EVENT_WILL_POP, callback);
+      emitter.once(EVENT_DID_POP, callback);
 
-      conductor.pop('/mypage');
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+      conductor.pop();
 
       setTimeout(() => {
-        expect(callback).toHaveBeenCalledTimes(0);
+        expect(callback).toHaveBeenCalledTimes(2);
         done();
-      }, 1);
+      }, 50);
+    });
+
+    it('should pop multiple routes', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_WILL_POP, callback);
+      emitter.once(EVENT_DID_POP, callback);
+
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+      conductor.push('/mypage');
+      conductor.push('/mypage');
+      conductor.pop(2);
+
+      setTimeout(() => {
+        expect(conductor.stack.length).toBe(1);
+        expect(callback).toHaveBeenCalledTimes(2);
+        done();
+      }, 50);
     });
   });
 
