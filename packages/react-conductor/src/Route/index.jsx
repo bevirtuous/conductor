@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import Transition from 'react-transition-group/Transition';
-import { TweenLite } from 'gsap';
+// Import { TweenLite } from 'gsap';
 import transition from './transition';
-import { RouteContext } from '../Router';
+import { RouteContext } from '../Router/context';
 
 /**
  * The Route component.
@@ -86,7 +86,7 @@ class Route extends Component {
   get transitionType() {
     if (this.props.path && !this.props.visible) {
       return this.props.transition.backward;
-    } else if (getCurrentAction() === 'REPLACE') {
+    } if (getCurrentAction() === 'REPLACE') {
       return this.props.transition.replace;
     }
 
@@ -107,7 +107,7 @@ class Route extends Component {
     //   Position = this.props.transition.pre;
     // }
 
-    TweenLite.to(this.node.current, duration / 1000, start);
+    // TweenLite.to(this.node.current, duration / 1000, start);
   }
 
   /**
@@ -126,9 +126,7 @@ class Route extends Component {
   /**
    *
    */
-  getEndPosition = () =>
-    // Determine the end position of the element
-    this.props.transition.in.push
+  getEndPosition = () => this.props.transition.in.push
 
   /**
    * Renders the component.

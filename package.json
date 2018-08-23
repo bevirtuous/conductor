@@ -1,8 +1,7 @@
 {
   "private": true,
   "devDependencies": {
-    "@sourceallies/coveralls-merge": "^1.0.0",
-    "@virtuous/eslint-config": "^1.4.0",
+    "@virtuous/eslint-config": "^1.4.1",
     "@virtuous/react-unit-test-suite": "^1.2.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -34,13 +33,12 @@
   "scripts": {
     "test": "jest",
     "cover": "jest --coverage",
-    "cover:send": "node ./sendReports.js",
     "release": "make release",
-    "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore --ext .js --ext .jsx .",
+    "lint": "eslint --quiet --ext .js --ext .jsx .",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.js": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js --ext .jsx ."
+    "*.{js|jsx}": "eslint --quiet --ext .js --ext .jsx ."
   },
   "pre-commit": []
 }
