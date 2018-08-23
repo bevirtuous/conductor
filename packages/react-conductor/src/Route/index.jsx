@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
+import { getCurrentAction } from '@virtuous/conductor-helpers';
 import Transition from 'react-transition-group/Transition';
 // Import { TweenLite } from 'gsap';
 import transition from './transition';

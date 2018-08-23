@@ -1,5 +1,5 @@
-import * as events from '../../conductor/constants';
-import emitter from '../../conductor/emitter';
+import * as events from '../../../conductor/constants';
+import emitter from '../../../conductor/emitter';
 import syncStore from './index';
 
 const dispatch = jest.fn();

@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import conductor from '@virtuous/conductor';
 import * as constants from '@virtuous/conductor/constants';
 import * as events from '@virtuous/conductor-events';
-import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
-import getRouteStack from '@virtuous/conductor-helpers/getRouteStack';
+import {
+  getCurrentAction,
+  getRouteStack,
+} from '@virtuous/conductor-helpers';
 import { RouterContext } from './context';
 import Route from '../Route';
 
