@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ACTION_REPLACE } from '@virtuous/conductor/constants';
 import { getCurrentAction } from '@virtuous/conductor-helpers';
 import Transition from 'react-transition-group/Transition';
-// Import { TweenLite } from 'gsap';
-import transition from './transition';
+import defaultTransition from './transition';
 import { RouteContext } from '../Router/context';
 
 /**
@@ -35,14 +35,13 @@ class Route extends Component {
     query: {},
     state: {},
     tag: 'div',
-    transition,
+    transition: defaultTransition,
     updated: null,
     visible: false,
   };
 
   /**
-   *
-   * @param {*} props
+   * @param {Object} props The initial component props.
    */
   constructor(props) {
     super(props);
@@ -50,83 +49,52 @@ class Route extends Component {
   }
 
   /**
-   *
+   * Returns the route context content.
    */
-  componentDidMount() {
-    // Const start = this.props.transition.push.out;
-    // TweenLite.to(this.node.current, 0, start);
+  get contextContent() {
+    const {
+      created,
+      id,
+      open,
+      params,
+      path,
+      pattern,
+      query,
+      state,
+      visible,
+      updated,
+    } = this.props;
+
+    return {
+      id,
+      open,
+      pathname: path,
+      pattern,
+      params,
+      query,
+      state,
+      visible,
+      created,
+      updated,
+    };
   }
 
   /**
-   *
-   * @param {*} nextProps
+   * Returns a transition object representing the position of the route.
    */
-  // ComponentWillReceiveProps(nextProps) {
-  //   //
-  //   If (this.props.isVisible === nextProps.isVisible) {
-  //     Return;
-  //   }
+  get transition() {
+    const { path, transition, visible } = this.props;
 
-  //   // Then find out which history action was just fired (use helper)
-  //   Const action = getCurrentAction();
-
-  //   Const position = this.props.isVisible ? 'in' : 'out';
-  //   Const newPosition = nextProps.isVisible ? 'in' : 'out';
-  //   Console.warn(position, newPosition, action);
-
-  //   Const start = transition[action.toLowerCase()][position];
-  //   Const end = transition[action.toLowerCase()][newPosition];
-
-  //   TweenLite.fromTo(this.node.current, 300 / 1000, start, end);
-  // }
-
-  /**
-   *
-   */
-  get transitionType() {
-    if (this.props.path && !this.props.visible) {
-      return this.props.transition.backward;
-    } if (getCurrentAction() === 'REPLACE') {
-      return this.props.transition.replace;
+    if (path && !visible) {
+      return transition.backward;
     }
 
-    return this.props.transition.forward;
+    if (getCurrentAction() === ACTION_REPLACE) {
+      return transition.replace;
+    }
+
+    return transition.forward;
   }
-
-  setPosition = (props, duration = this.props.transition.duration) => {
-    const start = this.getStartPosition(props);
-    // Let position;
-
-    // If (props.path) {
-    //   If (props.isVisible) {
-    //     Position = this.props.transition.visible;
-    //   } else {
-    //     Position = this.props.transition.post;
-    //   }
-    // } else {
-    //   Position = this.props.transition.pre;
-    // }
-
-    // TweenLite.to(this.node.current, duration / 1000, start);
-  }
-
-  /**
-   *
-   */
-  getStartPosition = (isVisible, isNew) => {
-    // First, find out if we are animating in (isVisible = true)
-    const intention = isVisible ? 'out' : 'in';
-
-    // Then find out which history action was just fired (use helper)
-    const action = getCurrentAction();
-
-    return transition[intention][action.toLowerCase()];
-  }
-
-  /**
-   *
-   */
-  getEndPosition = () => this.props.transition.in.push
 
   /**
    * Renders the component.
@@ -135,46 +103,24 @@ class Route extends Component {
   render() {
     const {
       component: Content,
-      created,
-      id,
-      open,
-      params,
       path,
       pattern,
-      query,
-      state: routeState,
       tag: Tag,
       visible,
-      updated,
     } = this.props;
 
-    const { transitionType } = this;
-    const route = {
-      id,
-      open,
-      pathname: path,
-      pattern,
-      params,
-      query,
-      state: routeState,
-      visible,
-      created,
-      updated,
-    };
+    const { contextContent, transition } = this;
 
     return (
-      <RouteContext.Provider value={route}>
-        <Transition
-          in={this.props.visible}
-          timeout={0}
-        >
+      <RouteContext.Provider value={contextContent}>
+        <Transition in={visible} timeout={0}>
           {state => (
             <Tag
-              data-pattern={route.pattern}
-              data-pathname={route.pathname}
+              data-pattern={pattern}
+              data-pathname={path}
               style={{
-                ...transitionType.default,
-                ...transitionType[state],
+                ...transition.default,
+                ...transition[state],
               }}
             >
               <Content />
