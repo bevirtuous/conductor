@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Route /> should match the snapshot 1`] = `
+<[object Object]
+  value={
+    Object {
+      "created": null,
+      "id": null,
+      "open": false,
+      "params": Object {},
+      "pathname": null,
+      "pattern": "/mypage",
+      "query": Object {},
+      "state": Object {},
+      "updated": null,
+      "visible": false,
+    }
+  }
+>
+  <Transition
+    appear={false}
+    enter={true}
+    exit={true}
+    in={false}
+    mountOnEnter={false}
+    onEnter={[Function]}
+    onEntered={[Function]}
+    onEntering={[Function]}
+    onExit={[Function]}
+    onExited={[Function]}
+    onExiting={[Function]}
+    timeout={0}
+    unmountOnExit={false}
+  />
+</[object Object]>
+`;
