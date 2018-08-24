@@ -64,12 +64,14 @@ describe('Conductor', () => {
   });
 
   describe('pop()', () => {
-    it('should not pop when the stack is empty', (done) => {
+    it('should not pop when the stack has less than 2 entries inside', (done) => {
       const callback = jest.fn();
 
-      emitter.once(EVENT_WILL_POP, callback);
+      emitter.once(EVENT_DID_POP, callback);
 
-      conductor.pop('/mypage');
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+      conductor.pop();
 
       setTimeout(() => {
         expect(callback).toHaveBeenCalledTimes(0);
@@ -84,6 +86,7 @@ describe('Conductor', () => {
       emitter.once(EVENT_DID_POP, callback);
 
       conductor.register('/mypage');
+      conductor.push('/mypage');
       conductor.push('/mypage');
       conductor.pop();
 
@@ -108,6 +111,25 @@ describe('Conductor', () => {
       setTimeout(() => {
         expect(conductor.stack.length).toBe(1);
         expect(callback).toHaveBeenCalledTimes(2);
+        done();
+      }, 50);
+    });
+
+    it('should not pop when steps equals or exceeds the stack length', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_WILL_POP, callback);
+      emitter.once(EVENT_DID_POP, callback);
+
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+      conductor.push('/mypage');
+      conductor.push('/mypage');
+      conductor.pop(3);
+
+      setTimeout(() => {
+        expect(conductor.stack.length).toBe(3);
+        expect(callback).toHaveBeenCalledTimes(0);
         done();
       }, 50);
     });

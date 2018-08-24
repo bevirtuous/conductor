@@ -1,3 +1,4 @@
+import { getRouteStack } from '@virtuous/conductor-helpers';
 import * as constants from '../constants';
 
 /**
@@ -6,11 +7,10 @@ import * as constants from '../constants';
  */
 const defaultState = {
   routing: false,
-  stack: [],
+  stack: getRouteStack(),
 };
 
 /**
- * The conductor router reducer.
  * @param {Object} state The current state.
  * @param {Object} action The action object.
  * @returns {Object} The new state.
@@ -20,10 +20,6 @@ export default (state = defaultState, { type, stack }) => {
     case constants.CONDUCTOR_PUSH:
     case constants.CONDUCTOR_POP:
     case constants.CONDUCTOR_REPLACE:
-      return {
-        routing: false,
-        stack,
-      };
     case constants.CONDUCTOR_UPDATE:
       return {
         routing: false,
