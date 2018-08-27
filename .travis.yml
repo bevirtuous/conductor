@@ -1,6 +1,9 @@
 language: node_js
 node_js:
-- 8.10.0
+- "10"
+cache:
+  directories:
+    - node_modules
 script: yarn run cover --maxWorkers=4 --ci
 # Send coverage report to coveralls.io
 after_script: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
