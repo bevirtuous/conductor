@@ -5,10 +5,7 @@ describe('Redux Conductor - Reducer', () => {
   it('should return the initial state', () => {
     const state = reducer(undefined, {});
 
-    expect(state).toEqual({
-      routing: false,
-      stack: [],
-    });
+    expect(state.stack.length).toEqual(1);
   });
 
   it('should handle a PUSH action', () => {

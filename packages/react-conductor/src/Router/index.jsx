@@ -93,6 +93,10 @@ class Router extends Component {
     return null;
   }
 
+  componentDidMount() {
+    this.handleRouteChange(constants.ACTION_PUSH);
+  }
+
   /**
    * Update the state based on the router changes.
    * TODO:

@@ -56,6 +56,6 @@ describe('<Link />', () => {
     wrapper.simulate('click', { preventDefault() { } });
 
     expect(wrapper).toMatchSnapshot();
-    expect(conductor.stack.length).toBe(0);
+    expect(conductor.stack.length).toBe(1);
   });
 });
