@@ -30,7 +30,7 @@ describe('<Link />', () => {
     wrapper.simulate('click', { preventDefault() {} });
 
     expect(wrapper).toMatchSnapshot();
-    expect(conductor.stack.length).toBe(1);
+    expect(conductor.stack.length).toBe(2);
   });
 
   it('should pop when clicked with prop action=REPLACE', () => {
@@ -43,7 +43,7 @@ describe('<Link />', () => {
     wrapper.simulate('click', { preventDefault() { } });
 
     expect(wrapper).toMatchSnapshot();
-    expect(conductor.stack.length).toBe(1);
+    expect(conductor.stack.length).toBe(2);
   });
 
   it('should pop when clicked with prop action=POP', () => {
