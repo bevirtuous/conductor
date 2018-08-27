@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor-helpers",
-  "version": "1.0.0-beta.32",
+  "version": "1.0.0-beta.33",
   "description": "Helpers for the conductor.",
   "license": "MIT",
   "repository": {
@@ -33,7 +33,7 @@
     "version": "npm run build && git add -A"
   },
   "dependencies": {
-    "@virtuous/conductor": "1.0.0-beta.32"
+    "@virtuous/conductor": "1.0.0-beta.33"
   },
   "nyc": {
     "include": [
