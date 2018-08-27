@@ -8,7 +8,7 @@ import emitter from './emitter';
 import * as constants from './constants';
 
 /**
- * The conductor class.
+ * The Conductor class.
  */
 export class Conductor {
   /**
@@ -23,13 +23,23 @@ export class Conductor {
     this.routes = {};
 
     /**
-     * Contains the cached routes matching the route templates.
+     * Contains the active history stack.
      * @type {Array}
      */
-    this.stack = [];
+    this.stack = [{
+      id: uuid(),
+      params: null,
+      pathname: history.location.pathname,
+      pattern: null,
+      query: queryString.parseUrl(history.location.pathname).query,
+      state: {},
+      created: Date.now(),
+      updated: null,
+    }];
 
     this.conductorEvent = false;
     this.silentMode = false;
+    this.syncedWithHistory = false;
 
     history.listen(this.handleHistoryEvent);
   }
@@ -58,11 +68,21 @@ export class Conductor {
   handleHistoryEvent = (location, action) => {
     // TODO: consider a switch case
     if (action === constants.ACTION_POP) {
+      /**
+       * Flag to know if a pop happened.
+       */
+      let popped;
+
+      /**
+       * Native back event, try to pop.
+       */
       if (!this.conductorEvent) {
-        this.pop(1, false);
+        popped = this.pop(1, false);
       }
 
-      if (!this.silentMode) {
+      if (this.conductorEvent && !this.silentMode) {
+        this.didPop(location);
+      } else if (!this.conductorEvent && popped) {
         this.didPop(location);
       }
     } else if (action === constants.ACTION_PUSH) {
@@ -90,10 +110,27 @@ export class Conductor {
       return;
     }
 
+    const match = matcher(pattern);
+
     this.routes[pattern] = {
-      match: matcher(pattern),
+      match,
       pattern,
     };
+
+    if (this.syncedWithHistory) {
+      return;
+    }
+
+    // Take the pathname of the first route and try to match it.
+    const { pathname } = this.stack[0];
+
+    if (match(pathname)) {
+      const urlPattern = new UrlPattern(pattern);
+
+      this.syncedWithHistory = true;
+      this.stack[0].pattern = pattern;
+      this.stack[0].params = urlPattern.match(pathname) || {};
+    }
   }
 
   /**
@@ -150,10 +187,21 @@ export class Conductor {
    * @param {number} steps The number of steps to pop.
    * @param {boolean} navigate Whether or not to perform the history action.
    * @param {boolean} silent Whather or not to navigate without emitting events.
+   * @returns {boolean}
    */
   pop = (steps = 1, navigate = true, silent = false) => {
-    if (!this.stack.length) {
-      return;
+    /**
+     * Do not pop when the history stack has 0 or 1 entry.
+     */
+    if (this.stack.length < 2) {
+      return false;
+    }
+
+    /**
+     * Do not pop when the number of steps exceeds the stack length.
+     */
+    if ((this.stack.length) <= steps) {
+      return false;
     }
 
     this.silentMode = silent;
@@ -176,6 +224,8 @@ export class Conductor {
     if (navigate) {
       history.go(-steps);
     }
+
+    return true;
   }
 
   /**

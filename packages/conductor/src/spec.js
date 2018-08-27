@@ -53,7 +53,7 @@ describe('Conductor', () => {
       conductor.register('/mypage');
       conductor.push('/mypage');
 
-      expect(conductor.stack.length).toBe(1);
+      expect(conductor.stack.length).toBe(2);
       expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage');
 
       setTimeout(() => {
@@ -64,12 +64,14 @@ describe('Conductor', () => {
   });
 
   describe('pop()', () => {
-    it('should not pop when the stack is empty', (done) => {
+    it('should not pop when the stack has less than 2 entries inside', (done) => {
       const callback = jest.fn();
 
-      emitter.once(EVENT_WILL_POP, callback);
+      emitter.once(EVENT_DID_POP, callback);
 
-      conductor.pop('/mypage');
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+      conductor.pop();
 
       setTimeout(() => {
         expect(callback).toHaveBeenCalledTimes(0);
@@ -84,6 +86,7 @@ describe('Conductor', () => {
       emitter.once(EVENT_DID_POP, callback);
 
       conductor.register('/mypage');
+      conductor.push('/mypage');
       conductor.push('/mypage');
       conductor.pop();
 
@@ -106,6 +109,25 @@ describe('Conductor', () => {
       conductor.pop(2);
 
       setTimeout(() => {
+        expect(conductor.stack.length).toBe(2);
+        expect(callback).toHaveBeenCalledTimes(2);
+        done();
+      }, 50);
+    });
+
+    it('should not pop when steps equals or exceeds the stack length', (done) => {
+      const callback = jest.fn();
+
+      emitter.once(EVENT_WILL_POP, callback);
+      emitter.once(EVENT_DID_POP, callback);
+
+      conductor.register('/mypage');
+      conductor.push('/mypage');
+      conductor.push('/mypage');
+      conductor.push('/mypage');
+      conductor.pop(3);
+
+      setTimeout(() => {
         expect(conductor.stack.length).toBe(1);
         expect(callback).toHaveBeenCalledTimes(2);
         done();
@@ -114,22 +136,6 @@ describe('Conductor', () => {
   });
 
   describe('replace()', () => {
-    it('should not replace when the stack is empty', (done) => {
-      const callback = jest.fn();
-
-      emitter.once(EVENT_WILL_REPLACE, callback);
-
-      conductor.register('/mypage');
-      conductor.replace('/mypage');
-
-      expect(conductor.stack.length).toBe(0);
-
-      setTimeout(() => {
-        expect(callback).toHaveBeenCalledTimes(0);
-        done();
-      }, 1);
-    });
-
     it('should replace a route', (done) => {
       const callback = jest.fn();
 
@@ -141,7 +147,7 @@ describe('Conductor', () => {
       conductor.push('/mypage');
       conductor.replace('/mypage2');
 
-      expect(conductor.stack.length).toBe(1);
+      expect(conductor.stack.length).toBe(2);
       expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
 
       setTimeout(() => {
@@ -165,7 +171,7 @@ describe('Conductor', () => {
       conductor.reset();
 
       expect(conductor.stack.length).toBe(1);
-      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage');
+      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
 
       setTimeout(() => {
         expect(callback).toHaveBeenCalledTimes(2);
@@ -179,12 +185,10 @@ describe('Conductor', () => {
       emitter.once(EVENT_WILL_RESET, callback);
       emitter.once(EVENT_DID_RESET, callback);
 
-      conductor.register('/mypage');
-      conductor.push('/mypage');
       conductor.reset();
 
       expect(conductor.stack.length).toBe(1);
-      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage');
+      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
 
       setTimeout(() => {
         expect(callback).not.toBeCalled();
