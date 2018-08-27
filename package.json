@@ -1,8 +1,8 @@
 {
   "private": true,
   "devDependencies": {
-    "@virtuous/eslint-config": "^1.4.1",
-    "@virtuous/react-unit-test-suite": "^1.2.0",
+    "@virtuous/eslint-config": "^2.0.0-beta.2",
+    "@virtuous/unit-tests": "^2.0.0-beta.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -14,7 +14,9 @@
     "babel-preset-react": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "coveralls": "^3.0.2",
-    "jest": "^23.4.0",
+    "enzyme": "^3.5.0",
+    "eslint": "^5.4.0",
+    "jest": "^23.5.0",
     "jsdom": "^11.5.1",
     "jsdom-global": "^3.0.2",
     "lerna": "^2.9.0",
@@ -24,6 +26,8 @@
     "nyc": "^11.4.1",
     "pre-commit": "^1.2.2",
     "proxyquire": "^1.8.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "rimraf": "^2.6.2",
     "sinon": "^4.1.4"
   },
