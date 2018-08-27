@@ -122,7 +122,7 @@ export class Conductor {
     }
 
     // Take the pathname of the first route and try to match it.
-    const { pathname } = this.stack[0];
+    const { id, pathname } = this.stack[0];
 
     if (match(pathname)) {
       const urlPattern = new UrlPattern(pattern);
@@ -130,6 +130,9 @@ export class Conductor {
       this.syncedWithHistory = true;
       this.stack[0].pattern = pattern;
       this.stack[0].params = urlPattern.match(pathname) || {};
+
+      this.sendEvent(constants.EVENT_WILL_PUSH, id);
+      this.sendEvent(constants.EVENT_DID_PUSH, id);
     }
   }
 
