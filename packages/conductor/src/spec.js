@@ -53,7 +53,7 @@ describe('Conductor', () => {
       conductor.register('/mypage');
       conductor.push('/mypage');
 
-      expect(conductor.stack.length).toBe(1);
+      expect(conductor.stack.length).toBe(2);
       expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage');
 
       setTimeout(() => {
@@ -109,7 +109,7 @@ describe('Conductor', () => {
       conductor.pop(2);
 
       setTimeout(() => {
-        expect(conductor.stack.length).toBe(1);
+        expect(conductor.stack.length).toBe(2);
         expect(callback).toHaveBeenCalledTimes(2);
         done();
       }, 50);
@@ -128,30 +128,14 @@ describe('Conductor', () => {
       conductor.pop(3);
 
       setTimeout(() => {
-        expect(conductor.stack.length).toBe(3);
-        expect(callback).toHaveBeenCalledTimes(0);
+        expect(conductor.stack.length).toBe(1);
+        expect(callback).toHaveBeenCalledTimes(2);
         done();
       }, 50);
     });
   });
 
   describe('replace()', () => {
-    it('should not replace when the stack is empty', (done) => {
-      const callback = jest.fn();
-
-      emitter.once(EVENT_WILL_REPLACE, callback);
-
-      conductor.register('/mypage');
-      conductor.replace('/mypage');
-
-      expect(conductor.stack.length).toBe(0);
-
-      setTimeout(() => {
-        expect(callback).toHaveBeenCalledTimes(0);
-        done();
-      }, 1);
-    });
-
     it('should replace a route', (done) => {
       const callback = jest.fn();
 
@@ -163,7 +147,7 @@ describe('Conductor', () => {
       conductor.push('/mypage');
       conductor.replace('/mypage2');
 
-      expect(conductor.stack.length).toBe(1);
+      expect(conductor.stack.length).toBe(2);
       expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
 
       setTimeout(() => {
@@ -187,7 +171,7 @@ describe('Conductor', () => {
       conductor.reset();
 
       expect(conductor.stack.length).toBe(1);
-      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage');
+      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
 
       setTimeout(() => {
         expect(callback).toHaveBeenCalledTimes(2);
@@ -201,12 +185,10 @@ describe('Conductor', () => {
       emitter.once(EVENT_WILL_RESET, callback);
       emitter.once(EVENT_DID_RESET, callback);
 
-      conductor.register('/mypage');
-      conductor.push('/mypage');
       conductor.reset();
 
       expect(conductor.stack.length).toBe(1);
-      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage');
+      expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
 
       setTimeout(() => {
         expect(callback).not.toBeCalled();

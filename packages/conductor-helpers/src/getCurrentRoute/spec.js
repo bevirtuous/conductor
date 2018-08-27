@@ -2,13 +2,6 @@ import conductor from '@virtuous/conductor';
 import getCurrentRoute from './index';
 
 describe('Helpers - getCurrentRoute', () => {
-  describe('Error Cases', () => {
-    it('should return null when stack is empty', () => {
-      const route = getCurrentRoute();
-      expect(route).toBeNull();
-    });
-  });
-
   describe('Correct Route', () => {
     beforeAll(() => {
       conductor.register('/mypage');
