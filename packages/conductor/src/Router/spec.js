@@ -1,7 +1,11 @@
 import router from './index';
+import emitter from '../emitter';
+import * as constants from '../constants';
 import * as errors from './errors';
 
 const pattern1 = '/myroute';
+const willCallback = jest.fn();
+const didCallback = jest.fn();
 
 describe('Conductor', () => {
   beforeEach(() => {
@@ -39,12 +43,18 @@ describe('Conductor', () => {
         pathname: '/myroute',
       };
 
+      emitter.once(constants.EVENT_WILL_PUSH, willCallback);
+      emitter.once(constants.EVENT_DID_PUSH, didCallback);
+
       return router.push(params).then((id) => {
         // Id was returned correctly.
         expect(typeof id).toBe('string');
 
         // Route index was updated.
         expect(router.routeIndex).toBe(2);
+
+        expect(willCallback).toBeCalledWith(id);
+        expect(didCallback).toBeCalledWith(id);
       });
     });
 

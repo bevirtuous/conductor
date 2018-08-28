@@ -1,10 +1,12 @@
 import uuid from 'uuid/v4';
+import queryString from 'query-string';
+import UrlPattern from 'url-pattern';
 import * as errors from './errors';
+import emitter from '../emitter';
 import history from '../history';
 import matcher from '../matcher';
-import {
-  ACTION_PUSH,
-} from '../constants';
+import stack from '../Stack';
+import * as constants from '../constants';
 
 /**
  *
@@ -28,6 +30,22 @@ class Router {
      * The `routeIndex` is used to track which route is the current route.
      */
     this.routeIndex = 1;
+
+    /**
+     * TODO: move to function
+     * Populate the stack with an initial entry to match the history module.
+     * Note: we cannot match it against a pattern at this point.
+     */
+    stack.add({
+      id: uuid(),
+      params: null,
+      pathname: history.location.pathname,
+      pattern: null,
+      query: queryString.parseUrl(history.location.pathname).query,
+      state: {},
+      created: Date.now(),
+      updated: null,
+    });
   }
 
   /**
@@ -70,7 +88,10 @@ class Router {
       const { pathname, state } = params;
       let unlisten = null;
 
-      // TODO: Emit willPush event
+      // TODO: Add item to the stack
+
+      // Emit creation event.
+      emitter.emit(constants.EVENT_WILL_PUSH, id);
 
       /**
        * The history event callback.
@@ -82,7 +103,8 @@ class Router {
         // Increment the route index.
         this.routeIndex += 1;
 
-        // TODO: Emit didPush event
+        // Emit completion event.
+        emitter.emit(constants.EVENT_DID_PUSH, id);
 
         // Resolve the Promise with the new id.
         resolve(id);
@@ -93,8 +115,6 @@ class Router {
        * to be able to unsubscribe inside the callback.
        */
       unlisten = history.listen(callback);
-
-      // Add route to the stack
 
       /**
        * Perform the history push action.
@@ -125,10 +145,30 @@ class Router {
 
   /**
    * 
+   */
+  createRoute = (pathname, pattern) => {
+    if (!pathname) {
+      return null;
+    }
+
+    return {
+      id: uuid(),
+      params: null,
+      pathname: history.location.pathname,
+      pattern: null,
+      query: queryString.parseUrl(history.location.pathname).query,
+      state: {},
+      created: Date.now(),
+      updated: null,
+    };
+  }
+
+  /**
+   * 
    * @param {*} params 
    */
   push = (params) => {
-    return this.navigate(ACTION_PUSH, params);
+    return this.navigate(constants.ACTION_PUSH, params);
   }
 }
 
