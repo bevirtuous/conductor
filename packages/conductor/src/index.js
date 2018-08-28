@@ -81,9 +81,9 @@ export class Conductor {
       }
 
       if (this.conductorEvent && !this.silentMode) {
-        this.didPop(location);
+        this.didPop();
       } else if (!this.conductorEvent && popped) {
-        this.didPop(location);
+        this.didPop();
       }
     } else if (action === constants.ACTION_PUSH) {
       if (!this.silentMode) {
@@ -233,10 +233,10 @@ export class Conductor {
 
   /**
    * Emits an event after a POP occured.
-   * @param {Object} location The current history entry.
    */
-  didPop = (location) => {
-    this.sendEvent(constants.EVENT_DID_POP, location.state.id);
+  didPop = () => {
+    const { id } = this.stack[this.stack.length - 1];
+    this.sendEvent(constants.EVENT_DID_POP, id);
   }
 
   /**
