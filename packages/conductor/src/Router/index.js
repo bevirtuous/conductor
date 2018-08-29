@@ -16,36 +16,59 @@ class Router {
    *
    */
   constructor() {
-    /**
-     * The patterns are collected to match pathnames.
-     */
+    // Flag to indicate a native history event. Should always be reset to true.
+    this.nativeEvent = true;
+
+    // The patterns are collected to match pathnames.
     this.patterns = {};
 
-    /**
-     * Flag to indicate whether or not there is an ongoing history change.
-     */
+    // Flag to indicate whether or not there is an ongoing history change.
     this.routing = false;
 
-    /**
-     * The `routeIndex` is used to track which route is the current route.
-     */
+    // The `routeIndex` is used to track which route is the current route.
     this.routeIndex = 1;
 
-    /**
-     * TODO: move to function
-     * Populate the stack with an initial entry to match the history module.
-     * Note: we cannot match it against a pattern at this point.
-     */
+    this.addInitialRoute();
+
+    // TODO: offset to a function
+    history.listen((location, action) => {
+      if (this.nativeEvent) {
+        return;
+      }
+
+      if (action === constants.ACTION_PUSH) {
+        this.push({
+          pathname: location.pathname,
+          state: location.state,
+        });
+      }
+    });
+  }
+
+  /**
+   * Populate the stack with an initial entry to match the history module.
+   * Note: we cannot match it against a pattern at this point.
+   */
+  addInitialRoute = () => {
+    const { pathname } = history.location;
+
     stack.add({
       id: uuid(),
       params: null,
-      pathname: history.location.pathname,
+      pathname,
       pattern: null,
-      query: queryString.parseUrl(history.location.pathname).query,
+      query: queryString.parseUrl(pathname).query,
       state: {},
       created: Date.now(),
       updated: null,
     });
+  }
+
+  /**
+   * 
+   */
+  updateInitialRoute = () => {
+
   }
 
   /**
@@ -55,43 +78,52 @@ class Router {
    */
   navigate(action, params) {
     return new Promise((resolve, reject) => {
-      /**
-       * Check for missing parameters.
-       */
+      // Check for missing parameters.
       if (!action || !params) {
         reject(new Error(errors.EPARAMSMISSING));
+        this.nativeEvent = true;
         return;
       }
 
-      /**
-       * Check for empty params.
-       */
+      // Check for empty params.
       if (Object.keys(params).length === 0) {
         reject(new Error(errors.EPARAMSEMPTY));
+        this.nativeEvent = true;
         return;
       }
 
-      /**
-       * Check for ongoing router action.
-       */
+      // Check for ongoing router action.
       if (this.routing) {
         reject(new Error('Error'));
+        this.nativeEvent = true;
         return;
       }
 
-      /**
-       * Block further router actions until this Promise has been returned.
-       */
-      this.routing = true;
-
       const id = uuid();
-      const { pathname, state } = params;
+      const {
+        emitBefore = true,
+        emitAfter = true,
+        pathname,
+        state,
+      } = params;
+      const pattern = this.findPattern(pathname);
       let unlisten = null;
 
-      // TODO: Add item to the stack
+      if (!pattern) {
+        reject(new Error(errors.EINVALIDPATHNAME));
+        this.nativeEvent = true;
+      }
+
+      // Block further router actions until this Promise has been returned.
+      this.routing = true;
+
+      //  Add item to the stack
+      stack.add(id, this.createRoute(pathname, pattern));
 
       // Emit creation event.
-      emitter.emit(constants.EVENT_WILL_PUSH, id);
+      if (emitBefore) {
+        emitter.emit(constants.EVENT_WILL_PUSH, id);
+      }
 
       /**
        * The history event callback.
@@ -104,29 +136,43 @@ class Router {
         this.routeIndex += 1;
 
         // Emit completion event.
-        emitter.emit(constants.EVENT_DID_PUSH, id);
+        if (emitAfter) {
+          emitter.emit(constants.EVENT_DID_PUSH, id);
+        }
 
         // Resolve the Promise with the new id.
         resolve(id);
+        this.nativeEvent = true;
       };
 
       /**
        * Create a reference to the hitory listener
-       * to be able to unsubscribe inside the callback.
+       * to be able to unsubscribe from inside the callback.
        */
       unlisten = history.listen(callback);
 
-      /**
-       * Perform the history push action.
-       */
-      history.push({
-        pathname,
-        state,
-      });
+      // Perform the history push action.
+      if (!this.nativeEvent) {
+        history.push({
+          pathname,
+          state,
+        });
+      }
     });
   }
 
   /**
+   * Match the given athname to a registered pattern.
+   * @param {string} pathname The pathname to match.
+   * @returns {string|null}
+   */
+  findPattern = (pathname) => {
+    const pattern = Object.keys(this.patterns).find(key => this.patterns[key](pathname));
+    return pattern || null;
+  }
+
+  /**
+   * Registers a route pattern to match new pathnames against.
    * @param {string} pattern The pattern to register.
    */
   register = (pattern) => {
@@ -155,7 +201,7 @@ class Router {
       id: uuid(),
       params: null,
       pathname: history.location.pathname,
-      pattern: null,
+      pattern,
       query: queryString.parseUrl(history.location.pathname).query,
       state: {},
       created: Date.now(),
@@ -168,6 +214,7 @@ class Router {
    * @param {*} params 
    */
   push = (params) => {
+    this.nativeEvent = false;
     return this.navigate(constants.ACTION_PUSH, params);
   }
 }

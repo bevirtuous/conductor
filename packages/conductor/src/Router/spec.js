@@ -1,11 +1,11 @@
 import router from './index';
+import stack from '../Stack';
 import emitter from '../emitter';
+import history from '../history';
 import * as constants from '../constants';
 import * as errors from './errors';
 
 const pattern1 = '/myroute';
-const willCallback = jest.fn();
-const didCallback = jest.fn();
 
 describe('Conductor', () => {
   beforeEach(() => {
@@ -33,15 +33,20 @@ describe('Conductor', () => {
     });
 
     it('should update initial entry when matching pattern is registered', () => {
-      // expect(() => router.register(123)).toThrowError(errors.EINVALIDPATTERN);
+      expect(() => router.register(123)).toThrowError(errors.EINVALIDPATTERN);
     });
   });
 
   describe('push()', () => {
     it('should resolve correctly', () => {
       const params = {
-        pathname: '/myroute',
+        pathname: pattern1,
       };
+
+      router.register(pattern1);
+
+      const willCallback = jest.fn();
+      const didCallback = jest.fn();
 
       emitter.once(constants.EVENT_WILL_PUSH, willCallback);
       emitter.once(constants.EVENT_DID_PUSH, didCallback);
@@ -55,6 +60,8 @@ describe('Conductor', () => {
 
         expect(willCallback).toBeCalledWith(id);
         expect(didCallback).toBeCalledWith(id);
+
+        expect(stack.get(id)).toBeTruthy();
       });
     });
 
@@ -69,6 +76,54 @@ describe('Conductor', () => {
         expect(error).toEqual(new Error(errors.EPARAMSEMPTY))
       ))
     ));
+
+    it('should reject when pathname cannot be matched', () => {
+      const params = {
+        pathname: pattern1,
+      };
+
+      return router.push(params).catch(error => (
+        expect(error).toEqual(new Error(errors.EINVALIDPATHNAME))
+      ));
+    });
+
+    it('should only emit willPush event', () => {
+      const params = {
+        pathname: pattern1,
+        emitBefore: false,
+      };
+
+      const callback = jest.fn();
+
+      router.register(pattern1);
+
+      emitter.once(constants.EVENT_WILL_PUSH, callback);
+
+      return router.push(params).then(() => {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should only emit didPush event', () => {
+      const params = {
+        pathname: pattern1,
+        emitAfter: false,
+      };
+
+      const callback = jest.fn();
+
+      router.register(pattern1);
+
+      emitter.once(constants.EVENT_DID_PUSH, callback);
+
+      return router.push(params).then(() => {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+
+    // it('should resolve correctly with a native event', () => {
+
+    // });
 
     // it('should reject when already routing', () => {
 
