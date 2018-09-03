@@ -7,6 +7,8 @@ import history from './history';
 import emitter from './emitter';
 import * as constants from './constants';
 
+let historyListener;
+
 /**
  * The Conductor class.
  */
@@ -14,13 +16,14 @@ export class Conductor {
   /**
    * Constructor
    */
-  constructor() {
+  constructor(customHistory = null) {
     /**
      * Contains the templates for each route. Includes the
      * route pattern, component definition and a matching function.
      * @type {Object}
      */
     this.routes = {};
+    this.history = customHistory || history;
 
     /**
      * Contains the active history stack.
@@ -29,9 +32,9 @@ export class Conductor {
     this.stack = [{
       id: uuid(),
       params: null,
-      pathname: history.location.pathname,
+      pathname: this.history.location.pathname,
       pattern: null,
-      query: queryString.parseUrl(history.location.pathname).query,
+      query: queryString.parseUrl(this.history.location.pathname).query,
       state: {},
       created: Date.now(),
       updated: null,
@@ -41,7 +44,11 @@ export class Conductor {
     this.silentMode = false;
     this.syncedWithHistory = false;
 
-    history.listen(this.handleHistoryEvent);
+    if (typeof historyListener === 'function') {
+      historyListener();
+    }
+
+    historyListener = this.history.listen(this.handleHistoryEvent);
   }
 
   /**
@@ -171,7 +178,7 @@ export class Conductor {
     this.conductorEvent = true;
 
     // Call the history action.
-    history.push(pathname, {
+    this.history.push(pathname, {
       ...options,
       id,
     });
@@ -225,7 +232,7 @@ export class Conductor {
 
     // Call the history action.
     if (navigate) {
-      history.go(-steps);
+      this.history.go(-steps);
     }
 
     return true;
@@ -288,7 +295,7 @@ export class Conductor {
     this.conductorEvent = true;
 
     // Call the history action.
-    history.replace(pathname, {
+    this.history.replace(pathname, {
       ...state,
       id,
     });
