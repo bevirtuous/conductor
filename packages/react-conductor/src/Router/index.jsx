@@ -25,6 +25,11 @@ function stateUpdated(oldStack, newStack) {
 class Router extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
+    history: PropTypes.shape(),
+  };
+
+  static defaultProps = {
+    history: null,
   };
 
   /**
@@ -33,6 +38,10 @@ class Router extends Component {
    */
   constructor(props) {
     super(props);
+
+    if (props.history !== null) {
+      conductor.constructor(props.history);
+    }
 
     this.state = {
       stack: [],
