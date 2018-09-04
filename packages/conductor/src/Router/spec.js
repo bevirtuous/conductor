@@ -32,9 +32,9 @@ describe('Conductor', () => {
       expect(() => router.register(123)).toThrowError(errors.EINVALIDPATTERN);
     });
 
-    it('should update initial entry when matching pattern is registered', () => {
-      expect(() => router.register(123)).toThrowError(errors.EINVALIDPATTERN);
-    });
+    // it('should update initial entry when matching pattern is registered', () => {
+
+    // });
   });
 
   describe('push()', () => {
@@ -61,7 +61,10 @@ describe('Conductor', () => {
         expect(willCallback).toBeCalledWith(id);
         expect(didCallback).toBeCalledWith(id);
 
-        expect(stack.get(id)).toBeTruthy();
+        const route = stack.get(id);
+
+        expect(route).toBeTruthy();
+        expect(route.constructor.name === 'Route').toBeTruthy();
       });
     });
 

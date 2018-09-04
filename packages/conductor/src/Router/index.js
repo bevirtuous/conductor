@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 import queryString from 'query-string';
-import UrlPattern from 'url-pattern';
+import Route from '../Route';
 import * as errors from './errors';
 import emitter from '../emitter';
 import history from '../history';
@@ -51,24 +51,15 @@ class Router {
    */
   addInitialRoute = () => {
     const { pathname } = history.location;
-
-    stack.add({
-      id: uuid(),
-      params: null,
-      pathname,
-      pattern: null,
-      query: queryString.parseUrl(pathname).query,
-      state: {},
-      created: Date.now(),
-      updated: null,
-    });
+    stack.add(uuid(), new Route({ pathname }));
   }
 
   /**
    * 
    */
   updateInitialRoute = () => {
-
+    // get first route
+    // call the set pattern
   }
 
   /**
@@ -118,7 +109,7 @@ class Router {
       this.routing = true;
 
       //  Add item to the stack
-      stack.add(id, this.createRoute(pathname, pattern));
+      stack.add(id, new Route({ pathname, pattern }));
 
       // Emit creation event.
       if (emitBefore) {
@@ -126,6 +117,7 @@ class Router {
       }
 
       /**
+       * TODO: move to class function with params
        * The history event callback.
        */
       const callback = () => {
@@ -187,26 +179,6 @@ class Router {
     const match = matcher(pattern);
 
     this.patterns[pattern] = match;
-  }
-
-  /**
-   * 
-   */
-  createRoute = (pathname, pattern) => {
-    if (!pathname) {
-      return null;
-    }
-
-    return {
-      id: uuid(),
-      params: null,
-      pathname: history.location.pathname,
-      pattern,
-      query: queryString.parseUrl(history.location.pathname).query,
-      state: {},
-      created: Date.now(),
-      updated: null,
-    };
   }
 
   /**
