@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/redux-conductor",
-  "version": "1.0.0-beta.36",
+  "version": "1.0.0-beta.37",
   "description": "A redux bridge for Conductor",
   "license": "MIT",
   "repository": {
@@ -30,9 +30,9 @@
     "redux": "^3.7.2"
   },
   "dependencies": {
-    "@virtuous/conductor": "1.0.0-beta.36",
-    "@virtuous/conductor-events": "1.0.0-beta.36",
-    "@virtuous/conductor-helpers": "1.0.0-beta.36"
+    "@virtuous/conductor": "1.0.0-beta.37",
+    "@virtuous/conductor-events": "1.0.0-beta.37",
+    "@virtuous/conductor-helpers": "1.0.0-beta.37"
   },
   "peerDependencies": {
     "redux": "3.x"
