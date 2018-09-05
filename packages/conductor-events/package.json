@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor-events",
-  "version": "1.0.0-beta.37",
+  "version": "1.0.0-beta.38",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {
@@ -30,7 +30,7 @@
     "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/jest --coverage"
   },
   "dependencies": {
-    "@virtuous/conductor": "1.0.0-beta.37"
+    "@virtuous/conductor": "1.0.0-beta.38"
   },
   "nyc": {
     "include": [
