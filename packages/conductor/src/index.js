@@ -34,7 +34,7 @@ export class Conductor {
       params: null,
       pathname: this.history.location.pathname,
       pattern: null,
-      query: queryString.parseUrl(this.history.location.pathname).query,
+      query: queryString.parseUrl(this.history.location.search).query,
       state: {},
       created: Date.now(),
       updated: null,
