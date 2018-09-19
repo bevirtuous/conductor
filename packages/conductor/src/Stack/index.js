@@ -1,9 +1,3 @@
-// remove(id)
-// reset()
-// update
-// first
-// last
-
 /**
  * The Stack class.
  */
@@ -23,6 +17,17 @@ class Stack {
   }
 
   /**
+   * @returns {Array|null}
+   */
+  first() {
+    if (!this.stack.size) {
+      return null;
+    }
+
+    return this.stack.entries().next().value;
+  }
+
+  /**
    * @param {string} id The key to lookup.
    * @returns {Object|null}
    */
@@ -39,6 +44,48 @@ class Stack {
    */
   getAll() {
     return this.stack;
+  }
+
+  /**
+   * @returns {Array|null}
+   */
+  last() {
+    if (!this.stack.size) {
+      return null;
+    }
+
+    return Array.from(this.stack.entries()).pop();
+  }
+
+  /**
+   * @param {string} id The key to remove.
+   */
+  remove(id) {
+    this.stack.delete(id);
+  }
+
+  /**
+   * @param {Array} The key and value to reset to.
+   */
+  reset([id, entry] = this.first()) {
+    this.stack.clear();
+    this.add(id, entry);
+  }
+
+  /**
+   * @param {string} id The key to update.
+   * @param {Object} entry The value to update at the given id.
+   */
+  update(id, entry) {
+    if (!id || !entry) {
+      return;
+    }
+
+    if (!this.stack.has(id)) {
+      return;
+    }
+
+    this.stack.set(id, entry);
   }
 }
 
