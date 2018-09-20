@@ -28,18 +28,15 @@ class Route {
   }
 
   /**
+   * Updates the state of the Route by merging the given state with the existing state.
    * @param {Object} state The state to merge with the existing state.
    */
   set setState(state) {
-    if (typeof state !== 'object') {
+    if (typeof state !== 'object' || Object.keys(state).length === 0) {
       return;
     }
 
-    this.state = {
-      ...this.state,
-      ...state,
-    };
-
+    this.state = Object.assign(this.state, state);
     this.updated = Date.now();
   }
 }
