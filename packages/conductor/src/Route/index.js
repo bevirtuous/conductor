@@ -12,10 +12,13 @@ class Route {
    * @param {Object} params.state The route state.
    */
   constructor(params) {
-    const { pathname, pattern = null, state = {} } = params;
+    const {
+      id, pathname, pattern = null, state = {},
+    } = params;
     const { query, url } = queryString.parseUrl(pathname);
     const urlPattern = pattern ? new UrlPattern(pattern) : null;
 
+    this.id = id;
     this.pathname = pathname;
     this.pattern = pattern;
 
@@ -25,6 +28,20 @@ class Route {
 
     this.created = Date.now();
     this.updated = null;
+  }
+
+  /**
+   * @param {string} pattern The pattern to set for this route.
+   */
+  setPattern = (pattern) => {
+    if (!pattern) {
+      return;
+    }
+
+    const urlPattern = new UrlPattern(pattern);
+
+    this.pattern = pattern;
+    this.params = urlPattern.match(this.pathname) || {};
   }
 
   /**

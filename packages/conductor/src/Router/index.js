@@ -1,5 +1,4 @@
 import uuid from 'uuid/v4';
-import queryString from 'query-string';
 import Route from '../Route';
 import * as errors from './errors';
 import emitter from '../emitter';
@@ -9,40 +8,48 @@ import stack from '../Stack';
 import * as constants from '../constants';
 
 /**
- *
+ * The Router class.
  */
 class Router {
   /**
-   *
+   * TODO:
    */
-  constructor() {
+  constructor(createHistory = history) {
     // Flag to indicate a native history event. Should always be reset to true.
     this.nativeEvent = true;
 
-    // The patterns are collected to match pathnames.
+    this.history = createHistory();
+
+    // The patterns are collected to match against pathnames.
     this.patterns = {};
 
     // Flag to indicate whether or not there is an ongoing history change.
     this.routing = false;
 
-    // The `routeIndex` is used to track which route is the current route.
-    this.routeIndex = 1;
+    // The `routeIndex` is used to track which stack entry is the current route.
+    this.routeIndex = 0;
 
+    // 
     this.addInitialRoute();
 
-    // TODO: offset to a function
-    history.listen((location, action) => {
-      if (this.nativeEvent) {
-        return;
-      }
+    // 
+    this.history.listen(this.handleNativeEvent);
+  }
 
-      if (action === constants.ACTION_PUSH) {
-        this.push({
-          pathname: location.pathname,
-          state: location.state,
-        });
-      }
-    });
+  /**
+   * 
+   */
+  handleNativeEvent = (location, action) => {
+    if (!this.nativeEvent) {
+      return;
+    }
+
+    if (action === constants.ACTION_PUSH) {
+      this.push({
+        pathname: location.pathname,
+        state: location.state,
+      });
+    }
   }
 
   /**
@@ -50,16 +57,71 @@ class Router {
    * Note: we cannot match it against a pattern at this point.
    */
   addInitialRoute = () => {
-    const { pathname } = history.location;
-    stack.add(uuid(), new Route({ pathname }));
+    const { pathname } = this.history.location;
+    const id = uuid();
+    stack.add(id, new Route({ id, pathname }));
   }
 
   /**
    * 
    */
-  updateInitialRoute = () => {
-    // get first route
-    // call the set pattern
+  pop = (params = {}) => {
+    return new Promise((resolve, reject) => {
+      const {
+        emitBefore = true,
+        emitAfter = true,
+        nativeEvent = false,
+        steps = 1,
+      } = params;
+      let unlisten = null;
+      const { size } = stack.getAll();
+
+      if (size < 2) {
+        reject(new Error(errors.ESTACKLENGTH));
+        return;
+      }
+
+      if (steps <= 0) {
+        reject(new Error(errors.EINVALIDSTEPS));
+        return;
+      }
+
+      // If steps is negative, stick at 0
+      // If steps is positive, stick at stack length
+
+      // Get id of target route.
+      const targetIndex = Math.max(this.routeIndex - steps, 0);
+      const { id } = stack.getByIndex(targetIndex);
+
+      // Emit creation event.
+      if (emitBefore) {
+        emitter.emit(constants.EVENT_WILL_POP, id);
+      }
+
+      /**
+       * 
+       */
+      const callback = () => {
+        unlisten();
+        this.routeIndex = targetIndex;
+
+        if (emitAfter) {
+          emitter.emit(constants.EVENT_DID_POP, id);
+        }
+        resolve(id);
+      };
+
+      /**
+       * Create a reference to the history listener
+       * to be able to unsubscribe from inside the callback.
+       */
+      unlisten = this.history.listen(callback);
+
+      // Perform the history pop action.
+      if (!nativeEvent) {
+        this.history.go(-1);
+      }
+    });
   }
 
   /**
@@ -85,6 +147,7 @@ class Router {
 
       // Check for ongoing router action.
       if (this.routing) {
+        // TODO: create real error
         reject(new Error('Error'));
         this.nativeEvent = true;
         return;
@@ -103,13 +166,18 @@ class Router {
       if (!pattern) {
         reject(new Error(errors.EINVALIDPATHNAME));
         this.nativeEvent = true;
+        return;
       }
 
       // Block further router actions until this Promise has been returned.
       this.routing = true;
 
-      //  Add item to the stack
-      stack.add(id, new Route({ pathname, pattern }));
+      // Add item to the stack
+      stack.add(id, new Route({
+        id,
+        pathname,
+        pattern,
+      }));
 
       // Emit creation event.
       if (emitBefore) {
@@ -135,17 +203,18 @@ class Router {
         // Resolve the Promise with the new id.
         resolve(id);
         this.nativeEvent = true;
+        this.routing = false;
       };
 
       /**
-       * Create a reference to the hitory listener
+       * Create a reference to the history listener
        * to be able to unsubscribe from inside the callback.
        */
-      unlisten = history.listen(callback);
+      unlisten = this.history.listen(callback);
 
       // Perform the history push action.
       if (!this.nativeEvent) {
-        history.push({
+        this.history.push({
           pathname,
           state,
         });
@@ -154,7 +223,7 @@ class Router {
   }
 
   /**
-   * Match the given athname to a registered pattern.
+   * Match the given pathname to a registered pattern.
    * @param {string} pathname The pathname to match.
    * @returns {string|null}
    */
@@ -176,14 +245,29 @@ class Router {
       throw new Error(errors.EINVALIDPATTERN);
     }
 
+    // 
     const match = matcher(pattern);
 
+    // 
     this.patterns[pattern] = match;
+
+    // Find the pathname of the first route.
+    const [, route] = stack.first();
+
+    // If it has been set then we don't need to match it.
+    if (route.pattern !== null) {
+      return;
+    }
+
+    // 
+    if (match(route.pathname)) {
+      route.setPattern(pattern);
+    }
   }
 
   /**
-   * 
-   * @param {*} params 
+   * @param {Object} params The params when routing.
+   * @returns {Promise}
    */
   push = (params) => {
     this.nativeEvent = false;

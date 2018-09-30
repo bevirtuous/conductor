@@ -40,6 +40,22 @@ class Stack {
   }
 
   /**
+   * @param {number} index The index to find.
+   * @returns {Object|null}
+   */
+  getByIndex(index = null) {
+    if (index === null) {
+      return null;
+    }
+
+    if (index > this.stack.size - 1) {
+      return null;
+    }
+
+    return this.stack.get(Array.from(this.stack.keys())[index]);
+  }
+
+  /**
    * @returns {Map}
    */
   getAll() {
