@@ -6,6 +6,7 @@ import * as errors from './errors';
 
 const pathname1 = '/myroute/123';
 const pattern1 = '/myroute/:id';
+const dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => 123456);
 
 describe('Conductor', () => {
   beforeEach(() => {
@@ -74,9 +75,22 @@ describe('Conductor', () => {
       });
     });
 
-    // it('should remove all next routes from the stack', () => (
-      // Needs pop() to work
-    // ));
+    it('should remove all forward routes from the stack', async () => {
+      await router.push({ pathname: '/myroute/456' });
+      await router.push({ pathname: '/myroute/789' });
+      expect(stack.getAll().size).toBe(3);
+      await router.pop({ steps: 2 })
+        .then(() => {
+          expect(stack.getAll().size).toBe(3);
+          expect(stack.getByIndex(2).pathname).toBe('/myroute/789');
+        });
+      await router.push({ pathname: '/myroute/abc' })
+        .then(() => {
+          expect(router.routeIndex).toBe(1);
+          expect(stack.getAll().size).toBe(2);
+          expect(stack.getByIndex(1).pathname).toBe('/myroute/abc');
+        });
+    });
 
     it('should reject when params are missing', () => (
       router.push().catch(error => (
@@ -201,6 +215,112 @@ describe('Conductor', () => {
       return router.pop({ emitAfter: false }).then(() => {
         expect(callback).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('reset()', () => {
+    it('should correctly reset to the first route', (done) => {
+      const [firstId] = stack.first();
+
+      const willCallback = jest.fn();
+      const didCallback = jest.fn();
+      emitter.once(constants.EVENT_WILL_RESET, willCallback);
+      emitter.once(constants.EVENT_DID_RESET, didCallback);
+
+      router.push({ pathname: '/myroute/456' });
+      router.push({ pathname: '/myroute/789' });
+
+      router.reset().then((id) => {
+        expect(id).toBe(firstId);
+        expect(willCallback).toHaveBeenCalledWith(firstId);
+        expect(didCallback).toHaveBeenCalledWith(firstId);
+        done();
+      });
+    });
+
+    it('should not reset when there is only one route', (done) => {
+      const willCallback = jest.fn();
+      emitter.once(constants.EVENT_WILL_RESET, willCallback);
+
+      router.reset().catch(() => {
+        expect(willCallback).not.toHaveBeenCalled();
+        done();
+      });
+    });
+  });
+
+  describe('resetTo()', () => {
+    it('should correctly reset to the specified route', async (done) => {
+      const willCallback = jest.fn();
+      const didCallback = jest.fn();
+
+      emitter.once(constants.EVENT_WILL_RESET, willCallback);
+      emitter.once(constants.EVENT_DID_RESET, didCallback);
+
+      await router.push({ pathname: '/myroute/456' });
+
+      router.resetTo('/myroute/789').then((id) => {
+        const [, route] = stack.first();
+        expect(route.id).toBe(id);
+        expect(route.pathname).toBe('/myroute/789');
+        expect(stack.getAll().size).toBe(1);
+        expect(willCallback).toHaveBeenCalledWith(id);
+        expect(didCallback).toHaveBeenCalledWith(id);
+        done();
+      });
+    });
+
+    it('should not reset when pathname is missing', () => (
+      router.resetTo().catch(error => (
+        expect(error).toEqual(new Error(errors.EMISSINGPATHNAME))
+      ))
+    ));
+
+    it('should not reset to non-matching pathname', () => (
+      router.resetTo('/invalid/path').catch(error => (
+        expect(error).toEqual(new Error(errors.EINVALIDPATHNAME))
+      ))
+    ));
+  });
+
+  describe('update()', () => {
+    it('should correctly update/override a route`s state', async () => {
+      const [id, route] = stack.last();
+      const callback = jest.fn();
+      emitter.once(constants.EVENT_UPDATE, callback);
+
+      await router.update(id, { test: 123 });
+      expect(route.state).toEqual({ test: 123 });
+      expect(route.updated).toEqual(dateNowSpy());
+
+      expect(callback).toHaveBeenCalledWith(id);
+
+      await router.update(id, { test: 456 });
+      expect(route.state).toEqual({ test: 456 });
+    });
+
+    it('should reject when id is missing', () => {
+      router.update().catch(error => (
+        expect(error).toEqual(new Error(errors.EPARAMSINVALID))
+      ));
+    });
+
+    it('should reject when state is missing', () => {
+      router.update(12345).catch(error => (
+        expect(error).toEqual(new Error(errors.EPARAMSINVALID))
+      ));
+    });
+
+    it('should reject when state is empty', () => {
+      router.update(12345, {}).catch(error => (
+        expect(error).toEqual(new Error(errors.EPARAMSINVALID))
+      ));
+    });
+
+    it('should reject when id doesn`t match a route', () => {
+      router.update(12345, { test: 123 }).catch(error => (
+        expect(error).toEqual(new Error(errors.EINVALIDID))
+      ));
     });
   });
 });

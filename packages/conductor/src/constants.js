@@ -17,5 +17,3 @@ export const EVENT_WILL_RESET = 'router.willReset';
 export const EVENT_DID_RESET = 'router.didReset';
 
 export const EVENT_UPDATE = 'router.update';
-
-export const EVENT_ERROR = 'router.error';
