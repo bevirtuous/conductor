@@ -154,7 +154,7 @@ export class Conductor {
 
     const { url } = queryString.parseUrl(pathname);
 
-    this.doMatchLoop(url, route => this.willPush(pathname, options, route));
+    this.doMatchLoop(url, route => this.willPush(pathname, options, route, url));
   }
 
   /**
@@ -344,7 +344,7 @@ export class Conductor {
     this.stack.push({
       id,
       params: urlPattern.match(url) || {},
-      pathname,
+      pathname: url,
       pattern,
       query,
       state,
@@ -395,7 +395,7 @@ export class Conductor {
     match.state = newState;
     match.updated = Date.now();
 
-    this.stack = cloneDeep(this.stack);
+    // this.stack = cloneDeep(this.stack);
 
     this.sendEvent(constants.EVENT_UPDATE, id);
   }
