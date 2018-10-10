@@ -102,13 +102,8 @@ class Router extends Component {
     return null;
   }
 
-  componentDidMount() {
-    this.handleRouteChange(constants.ACTION_PUSH);
-  }
-
   /**
    * Update the state based on the router changes.
-   * TODO:
    */
   handleRouteChange = (action) => {
     const stack = getRouteStack();
@@ -127,12 +122,14 @@ class Router extends Component {
       }
 
       case constants.ACTION_POP: {
-        //
         const { pattern } = this.state.stack[this.state.stack.length - 1];
 
-        //
+        const lastEntry = this.routeStack.slice(-1)[0];
+
         if (this.routes[pattern].preload) {
-          this.routeStack.pop();
+          if (lastEntry === pattern) {
+            this.routeStack.pop();
+          }
         }
 
         break;
