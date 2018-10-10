@@ -139,9 +139,13 @@ class Router extends Component {
         const { pattern } = this.state.stack[this.state.stack.length - 1];
         const newPattern = stack[stack.length - 1].pattern;
 
+        const lastEntry = this.routeStack.slice(-1)[0];
+
         //
         if (this.routes[pattern].preload) {
-          this.routeStack.pop();
+          if (lastEntry === pattern) {
+            this.routeStack.pop();
+          }
         }
 
         //
