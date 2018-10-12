@@ -7,27 +7,42 @@ import UrlPattern from 'url-pattern';
 class Route {
   /**
    * @param {Object} params The route parameters.
-   * @param {string} params.pathname The pathname.
-   * @param {string} params.pattern The pattern.
-   * @param {Object} params.state The route state.
    */
   constructor(params) {
     const {
-      id, pathname, pattern = null, state = {},
+      id,
+      pathname,
+      pattern = null,
+      state = {},
+      transform = null,
     } = params;
-    const { query, url } = queryString.parseUrl(pathname);
+    const [path, hash = null] = pathname.split('#');
+    const { query, url } = queryString.parseUrl(path);
     const urlPattern = pattern ? new UrlPattern(pattern) : null;
 
     this.id = id;
-    this.pathname = pathname;
+    this.pathname = url;
     this.pattern = pattern;
 
     this.params = urlPattern ? (urlPattern.match(url) || {}) : {};
     this.query = query;
+    this.hash = hash;
     this.state = state;
 
     this.created = Date.now();
     this.updated = null;
+
+    if (typeof transform === 'function') {
+      const transformed = transform(this);
+      this.params = {
+        ...this.params,
+        ...transformed.params,
+      };
+      this.state = {
+        ...this.state,
+        ...transformed.state,
+      };
+    }
   }
 
   /**

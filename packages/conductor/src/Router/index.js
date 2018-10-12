@@ -163,7 +163,7 @@ class Router {
         pathname,
         state,
       } = params;
-      const pattern = this.findPattern(pathname);
+      const pattern = this.findPattern(pathname.split('?')[0]);
       let unlisten = null;
 
       if (!pattern) {
@@ -182,11 +182,13 @@ class Router {
       }
 
       const id = uuid();
+      const transform = this.patterns[pattern].transform;
       // Add item to the stack
       stack.add(id, new Route({
         id,
         pathname,
         pattern,
+        transform,
       }));
 
       // Emit creation event.
@@ -238,16 +240,17 @@ class Router {
    * @returns {string|null}
    */
   findPattern = (pathname) => {
-    const pattern = Object.keys(this.patterns).find(key => this.patterns[key](pathname));
+    const pattern = Object.keys(this.patterns).find(key => this.patterns[key].match(pathname));
     return pattern || null;
   }
 
   /**
    * Registers a route pattern to match new pathnames against.
    * @param {string} pattern The pattern to register.
+   * @param {Function} transform The route transformer.
    */
   // TODO: convert to Promise
-  register = (pattern) => {
+  register = (pattern, transform = null) => {
     if (!pattern) {
       throw new Error(errors.EMISSINGPATTERN);
     }
@@ -260,7 +263,10 @@ class Router {
     const match = matcher(pattern);
 
     // 
-    this.patterns[pattern] = match;
+    this.patterns[pattern] = {
+      match,
+      transform,
+    };
 
     // Find the pathname of the first route.
     const [, route] = stack.first();

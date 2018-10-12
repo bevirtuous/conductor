@@ -6,18 +6,28 @@ describe('Stack', () => {
   describe('constructor()', () => {
     it('should correctly initialise', () => {
       const route = new Route({
-        pathname: '/myroute/123?search=hello',
+        pathname: '/myroute/123?search=hello#headline',
         pattern: '/myroute/:id',
         state: {
           a: 1,
+          b: 2,
         },
+        transform: () => {
+          return {
+            state: {
+              b: 3,
+              c: 4,
+            },
+          };
+        }
       });
 
-      expect(route.pathname).toBe('/myroute/123?search=hello');
+      expect(route.pathname).toBe('/myroute/123');
       expect(route.pattern).toBe('/myroute/:id');
       expect(route.params).toEqual({ id: '123' });
       expect(route.query).toEqual({ search: 'hello' });
-      expect(route.state).toEqual({ a: 1 });
+      expect(route.hash).toBe('headline');
+      expect(route.state).toEqual({ a: 1, b: 3, c: 4 });
       expect(route.created).toEqual(123456789);
       expect(route.updated).toBeNull();
     });
@@ -37,6 +47,14 @@ describe('Stack', () => {
 
       expect(route.query).toEqual({});
       expect(route.state).toEqual({});
+    });
+
+    it('should set hash to be null when missing', () => {
+      const route = new Route({
+        pathname: '/myroute/123',
+      });
+
+      expect(route.hash).toBeNull();
     });
   });
 

@@ -26,7 +26,14 @@ describe('Conductor', () => {
 
   describe('register()', () => {
     it('should correctly register a pattern with a matching function', () => {
-      expect(typeof router.patterns[pattern1]).toBe('function');
+      expect(typeof router.patterns[pattern1].match).toBe('function');
+    });
+
+    it('should correctly register a pattern with a transform function', () => {
+      const transform = () => {};
+      router.register('/test', transform);
+
+      expect(typeof router.patterns['/test'].transform).toBe('function');
     });
 
     it('should not register with missing pattern', () => {
@@ -75,21 +82,41 @@ describe('Conductor', () => {
       });
     });
 
+    it('should transform the route when pushed', async () => {
+      const transform = (route) => {
+        return {
+          params: {
+            test: route.query.search,
+          },
+          state: {
+            searchActive: !!route.query.search,
+          },
+        };
+      };
+
+      router.register('/test', transform);
+
+      await router.push({ pathname: '/test?search=hello' });
+
+      const [, route] = stack.last();
+      expect(route.pathname).toBe('/test');
+      expect(route.params).toEqual({ test: 'hello' });
+      expect(route.state).toEqual({ searchActive: true });
+
+    })
+
     it('should remove all forward routes from the stack', async () => {
       await router.push({ pathname: '/myroute/456' });
       await router.push({ pathname: '/myroute/789' });
+
       expect(stack.getAll().size).toBe(3);
-      await router.pop({ steps: 2 })
-        .then(() => {
-          expect(stack.getAll().size).toBe(3);
-          expect(stack.getByIndex(2).pathname).toBe('/myroute/789');
-        });
-      await router.push({ pathname: '/myroute/abc' })
-        .then(() => {
-          expect(router.routeIndex).toBe(1);
-          expect(stack.getAll().size).toBe(2);
-          expect(stack.getByIndex(1).pathname).toBe('/myroute/abc');
-        });
+
+      await router.pop({ steps: 2 });
+      await router.push({ pathname: '/myroute/abc' });
+
+      expect(router.routeIndex).toBe(1);
+      expect(stack.getAll().size).toBe(2);
+      expect(stack.getByIndex(1).pathname).toBe('/myroute/abc');
     });
 
     it('should reject when params are missing', () => (
