@@ -12,14 +12,12 @@ describe('Stack', () => {
           a: 1,
           b: 2,
         },
-        transform: () => {
-          return {
-            state: {
-              b: 3,
-              c: 4,
-            },
-          };
-        }
+        transform: () => ({
+          state: {
+            b: 3,
+            c: 4,
+          },
+        }),
       });
 
       expect(route.pathname).toBe('/myroute/123');

@@ -1,4 +1,4 @@
-import { getRouteStack } from '@virtuous/conductor-helpers';
+import { stack } from '@virtuous/conductor';
 import * as constants from '../constants';
 
 /**
@@ -7,7 +7,7 @@ import * as constants from '../constants';
  */
 const defaultState = {
   routing: false,
-  stack: getRouteStack(),
+  stack: stack.getAll(),
 };
 
 /**

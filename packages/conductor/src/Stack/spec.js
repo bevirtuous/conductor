@@ -61,7 +61,7 @@ describe('Stack', () => {
   });
 
   describe('last()', () => {
-    it('should correctly return the first entry', () => {
+    it('should correctly return the last entry', () => {
       stack.add('123', { a: 1 });
       stack.add('456', { a: 2 });
 

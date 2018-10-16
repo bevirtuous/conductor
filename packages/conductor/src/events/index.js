@@ -1,13 +1,5 @@
-import * as events from '@virtuous/conductor/constants';
+import * as events from '../constants';
 import addCallback from './addCallback';
-
-/**
- * Registers a callback to be executed after the error event.
- * @param {Function} callback The callback to register.
- */
-export const onError = (callback) => {
-  addCallback(events.EVENT_ERROR, callback);
-};
 
 /**
  * Registers a callback to be executed before the push event.

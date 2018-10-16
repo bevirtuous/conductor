@@ -1,4 +1,4 @@
-import emitter from '@virtuous/conductor/emitter';
+import emitter from '../emitter';
 
 /**
  * Registers a callback to the given event name.

@@ -1,18 +1,12 @@
-import emitter from '@virtuous/conductor/emitter';
-import * as constants from '@virtuous/conductor/constants';
-import * as events from '@virtuous/conductor-events';
+import emitter from '../emitter';
+import * as constants from '../constants';
+import * as events from './index';
 
 const mockCallback = jest.fn();
 
 describe('Events', () => {
   beforeEach(() => {
     mockCallback.mockClear();
-  });
-
-  it('registers for onError event', () => {
-    events.onError(mockCallback);
-    emitter.emit(constants.EVENT_ERROR);
-    expect(mockCallback).toHaveBeenCalled();
   });
 
   it('registers for onWillPush event', () => {

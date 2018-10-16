@@ -1,7 +1,7 @@
 import reducer from './index';
 import * as constants from '../constants';
 
-describe('Redux Conductor - Reducer', () => {
+describe.skip('Redux Conductor - Reducer', () => {
   it('should return the initial state', () => {
     const state = reducer(undefined, {});
 
