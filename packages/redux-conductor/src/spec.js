@@ -1,4 +1,4 @@
-import * as events from '../../conductor/constants';
+import * as events from '@virtuous/conductor/constants';
 import emitter from '../../conductor/emitter';
 import syncStore from './index';
 

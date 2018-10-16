@@ -182,7 +182,7 @@ class Router {
       }
 
       const id = uuid();
-      const transform = this.patterns[pattern].transform;
+      const { transform } = this.patterns[pattern];
       // Add item to the stack
       stack.add(id, new Route({
         id,
@@ -284,7 +284,94 @@ class Router {
 
   handleReplace = (params) => {
     return new Promise((resolve, reject) => {
+      // Check for missing parameters.
+      if (!params) {
+        reject(new Error(errors.EPARAMSMISSING));
+        this.nativeEvent = true;
+        return;
+      }
 
+      // Check for empty params.
+      if (Object.keys(params).length === 0) {
+        reject(new Error(errors.EPARAMSEMPTY));
+        this.nativeEvent = true;
+        return;
+      }
+
+      // Check for ongoing router action.
+      if (this.routing) {
+        // TODO: create real error
+        reject(new Error('Error'));
+        this.nativeEvent = true;
+        return;
+      }
+
+      const {
+        emitBefore = true,
+        emitAfter = true,
+        pathname,
+        state,
+      } = params;
+      const pattern = this.findPattern(pathname.split('?')[0]);
+      let unlisten = null;
+
+      if (!pattern) {
+        reject(new Error(errors.EINVALIDPATHNAME));
+        this.nativeEvent = true;
+        return;
+      }
+
+      // Block further router actions until this Promise has been returned.
+      this.routing = true;
+
+      const { id } = stack.getByIndex(this.routeIndex);
+      const { transform } = this.patterns[pattern];
+      // Add item to the stack
+      stack.add(id, new Route({
+        id,
+        pathname,
+        pattern,
+        state,
+        transform,
+      }));
+
+      // Emit creation event.
+      if (emitBefore) {
+        emitter.emit(constants.EVENT_WILL_REPLACE, id);
+      }
+
+      /**
+       * TODO: move to class function with params
+       * The history event callback.
+       */
+      const callback = () => {
+        // Unsubscribe from the history events.
+        unlisten();
+
+        // Emit completion event.
+        if (emitAfter) {
+          emitter.emit(constants.EVENT_DID_REPLACE, id);
+        }
+
+        // Resolve the Promise with the new id.
+        resolve(id);
+        this.nativeEvent = true;
+        this.routing = false;
+      };
+
+      /**
+       * Create a reference to the history listener
+       * to be able to unsubscribe from inside the callback.
+       */
+      unlisten = this.history.listen(callback);
+
+      // Perform the history replace action.
+      if (!this.nativeEvent) {
+        this.history.replace({
+          pathname,
+          state,
+        });
+      }
     });
   }
 

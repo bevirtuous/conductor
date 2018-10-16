@@ -30,7 +30,10 @@ describe('Conductor', () => {
     });
 
     it('should correctly register a pattern with a transform function', () => {
-      const transform = () => {};
+      /**
+       * @returns {Object}
+       */
+      const transform = () => ({});
       router.register('/test', transform);
 
       expect(typeof router.patterns['/test'].transform).toBe('function');
@@ -83,16 +86,18 @@ describe('Conductor', () => {
     });
 
     it('should transform the route when pushed', async () => {
-      const transform = (route) => {
-        return {
-          params: {
-            test: route.query.search,
-          },
-          state: {
-            searchActive: !!route.query.search,
-          },
-        };
-      };
+      /**
+       * @param {Object} route The route object.
+       * @returns {Object}
+       */
+      const transform = route => ({
+        params: {
+          test: route.query.search,
+        },
+        state: {
+          searchActive: !!route.query.search,
+        },
+      });
 
       router.register('/test', transform);
 
@@ -102,8 +107,7 @@ describe('Conductor', () => {
       expect(route.pathname).toBe('/test');
       expect(route.params).toEqual({ test: 'hello' });
       expect(route.state).toEqual({ searchActive: true });
-
-    })
+    });
 
     it('should remove all forward routes from the stack', async () => {
       await router.push({ pathname: '/myroute/456' });
@@ -242,6 +246,79 @@ describe('Conductor', () => {
       return router.pop({ emitAfter: false }).then(() => {
         expect(callback).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('replace()', () => {
+    it('should replace correctly', async () => {
+      const willCallback = jest.fn();
+      const didCallback = jest.fn();
+      emitter.once(constants.EVENT_WILL_REPLACE, willCallback);
+      emitter.once(constants.EVENT_DID_REPLACE, didCallback);
+
+      await router.replace({
+        pathname: '/myroute/456',
+        state: { test: 123 },
+      });
+
+      const [, route] = stack.first();
+
+      expect(stack.getAll().size).toBe(1);
+      expect(route.pathname).toBe('/myroute/456');
+      expect(route.state).toEqual({ test: 123 });
+      expect(willCallback).toHaveBeenCalledWith(route.id);
+      expect(didCallback).toHaveBeenCalledWith(route.id);
+    });
+
+    it('should reject when params are missing', () => (
+      router.replace().catch(error => (
+        expect(error).toEqual(new Error(errors.EPARAMSMISSING))
+      ))
+    ));
+
+    it('should reject when params are empty', () => (
+      router.replace({}).catch(error => (
+        expect(error).toEqual(new Error(errors.EPARAMSEMPTY))
+      ))
+    ));
+
+    it('should not emit willPush event', () => {
+      const params = {
+        pathname: pathname1,
+        emitBefore: false,
+      };
+
+      const callback = jest.fn();
+
+      emitter.once(constants.EVENT_WILL_REPLACE, callback);
+
+      return router.replace(params).then(() => {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should not emit didPush event', () => {
+      const params = {
+        pathname: pathname1,
+        emitAfter: false,
+      };
+
+      const callback = jest.fn();
+      emitter.once(constants.EVENT_DID_REPLACE, callback);
+
+      return router.replace(params).then(() => {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should reject when pathname cannot be matched', () => {
+      const params = {
+        pathname: pathname1,
+      };
+
+      return router.replace(params).catch(error => (
+        expect(error).toEqual(new Error(errors.EINVALIDPATHNAME))
+      ));
     });
   });
 
