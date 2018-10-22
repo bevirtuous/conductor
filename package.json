@@ -1,8 +1,8 @@
 {
   "private": true,
   "devDependencies": {
+    "@shopgate/pwa-unit-test": "6.0.0-beta.13",
     "@virtuous/eslint-config": "^1.4.1",
-    "@virtuous/react-unit-test-suite": "^1.2.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",

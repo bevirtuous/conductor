@@ -22,23 +22,21 @@
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
   ],
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/jest",
     "cover": "NODE_ENV=test ../../node_modules/.bin/jest --coverage"
   },
   "dependencies": {
-    "@virtuous/conductor": "1.0.0-beta.32",
-    "gsap": "^1.20.4",
-    "react-transition-group": "^2.2.1",
-    "uuid": "^3.1.0"
+    "@virtuous/conductor": "1.0.0-beta.32"
   },
   "devDependencies": {
+    "@shopgate/pwa-unit-test": "6.0.0-beta.13",
     "prop-types": "^15.6.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   },
-  "peerDependencies": {
+  "peerDependencies": { 
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   }

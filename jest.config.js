@@ -1,4 +1,4 @@
-const defaultConfig = require('@virtuous/react-unit-test-suite/jest.config');
+const defaultConfig = require('@shopgate/pwa-unit-test/jest.config');
 
 const config = {
   ...defaultConfig,
