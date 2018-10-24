@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   stack as routeStack,
@@ -12,7 +12,7 @@ import { RouterContext } from '../context';
 /**
  * The Router component.
  */
-class Router extends Component {
+class Router extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
   }
@@ -24,14 +24,21 @@ class Router extends Component {
     super(props);
 
     this.state = {
-      stack: routeStack.getAll(),
-      updated: Date.now(),
+      stack: {},
+      updated: null,
     };
 
     onDidPush(this.update);
     onDidPop(this.update);
     onDidReplace(this.update);
     onDidReset(this.update);
+  }
+
+  /**
+   * Update the format of the stack when the router is mounted.
+   */
+  componentDidMount() {
+    this.update();
   }
 
   /**
@@ -45,11 +52,9 @@ class Router extends Component {
   }
 
   /**
-   * Update the local stack with the route stack.
-   * The local stack items are grouped by the route pattern.
-   * The order is then identifiable by a given index.
+   * @returns {Object}
    */
-  update = () => {
+  formatStack = () => {
     const routes = Array.from(routeStack.getAll());
 
     const stack = routes.reduce((acc, [, route], index) => {
@@ -68,8 +73,17 @@ class Router extends Component {
       return acc;
     }, {});
 
+    return stack;
+  }
+
+  /**
+   * Update the local stack with the route stack.
+   * The local stack items are grouped by the route pattern.
+   * The order is then identifiable by a given index.
+   */
+  update = () => {
     this.setState({
-      stack,
+      stack: this.formatStack(),
       updated: Date.now(),
     });
   }
@@ -80,10 +94,9 @@ class Router extends Component {
   render() {
     const { children } = this.props;
     const { stack } = this.state;
-    const context = { stack };
 
     return (
-      <RouterContext.Provider value={context}>
+      <RouterContext.Provider value={stack}>
         {children}
       </RouterContext.Provider>
     );

@@ -1,11 +1,19 @@
+import {
+  stack,
+  onDidPush,
+  onDidPop,
+  onDidReplace,
+  onDidReset,
+  onUpdate,
+} from '@virtuous/conductor';
 import * as actions from './action-creators';
 
 export { default as reducer } from './reducer';
 
 export default ({ dispatch }) => {
-  events.onDidPush(() => dispatch(actions.conductorPush(getRouteStack())));
-  events.onDidPop(() => dispatch(actions.conductorPop(getRouteStack())));
-  events.onDidReplace(() => dispatch(actions.conductorReplace(getRouteStack())));
-  events.onDidReset(() => dispatch(actions.conductorReset(getRouteStack())));
-  events.onUpdate(() => dispatch(actions.conductorUpdate(getRouteStack())));
+  onDidPush(() => dispatch(actions.conductorPush(stack.getAll())));
+  onDidPop(() => dispatch(actions.conductorPop(stack.getAll())));
+  onDidReplace(() => dispatch(actions.conductorReplace(stack.getAll())));
+  onDidReset(() => dispatch(actions.conductorReset(stack.getAll())));
+  onUpdate(() => dispatch(actions.conductorUpdate(stack.getAll())));
 };

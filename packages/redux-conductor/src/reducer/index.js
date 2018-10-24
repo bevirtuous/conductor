@@ -1,4 +1,4 @@
-import { stack } from '@virtuous/conductor';
+import { stack as routeStack } from '@virtuous/conductor';
 import * as constants from '../constants';
 
 /**
@@ -7,7 +7,7 @@ import * as constants from '../constants';
  */
 const defaultState = {
   routing: false,
-  stack: stack.getAll(),
+  stack: routeStack.getAll(),
 };
 
 /**

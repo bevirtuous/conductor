@@ -44,6 +44,7 @@ class Router {
       return;
     }
 
+    // TODO check if the popped pathname is actually the next
     if (action === constants.ACTION_PUSH) {
       this.push({
         pathname: location.pathname,
@@ -63,9 +64,10 @@ class Router {
    * Note: we cannot match it against a pattern at this point.
    */
   addInitialRoute = () => {
-    const { pathname } = this.history.location;
+    const { hash, pathname, search } = this.history.location;
+    const fullPathname = `${pathname}${search}${hash}`;
     const id = uuid();
-    stack.add(id, new Route({ id, pathname }));
+    stack.add(id, new Route({ id, pathname: fullPathname }));
   }
 
   /**
@@ -113,6 +115,7 @@ class Router {
         if (emitAfter) {
           emitter.emit(constants.EVENT_DID_POP, id);
         }
+
         resolve(id);
       };
 
@@ -125,6 +128,8 @@ class Router {
       // Perform the history back action.
       if (!this.nativeEvent) {
         this.history.go(steps * -1);
+      } else {
+        callback();
       }
     });
   }
@@ -230,6 +235,8 @@ class Router {
           pathname,
           state,
         });
+      } else {
+        callback();
       }
     });
   }
@@ -371,6 +378,8 @@ class Router {
           pathname,
           state,
         });
+      } else {
+        callback();
       }
     });
   }
