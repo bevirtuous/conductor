@@ -117,6 +117,8 @@ class Router {
         }
 
         resolve(id);
+        this.nativeEvent = true;
+        this.routing = false;
       };
 
       /**
@@ -465,9 +467,9 @@ class Router {
   /**
    * 
    */
-  update = (id, state = {}) => {
+  update = (id, state = {}, emit = true) => {
     return new Promise((resolve, reject) => {
-      // 
+      //
       if (!id || Object.keys(state).length === 0) {
         reject(new Error(errors.EPARAMSINVALID));
         return;
@@ -487,7 +489,10 @@ class Router {
       route.updated = Date.now();
 
       stack.update(id, route);
-      emitter.emit(constants.EVENT_UPDATE, id);
+
+      if (emit) {
+        emitter.emit(constants.EVENT_UPDATE, id);
+      }
 
       resolve();
     });

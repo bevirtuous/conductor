@@ -33,26 +33,20 @@ class Route extends React.Component {
    */
   render() {
     const { component: Component, pattern } = this.props;
-    const { [pattern]: stack } = this.context;
+    const { [router.routeIndex]: [, route] } = this.context;
 
-    if (!stack) {
+    if (route.pattern !== pattern) {
       return null;
     }
 
+    const { setPattern, ...context } = route;
+    context.open = true;
+    context.visible = true;
+
     return (
-      stack.map((entry) => {
-        if (entry.index !== router.routeIndex) {
-          return null;
-        }
-
-        const { setPattern, ...rest } = entry.route;
-
-        return (
-          <RouteContext.Provider key={entry.route.id} value={rest}>
-            <Component />
-          </RouteContext.Provider>
-        );
-      })
+      <RouteContext.Provider key={route.id} value={context}>
+        <Component />
+      </RouteContext.Provider>
     );
   }
 }

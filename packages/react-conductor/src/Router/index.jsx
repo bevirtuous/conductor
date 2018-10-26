@@ -24,7 +24,7 @@ class Router extends React.Component {
     super(props);
 
     this.state = {
-      stack: {},
+      stack: Array.from(routeStack.getAll()),
       updated: null,
     };
 
@@ -32,13 +32,6 @@ class Router extends React.Component {
     onDidPop(this.update);
     onDidReplace(this.update);
     onDidReset(this.update);
-  }
-
-  /**
-   * Update the format of the stack when the router is mounted.
-   */
-  componentDidMount() {
-    this.update();
   }
 
   /**
@@ -52,38 +45,11 @@ class Router extends React.Component {
   }
 
   /**
-   * @returns {Object}
-   */
-  formatStack = () => {
-    const routes = Array.from(routeStack.getAll());
-
-    const stack = routes.reduce((acc, [, route], index) => {
-      // Find the given pattern inside the accumulated value.
-      const entry = acc[route.pattern] || [];
-
-      // Push a new route into this pattern entry.
-      entry.push({
-        index,
-        route,
-      });
-
-      // Set the entry back to the accumulated value.
-      acc[route.pattern] = entry;
-
-      return acc;
-    }, {});
-
-    return stack;
-  }
-
-  /**
    * Update the local stack with the route stack.
-   * The local stack items are grouped by the route pattern.
-   * The order is then identifiable by a given index.
    */
   update = () => {
     this.setState({
-      stack: this.formatStack(),
+      stack: Array.from(routeStack.getAll()),
       updated: Date.now(),
     });
   }
