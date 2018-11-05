@@ -1,5 +1,5 @@
-import { stack as routeStack } from '@virtuous/conductor';
 import * as constants from '../constants';
+import { getStack } from '../helpers';
 
 /**
  * The default state definition.
@@ -7,7 +7,7 @@ import * as constants from '../constants';
  */
 const defaultState = {
   routing: false,
-  stack: routeStack.getAll(),
+  stack: getStack(),
 };
 
 /**

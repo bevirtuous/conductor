@@ -2,20 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { router } from '@virtuous/conductor';
 import Route from '../Route';
+import Child from './components/Route';
 import { RouteContext } from '../context';
 
 /**
- * The CachedRoute component.
+ * The TransitionRoute component.
  */
-class CachedRoute extends Route {
+class TransitionRoute extends Route {
   static propTypes = {
     ...Route.propTypes,
-    prerender: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    ...Route.defaultProps,
-    prerender: false,
+    transition: PropTypes.shape(),
   };
 
   /**
@@ -41,25 +37,19 @@ class CachedRoute extends Route {
    * @returns {JSX}
    */
   render() {
-    const { component: Component } = this.props;
+    const { component, transition } = this.props;
     const routes = this.matchingRoutes;
 
-    if (!routes || !routes.length) {
-      return null;
-    }
-
     return routes.map((entry) => {
-      const { setPattern, ...context } = entry.route;
-      context.current = entry.index === router.routeIndex;
+      const visible = entry.index === router.routeIndex;
 
       return (
-        <RouteContext.Provider key={entry.route.id} value={context}>
-          <Component />
+        <RouteContext.Provider key={entry.route.id} value={entry.route}>
+          <Child component={component} visible={visible} transition={transition} />
         </RouteContext.Provider>
       );
     });
   }
 }
 
-export default CachedRoute;
-
+export default TransitionRoute;

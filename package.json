@@ -1,7 +1,6 @@
 {
   "private": true,
   "devDependencies": {
-    "@shopgate/pwa-unit-test": "6.0.0-beta.13",
     "@virtuous/eslint-config": "^1.4.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -14,18 +13,11 @@
     "babel-preset-react": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "coveralls": "^3.0.2",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
     "jest": "^23.4.0",
-    "jsdom": "^11.5.1",
-    "jsdom-global": "^3.0.2",
     "lerna": "^2.9.0",
-    "lint-staged": "^6.0.0",
-    "mocha": "^4.1.0",
-    "mock-require": "^2.0.2",
-    "nyc": "^11.4.1",
-    "pre-commit": "^1.2.2",
-    "proxyquire": "^1.8.0",
-    "rimraf": "^2.6.2",
-    "sinon": "^4.1.4"
+    "nyc": "^11.4.1"
   },
   "workspaces": [
     "packages/*"
@@ -34,11 +26,6 @@
     "test": "jest",
     "cover": "jest --coverage",
     "release": "make release",
-    "lint": "eslint --quiet --ext .js --ext .jsx .",
-    "lint-staged": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js|jsx}": "eslint --quiet --ext .js --ext .jsx ."
-  },
-  "pre-commit": []
+    "lint": "eslint --quiet --ext .js --ext .jsx ."
+  }
 }

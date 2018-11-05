@@ -24,8 +24,26 @@ class Route extends React.Component {
    */
   constructor(props) {
     super(props);
-
     router.register(props.pattern, props.transform);
+  }
+
+  /**
+   * TODO: Move to router
+   */
+  get currentRoute() {
+    const { [router.routeIndex]: [, route] } = this.context;
+
+    return route;
+  }
+
+  /**
+   * @returns {Object}
+   */
+  get contextValue() {
+    const { setPattern, ...context } = this.currentRoute;
+    context.node = this.node;
+
+    return context;
   }
 
   /**
@@ -33,18 +51,14 @@ class Route extends React.Component {
    */
   render() {
     const { component: Component, pattern } = this.props;
-    const { [router.routeIndex]: [, route] } = this.context;
+    const route = this.currentRoute;
 
     if (route.pattern !== pattern) {
       return null;
     }
 
-    const { setPattern, ...context } = route;
-    context.open = true;
-    context.visible = true;
-
     return (
-      <RouteContext.Provider key={route.id} value={context}>
+      <RouteContext.Provider key={route.id} value={this.contextValue}>
         <Component />
       </RouteContext.Provider>
     );

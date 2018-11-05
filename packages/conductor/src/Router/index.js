@@ -44,12 +44,13 @@ class Router {
       return;
     }
 
-    // TODO check if the popped pathname is actually the next
-    if (action === constants.ACTION_PUSH) {
-      this.push({
+    const next = stack.getByIndex(this.routeIndex + 1);
+
+    if (next && location.state && location.state.route && next.id === location.state.route.id) {
+      this.handlePush({
         pathname: location.pathname,
         state: location.state,
-      });
+      }, false);
 
       return;
     }
@@ -140,7 +141,7 @@ class Router {
    * @param {Object} params The params to use when navigating.
    * @returns {Promise}
    */
-  handlePush(params) {
+  handlePush(params, override = true) {
     return new Promise((resolve, reject) => {
       // Check for missing parameters.
       if (!params) {
@@ -183,9 +184,11 @@ class Router {
       this.routing = true;
 
       // Remove all unwanted items from the stack.
-      while (this.routeIndex < stack.getAll().size - 1) {
-        const [id] = stack.last();
-        stack.remove(id);
+      if (override) {
+        while (this.routeIndex < stack.getAll().size - 1) {
+          const [id] = stack.last();
+          stack.remove(id);
+        }
       }
 
       const id = uuid();
@@ -235,7 +238,10 @@ class Router {
       if (!this.nativeEvent) {
         this.history.push({
           pathname,
-          state,
+          state: {
+            ...state,
+            route: { id },
+          },
         });
       } else {
         callback();
@@ -378,7 +384,10 @@ class Router {
       if (!this.nativeEvent) {
         this.history.replace({
           pathname,
-          state,
+          state: {
+            ...state,
+            route: { id },
+          },
         });
       } else {
         callback();
