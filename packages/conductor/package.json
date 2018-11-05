@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "history": "^4.7.2",
-    "lodash": "^4.17.10",
     "path-match": "^1.2.4",
     "query-string": "^6.1.0",
     "url-pattern": "^1.0.3"

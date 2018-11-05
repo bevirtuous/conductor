@@ -271,13 +271,11 @@ class Router extends Component {
             visible = lastOccurence === this.state.stack.length - 1;
           }
 
-          const key = `route-${index}`;
-
           return (
             <Route
               id={id}
               component={component}
-              key={key}
+              key={id}
               open={open}
               params={params}
               path={pathname}

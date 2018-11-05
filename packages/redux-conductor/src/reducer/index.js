@@ -1,4 +1,5 @@
 import { getRouteStack } from '@virtuous/conductor-helpers';
+import cloneDeep from 'lodash/cloneDeep';
 import * as constants from '../constants';
 
 /**
@@ -23,12 +24,12 @@ export default (state = defaultState, { type, stack }) => {
     case constants.CONDUCTOR_UPDATE:
       return {
         routing: false,
-        stack,
+        stack: cloneDeep(stack),
       };
     case constants.CONDUCTOR_RESET:
       return {
         routing: false,
-        stack: [stack[0]],
+        stack: [cloneDeep(stack[0])],
       };
     default:
       return state;

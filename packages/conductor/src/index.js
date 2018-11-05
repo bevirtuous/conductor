@@ -1,7 +1,6 @@
 import uuid from 'uuid/v4';
 import queryString from 'query-string';
 import UrlPattern from 'url-pattern';
-import cloneDeep from 'lodash/cloneDeep';
 import matcher from './matcher';
 import history from './history';
 import emitter from './emitter';
@@ -394,8 +393,6 @@ export class Conductor {
 
     match.state = newState;
     match.updated = Date.now();
-
-    // this.stack = cloneDeep(this.stack);
 
     this.sendEvent(constants.EVENT_UPDATE, id);
   }

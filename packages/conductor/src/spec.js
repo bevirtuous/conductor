@@ -292,7 +292,7 @@ describe('Conductor', () => {
         params: {
           myParam: 'thing',
         },
-        pathname,
+        pathname: '/mypage/thing',
         pattern,
         query: {
           a: '456',

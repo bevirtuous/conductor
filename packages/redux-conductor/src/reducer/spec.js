@@ -9,12 +9,16 @@ describe('Redux Conductor - Reducer', () => {
   });
 
   it('should handle a PUSH action', () => {
+    const stack = [{
+      pathname: 'mypage',
+    }];
+
     const state = reducer(undefined, {
       type: constants.CONDUCTOR_PUSH,
-      stack: [{
-        pathname: 'mypage',
-      }],
+      stack,
     });
+
+    expect(state.stack).not.toBe(stack);
 
     expect(state).toEqual({
       routing: false,
@@ -73,12 +77,16 @@ describe('Redux Conductor - Reducer', () => {
   });
 
   it('should handle a UPDATE action', () => {
+    const stack = [{
+      pathname: 'mypage',
+    }];
+
     const state = reducer(undefined, {
       type: constants.CONDUCTOR_UPDATE,
-      stack: [{
-        pathname: 'mypage',
-      }],
+      stack,
     });
+
+    expect(state.stack).not.toBe(stack);
 
     expect(state).toEqual({
       routing: false,
