@@ -1,23 +1,24 @@
 import reducer from './index';
 import * as constants from '../constants';
 
-describe.skip('Redux Conductor - Reducer', () => {
+describe('Redux Conductor - Reducer', () => {
   it('should return the initial state', () => {
     const state = reducer(undefined, {});
 
-    expect(state).toEqual({
-      routing: false,
-      stack: [],
-    });
+    expect(state.stack.length).toEqual(1);
   });
 
   it('should handle a PUSH action', () => {
+    const stack = [{
+      pathname: 'mypage',
+    }];
+
     const state = reducer(undefined, {
       type: constants.CONDUCTOR_PUSH,
-      stack: [{
-        pathname: 'mypage',
-      }],
+      stack,
     });
+
+    expect(state.stack).not.toBe(stack);
 
     expect(state).toEqual({
       routing: false,
@@ -76,12 +77,16 @@ describe.skip('Redux Conductor - Reducer', () => {
   });
 
   it('should handle a UPDATE action', () => {
+    const stack = [{
+      pathname: 'mypage',
+    }];
+
     const state = reducer(undefined, {
       type: constants.CONDUCTOR_UPDATE,
-      stack: [{
-        pathname: 'mypage',
-      }],
+      stack,
     });
+
+    expect(state.stack).not.toBe(stack);
 
     expect(state).toEqual({
       routing: false,

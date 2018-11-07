@@ -21,3 +21,5 @@ export const sync = ({ dispatch }) => {
   onDidReset(() => dispatch(actions.conductorReset(getStack())));
   onUpdate(() => dispatch(actions.conductorUpdate(getStack())));
 };
+
+export default sync;

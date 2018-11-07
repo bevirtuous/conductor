@@ -51,6 +51,8 @@ class CachedRoute extends Route {
     return routes.map((entry) => {
       const { setPattern, ...context } = entry.route;
       context.current = entry.index === router.routeIndex;
+      context.visible = context.current;
+      context.open = true;
 
       return (
         <RouteContext.Provider key={entry.route.id} value={context}>

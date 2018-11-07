@@ -67,20 +67,15 @@ describe('Conductor', () => {
       emitter.once(constants.EVENT_WILL_PUSH, willCallback);
       emitter.once(constants.EVENT_DID_PUSH, didCallback);
 
-      return router.push(params).then((id) => {
-        // Id was returned correctly.
-        expect(typeof id).toBe('string');
-
+      return router.push(params).then((result) => {
         // Route index was updated.
         expect(router.routeIndex).toBe(1);
 
-        expect(willCallback).toBeCalledWith(id);
-        expect(didCallback).toBeCalledWith(id);
+        expect(willCallback).toHaveBeenCalledWith(result);
+        expect(didCallback).toHaveBeenCalledWith(result);
 
-        const route = stack.get(id);
-
-        expect(route).toBeTruthy();
-        expect(route.constructor.name === 'Route').toBeTruthy();
+        expect(result.prev.constructor.name === 'Route').toBeTruthy();
+        expect(result.next.constructor.name === 'Route').toBeTruthy();
         expect(router.history.location.pathname).toBe(pathname1);
       });
     });
@@ -176,7 +171,7 @@ describe('Conductor', () => {
   });
 
   describe('pop()', () => {
-    it('should resolve correctly', async () => {
+    it('should resolve correctly', async (done) => {
       const willCallback = jest.fn();
       const didCallback = jest.fn();
 
@@ -184,24 +179,29 @@ describe('Conductor', () => {
       emitter.once(constants.EVENT_DID_POP, didCallback);
 
       await router.push({ pathname: '/myroute/456' });
-      await router.pop().then((id) => {
+
+      router.pop().then((result) => {
         const route = stack.getByIndex(0);
 
         expect(stack.getAll().size).toBe(2);
         expect(router.routeIndex).toBe(0);
-        expect(route.id).toEqual(id);
-        expect(willCallback).toHaveBeenCalledWith(id);
-        expect(didCallback).toHaveBeenCalledWith(id);
+        expect(route).toEqual(result.next);
+        expect(willCallback).toHaveBeenCalledWith(result);
+        expect(didCallback).toHaveBeenCalledWith(result);
         expect(router.history.location.pathname).toBe(pathname1);
+
+        done();
       });
     });
 
-    it('should pop multiple routes', async () => {
+    it('should pop multiple routes', async (done) => {
       await router.push({ pathname: '/myroute/456' });
       await router.push({ pathname: '/myroute/789' });
-      await router.pop({ steps: 2 }).then((id) => {
-        const { id: currentId } = stack.getByIndex(router.routeIndex);
-        expect(currentId).toEqual(id);
+
+      router.pop({ steps: 2 }).then((result) => {
+        const currentRoute = stack.getByIndex(router.routeIndex);
+        expect(currentRoute).toBe(result.next);
+        done()
       });
     });
 
@@ -218,12 +218,14 @@ describe('Conductor', () => {
       ));
     });
 
-    it('should clamp when steps is larger than the stack', async () => {
+    it('should clamp when steps is larger than the stack', async (done) => {
       await router.push({ pathname: '/myroute/456' });
       await router.push({ pathname: '/myroute/789' });
-      await router.pop({ steps: 5 }).then(id => (
-        expect(id).toBe(stack.getByIndex(0).id)
-      ));
+
+      router.pop({ steps: 5 }).then((result) => {
+        expect(result.next).toBe(stack.getByIndex(0));
+        done();
+      });
     });
 
     it('should not emit willPop event', async () => {
@@ -250,24 +252,25 @@ describe('Conductor', () => {
   });
 
   describe('replace()', () => {
-    it('should replace correctly', async () => {
+    it('should replace correctly', (done) => {
       const willCallback = jest.fn();
       const didCallback = jest.fn();
       emitter.once(constants.EVENT_WILL_REPLACE, willCallback);
       emitter.once(constants.EVENT_DID_REPLACE, didCallback);
 
-      await router.replace({
+      router.replace({
         pathname: '/myroute/456',
         state: { test: 123 },
+      }).then((result) => {
+        const [, route] = stack.first();
+
+        expect(stack.getAll().size).toBe(1);
+        expect(route.pathname).toBe('/myroute/456');
+        expect(route.state).toEqual({ test: 123 });
+        expect(willCallback).toHaveBeenCalledWith(result);
+        expect(didCallback).toHaveBeenCalledWith(result);
+        done();
       });
-
-      const [, route] = stack.first();
-
-      expect(stack.getAll().size).toBe(1);
-      expect(route.pathname).toBe('/myroute/456');
-      expect(route.state).toEqual({ test: 123 });
-      expect(willCallback).toHaveBeenCalledWith(route.id);
-      expect(didCallback).toHaveBeenCalledWith(route.id);
     });
 
     it('should reject when params are missing', () => (
@@ -324,7 +327,7 @@ describe('Conductor', () => {
 
   describe('reset()', () => {
     it('should correctly reset to the first route', (done) => {
-      const [firstId] = stack.first();
+      const [, firstRoute] = stack.first();
 
       const willCallback = jest.fn();
       const didCallback = jest.fn();
@@ -334,10 +337,13 @@ describe('Conductor', () => {
       router.push({ pathname: '/myroute/456' });
       router.push({ pathname: '/myroute/789' });
 
-      router.reset().then((id) => {
-        expect(id).toBe(firstId);
-        expect(willCallback).toHaveBeenCalledWith(firstId);
-        expect(didCallback).toHaveBeenCalledWith(firstId);
+      const prevRoute = stack.getByIndex(router.routeIndex);
+
+      router.reset().then((result) => {
+        expect(firstRoute).toBe(result.next);
+        expect(prevRoute).toBe(result.prev);
+        expect(willCallback).toHaveBeenCalledWith(result);
+        expect(didCallback).toHaveBeenCalledWith(result);
         done();
       });
     });
@@ -363,13 +369,13 @@ describe('Conductor', () => {
 
       await router.push({ pathname: '/myroute/456' });
 
-      router.resetTo('/myroute/789').then((id) => {
+      router.resetTo('/myroute/789').then((result) => {
         const [, route] = stack.first();
-        expect(route.id).toBe(id);
+        expect(route).toBe(result.next);
         expect(route.pathname).toBe('/myroute/789');
         expect(stack.getAll().size).toBe(1);
-        expect(willCallback).toHaveBeenCalledWith(id);
-        expect(didCallback).toHaveBeenCalledWith(id);
+        expect(willCallback).toHaveBeenCalledWith(result);
+        expect(didCallback).toHaveBeenCalledWith(result);
         done();
       });
     });

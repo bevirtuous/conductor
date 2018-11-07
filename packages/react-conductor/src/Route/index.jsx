@@ -41,7 +41,6 @@ class Route extends React.Component {
    */
   get contextValue() {
     const { setPattern, ...context } = this.currentRoute;
-    context.node = this.node;
 
     return context;
   }

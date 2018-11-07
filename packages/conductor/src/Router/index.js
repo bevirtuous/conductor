@@ -99,11 +99,13 @@ class Router {
 
       // Get id of target route.
       const targetIndex = Math.max(this.routeIndex - steps, 0);
-      const { id } = stack.getByIndex(targetIndex);
+      const prev = stack.getByIndex(this.routeIndex);
+      const next = stack.getByIndex(targetIndex);
+      const end = { prev, next };
 
       // Emit creation event.
       if (emitBefore) {
-        emitter.emit(constants.EVENT_WILL_POP, id);
+        emitter.emit(constants.EVENT_WILL_POP, end);
       }
 
       /**
@@ -114,10 +116,10 @@ class Router {
         this.routeIndex = targetIndex;
 
         if (emitAfter) {
-          emitter.emit(constants.EVENT_DID_POP, id);
+          emitter.emit(constants.EVENT_DID_POP, end);
         }
 
-        resolve(id);
+        resolve(end);
         this.nativeEvent = true;
         this.routing = false;
       };
@@ -193,17 +195,20 @@ class Router {
 
       const id = uuid();
       const { transform } = this.patterns[pattern];
-      // Add item to the stack
-      stack.add(id, new Route({
+      const prev = stack.getByIndex(this.routeIndex);
+      const next = new Route({
         id,
         pathname,
         pattern,
         transform,
-      }));
+      });
+
+      // Add item to the stack
+      stack.add(id, next);
 
       // Emit creation event.
       if (emitBefore) {
-        emitter.emit(constants.EVENT_WILL_PUSH, id);
+        emitter.emit(constants.EVENT_WILL_PUSH, { prev, next });
       }
 
       /**
@@ -219,11 +224,11 @@ class Router {
 
         // Emit completion event.
         if (emitAfter) {
-          emitter.emit(constants.EVENT_DID_PUSH, id);
+          emitter.emit(constants.EVENT_DID_PUSH, { prev, next });
         }
 
-        // Resolve the Promise with the new id.
-        resolve(id);
+        // Resolve the Promise.
+        resolve({ prev, next });
         this.nativeEvent = true;
         this.routing = false;
       };
@@ -294,6 +299,11 @@ class Router {
     // 
     if (match(route.pathname)) {
       route.setPattern(pattern);
+
+      const end = { prev: null, next: route };
+
+      emitter.emit(constants.EVENT_WILL_PUSH, end);
+      emitter.emit(constants.EVENT_DID_PUSH, end);
     }
   }
 
@@ -341,22 +351,25 @@ class Router {
 
       const { id } = stack.getByIndex(this.routeIndex);
       const { transform } = this.patterns[pattern];
-      // Add item to the stack
-      stack.add(id, new Route({
+      const prev = stack.get(id);
+      const next = new Route({
         id,
         pathname,
         pattern,
         state,
         transform,
-      }));
+      });
+      const end = { prev, next };
+
+      // Add item to the stack
+      stack.add(id, next);
 
       // Emit creation event.
       if (emitBefore) {
-        emitter.emit(constants.EVENT_WILL_REPLACE, id);
+        emitter.emit(constants.EVENT_WILL_REPLACE, end);
       }
 
       /**
-       * TODO: move to class function with params
        * The history event callback.
        */
       const callback = () => {
@@ -365,11 +378,10 @@ class Router {
 
         // Emit completion event.
         if (emitAfter) {
-          emitter.emit(constants.EVENT_DID_REPLACE, id);
+          emitter.emit(constants.EVENT_DID_REPLACE, end);
         }
 
-        // Resolve the Promise with the new id.
-        resolve(id);
+        resolve(end);
         this.nativeEvent = true;
         this.routing = false;
       };
@@ -428,22 +440,29 @@ class Router {
   reset = () => {
     return new Promise((resolve, reject) => {
       const { size } = stack.getAll();
-      const [id] = stack.first();
+      const [id, route] = stack.first();
+
+      const prev = stack.getByIndex(this.routeIndex);
+      const end = {
+        prev,
+        next: route,
+      };
 
       if (size === 1) {
+        // TODO: Add error
         reject();
         return;
       }
 
-      emitter.emit(constants.EVENT_WILL_RESET, id);
+      emitter.emit(constants.EVENT_WILL_RESET, end);
 
       this.pop({
         emitBefore: false,
         emitAfter: false,
         steps: size,
-      }).then((params) => {
-        emitter.emit(constants.EVENT_DID_RESET, id);
-        resolve(params);
+      }).then(() => {
+        emitter.emit(constants.EVENT_DID_RESET, end);
+        resolve(end);
       });
     });
   }
@@ -465,11 +484,15 @@ class Router {
       }
 
       const id = uuid();
-      emitter.emit(constants.EVENT_WILL_RESET, id);
-      stack.reset([id, new Route({ id, pathname })]);
-      emitter.emit(constants.EVENT_DID_RESET, id);
+      const prev = stack.getByIndex(this.routeIndex);
+      const next = new Route({ id, pathname });
+      const end = { prev, next }
 
-      resolve(id);
+      emitter.emit(constants.EVENT_WILL_RESET, end);
+      stack.reset([id, next]);
+      emitter.emit(constants.EVENT_DID_RESET, end);
+
+      resolve(end);
     });
   }
 
@@ -503,9 +526,14 @@ class Router {
         emitter.emit(constants.EVENT_UPDATE, id);
       }
 
-      resolve();
+      resolve(route);
     });
   }
+
+  // TODO: Add deprecation warning
+  getCurrentRoute = () => (
+    stack.getByIndex(this.routeIndex)
+  )
 }
 
 export default new Router();
