@@ -284,7 +284,7 @@ export class Conductor {
     this.stack[this.stack.length - 1] = {
       id,
       params: urlPattern.match(url) || {},
-      pathname,
+      pathname: url,
       pattern,
       query,
       state,

@@ -145,7 +145,7 @@ describe('Conductor', () => {
       conductor.register('/mypage');
       conductor.register('/mypage2');
       conductor.push('/mypage');
-      conductor.replace('/mypage2');
+      conductor.replace('/mypage2?s=test');
 
       expect(conductor.stack.length).toBe(2);
       expect(conductor.stack[conductor.stack.length - 1].pathname).toEqual('/mypage2');
