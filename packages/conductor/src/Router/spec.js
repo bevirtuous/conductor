@@ -58,7 +58,10 @@ describe('Conductor', () => {
   describe('push()', () => {
     it('should resolve correctly', () => {
       const params = {
-        pathname: pathname1,
+        pathname: `${pathname1}?s=phrase`,
+        state: {
+          test: 123,
+        },
       };
 
       const willCallback = jest.fn();
@@ -68,15 +71,20 @@ describe('Conductor', () => {
       emitter.once(constants.EVENT_DID_PUSH, didCallback);
 
       return router.push(params).then((result) => {
-        // Route index was updated.
         expect(router.routeIndex).toBe(1);
+
+        const [, route] = stack.last();
+
+        expect(route.pathname).toBe(pathname1);
+        expect(route.query).toEqual({ s: 'phrase' });
+        expect(route.state).toEqual({ test: 123 });
 
         expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
 
         expect(result.prev.constructor.name === 'Route').toBeTruthy();
         expect(result.next.constructor.name === 'Route').toBeTruthy();
-        expect(router.history.location.pathname).toBe(pathname1);
+        expect(router.history.location.pathname).toBe(`${pathname1}?s=phrase`);
       });
     });
 
