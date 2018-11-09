@@ -41,6 +41,8 @@ class Route extends React.Component {
    */
   get contextValue() {
     const { setPattern, ...context } = this.currentRoute;
+    context.open = true;
+    context.visible = true;
 
     return context;
   }

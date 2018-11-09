@@ -200,6 +200,7 @@ class Router {
         id,
         pathname,
         pattern,
+        state,
         transform,
       });
 
