@@ -29,6 +29,8 @@ class Router {
     // The `routeIndex` is used to track which stack entry is the current route.
     this.routeIndex = 0;
 
+    this.action = constants.ACTION_PUSH;
+
     // 
     this.addInitialRoute();
 
@@ -81,6 +83,7 @@ class Router {
         emitBefore = true,
         emitAfter = true,
         steps = 1,
+        state = null,
       } = params;
       let unlisten = null;
       const { size } = stack.getAll();
@@ -108,12 +111,17 @@ class Router {
         emitter.emit(constants.EVENT_WILL_POP, end);
       }
 
+      if (state) {
+        next.state = Object.assign(next.state, state);
+      }
+
       /**
        * 
        */
       const callback = () => {
         unlisten();
         this.routeIndex = targetIndex;
+        this.action = constants.ACTION_POP;
 
         if (emitAfter) {
           emitter.emit(constants.EVENT_DID_POP, end);
@@ -222,6 +230,8 @@ class Router {
 
         // Increment the route index.
         this.routeIndex += 1;
+
+        this.action = constants.ACTION_PUSH;
 
         // Emit completion event.
         if (emitAfter) {
@@ -377,6 +387,8 @@ class Router {
         // Unsubscribe from the history events.
         unlisten();
 
+        this.action = constants.ACTION_REPLACE;
+
         // Emit completion event.
         if (emitAfter) {
           emitter.emit(constants.EVENT_DID_REPLACE, end);
@@ -441,7 +453,7 @@ class Router {
   reset = () => {
     return new Promise((resolve, reject) => {
       const { size } = stack.getAll();
-      const [id, route] = stack.first();
+      const [, route] = stack.first();
 
       const prev = stack.getByIndex(this.routeIndex);
       const end = {
@@ -487,7 +499,7 @@ class Router {
       const id = uuid();
       const prev = stack.getByIndex(this.routeIndex);
       const next = new Route({ id, pathname });
-      const end = { prev, next }
+      const end = { prev, next };
 
       emitter.emit(constants.EVENT_WILL_RESET, end);
       stack.reset([id, next]);
@@ -524,7 +536,7 @@ class Router {
       stack.update(id, route);
 
       if (emit) {
-        emitter.emit(constants.EVENT_UPDATE, id);
+        emitter.emit(constants.EVENT_UPDATE, route);
       }
 
       resolve(route);

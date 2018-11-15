@@ -209,7 +209,7 @@ describe('Conductor', () => {
       router.pop({ steps: 2 }).then((result) => {
         const currentRoute = stack.getByIndex(router.routeIndex);
         expect(currentRoute).toBe(result.next);
-        done()
+        done();
       });
     });
 
@@ -232,6 +232,24 @@ describe('Conductor', () => {
 
       router.pop({ steps: 5 }).then((result) => {
         expect(result.next).toBe(stack.getByIndex(0));
+        done();
+      });
+    });
+
+    it('should merge given state to incoming route', async (done) => {
+      await router.push({
+        pathname: '/myroute/456',
+        state: { test: 123 },
+      });
+      await router.push({ pathname: '/myroute/789' });
+
+      const state = {
+        test: 456,
+      };
+
+      router.pop({ state }).then(() => {
+        const currentRoute = stack.getByIndex(router.routeIndex);
+        expect(currentRoute.state).toEqual(state);
         done();
       });
     });
@@ -407,11 +425,15 @@ describe('Conductor', () => {
       const callback = jest.fn();
       emitter.once(constants.EVENT_UPDATE, callback);
 
-      await router.update(id, { test: 123 });
-      expect(route.state).toEqual({ test: 123 });
+      const state = {
+        test: 123,
+      };
+
+      await router.update(id, state);
+      expect(route.state).toEqual(state);
       expect(route.updated).toEqual(dateNowSpy());
 
-      expect(callback).toHaveBeenCalledWith(id);
+      expect(callback).toHaveBeenCalledWith(route);
 
       await router.update(id, { test: 456 });
       expect(route.state).toEqual({ test: 456 });
