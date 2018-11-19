@@ -12,6 +12,11 @@ class SpringRoute extends React.Component {
     current: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
     transition: PropTypes.shape().isRequired,
+    className: PropTypes.string,
+  }
+
+  static defaultProps = {
+    className: null,
   }
 
   state = {
@@ -69,12 +74,12 @@ class SpringRoute extends React.Component {
       return null;
     }
 
-    const { component: Component, index } = this.props;
+    const { className, component: Component, index } = this.props;
 
     return (
       <Spring {...this.transition} onRest={this.handleRest}>
         {props => (
-          <div style={{ transform: `translateX(${props.x}px)`, height: '100vh', zIndex: index, position: 'absolute' }}>
+          <div className={className} style={{ ...props, zIndex: index }}>
             <Component />
           </div>
         )}
