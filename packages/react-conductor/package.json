@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/react-conductor",
-  "version": "1.0.0-beta.44",
+  "version": "1.0.0-beta.45",
   "description": "A redux bridge for Conductor",
   "license": "MIT",
   "repository": {
@@ -28,9 +28,9 @@
     "cover": "NODE_ENV=test ../../node_modules/.bin/jest --coverage"
   },
   "dependencies": {
-    "@virtuous/conductor": "1.0.0-beta.44",
-    "@virtuous/conductor-events": "1.0.0-beta.44",
-    "@virtuous/conductor-helpers": "1.0.0-beta.44",
+    "@virtuous/conductor": "1.0.0-beta.45",
+    "@virtuous/conductor-events": "1.0.0-beta.45",
+    "@virtuous/conductor-helpers": "1.0.0-beta.45",
     "react-transition-group": "^2.2.1",
     "uuid": "^3.1.0"
   },
