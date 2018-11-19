@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import getCurrentAction from '@virtuous/conductor-helpers/getCurrentAction';
 import Transition from 'react-transition-group/Transition';
-// Import { TweenLite } from 'gsap';
 import transition from './transition';
 import { RouteContext } from '../Router/context';
 
@@ -52,37 +51,6 @@ class Route extends Component {
   /**
    *
    */
-  componentDidMount() {
-    // Const start = this.props.transition.push.out;
-    // TweenLite.to(this.node.current, 0, start);
-  }
-
-  /**
-   *
-   * @param {*} nextProps
-   */
-  // ComponentWillReceiveProps(nextProps) {
-  //   //
-  //   If (this.props.isVisible === nextProps.isVisible) {
-  //     Return;
-  //   }
-
-  //   // Then find out which history action was just fired (use helper)
-  //   Const action = getCurrentAction();
-
-  //   Const position = this.props.isVisible ? 'in' : 'out';
-  //   Const newPosition = nextProps.isVisible ? 'in' : 'out';
-  //   Console.warn(position, newPosition, action);
-
-  //   Const start = transition[action.toLowerCase()][position];
-  //   Const end = transition[action.toLowerCase()][newPosition];
-
-  //   TweenLite.fromTo(this.node.current, 300 / 1000, start, end);
-  // }
-
-  /**
-   *
-   */
   get transitionType() {
     if (this.props.path && !this.props.visible) {
       return this.props.transition.backward;
@@ -92,41 +60,6 @@ class Route extends Component {
 
     return this.props.transition.forward;
   }
-
-  setPosition = (props, duration = this.props.transition.duration) => {
-    const start = this.getStartPosition(props);
-    // Let position;
-
-    // If (props.path) {
-    //   If (props.isVisible) {
-    //     Position = this.props.transition.visible;
-    //   } else {
-    //     Position = this.props.transition.post;
-    //   }
-    // } else {
-    //   Position = this.props.transition.pre;
-    // }
-
-    // TweenLite.to(this.node.current, duration / 1000, start);
-  }
-
-  /**
-   *
-   */
-  getStartPosition = (isVisible, isNew) => {
-    // First, find out if we are animating in (isVisible = true)
-    const intention = isVisible ? 'out' : 'in';
-
-    // Then find out which history action was just fired (use helper)
-    const action = getCurrentAction();
-
-    return transition[intention][action.toLowerCase()];
-  }
-
-  /**
-   *
-   */
-  getEndPosition = () => this.props.transition.in.push
 
   /**
    * Renders the component.
@@ -149,6 +82,7 @@ class Route extends Component {
     } = this.props;
 
     const { transitionType } = this;
+
     const route = {
       id,
       open,
