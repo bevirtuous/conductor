@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor",
-  "version": "1.0.0-beta.32",
+  "version": "2.0.0-beta.2",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {
@@ -14,6 +14,8 @@
   "keywords": [
     "conductor",
     "javascript",
+    "react",
+    "redux",
     "router",
     "route",
     "routing",
@@ -24,14 +26,13 @@
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
   ],
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/jest",
     "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/jest --coverage"
   },
   "dependencies": {
     "history": "^4.7.2",
-    "lodash": "^4.17.10",
     "path-match": "^1.2.4",
     "query-string": "^6.1.0",
     "url-pattern": "^1.0.3"

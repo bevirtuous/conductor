@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/react-conductor",
-  "version": "1.0.0-beta.32",
+  "version": "2.0.0-beta.2",
   "description": "A redux bridge for Conductor",
   "license": "MIT",
   "repository": {
@@ -22,26 +22,23 @@
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
   ],
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/jest",
     "cover": "NODE_ENV=test ../../node_modules/.bin/jest --coverage"
   },
   "dependencies": {
-    "@virtuous/conductor": "1.0.0-beta.32",
-    "@virtuous/conductor-events": "1.0.0-beta.32",
-    "@virtuous/conductor-helpers": "1.0.0-beta.32",
-    "gsap": "^1.20.4",
-    "react-transition-group": "^2.2.1",
-    "uuid": "^3.1.0"
+    "@virtuous/conductor": "2.0.0-beta.2",
+    "react-spring": "^6.1.4"
   },
   "devDependencies": {
+    "@shopgate/pwa-unit-test": "^5.9.0",
     "prop-types": "^15.6.2",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0"
   },
   "peerDependencies": {
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react": "^16.6",
+    "react-dom": "^16.6"
   }
 }

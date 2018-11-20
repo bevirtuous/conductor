@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/redux-conductor",
-  "version": "1.0.0-beta.32",
+  "version": "2.0.0-beta.2",
   "description": "A redux bridge for Conductor",
   "license": "MIT",
   "repository": {
@@ -21,7 +21,7 @@
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
   ],
-  "main": "./index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/jest",
     "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/jest --coverage"
@@ -30,9 +30,8 @@
     "redux": "^3.7.2"
   },
   "dependencies": {
-    "@virtuous/conductor": "1.0.0-beta.32",
-    "@virtuous/conductor-events": "1.0.0-beta.32",
-    "@virtuous/conductor-helpers": "1.0.0-beta.32"
+    "@virtuous/conductor": "2.0.0-beta.2",
+    "lodash": "^4.17.11"
   },
   "peerDependencies": {
     "redux": "3.x"

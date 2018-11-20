@@ -4,18 +4,16 @@ export const ACTION_REPLACE = 'REPLACE';
 export const ACTION_RESET = 'RESET';
 export const ACTION_UPDATE = 'UPDATE';
 
-export const EVENT_WILL_PUSH = 'conductor.willPush';
-export const EVENT_DID_PUSH = 'conductor.didPush';
+export const EVENT_WILL_PUSH = 'router.willPush';
+export const EVENT_DID_PUSH = 'router.didPush';
 
-export const EVENT_WILL_POP = 'conductor.willPop';
-export const EVENT_DID_POP = 'conductor.didPop';
+export const EVENT_WILL_POP = 'router.willPop';
+export const EVENT_DID_POP = 'router.didPop';
 
-export const EVENT_WILL_REPLACE = 'conductor.willReplace';
-export const EVENT_DID_REPLACE = 'conductor.didReplace';
+export const EVENT_WILL_REPLACE = 'router.willReplace';
+export const EVENT_DID_REPLACE = 'router.didReplace';
 
-export const EVENT_WILL_RESET = 'conductor.willReset';
-export const EVENT_DID_RESET = 'conductor.didReset';
+export const EVENT_WILL_RESET = 'router.willReset';
+export const EVENT_DID_RESET = 'router.didReset';
 
-export const EVENT_UPDATE = 'conductor.update';
-
-export const EVENT_ERROR = 'conductor.error';
+export const EVENT_UPDATE = 'router.update';
