@@ -23,6 +23,7 @@ class Route {
     this.id = id;
     this.pathname = url;
     this.pattern = pattern;
+    this.location = pathname;
 
     this.params = urlPattern ? (urlPattern.match(url) || {}) : {};
     this.query = query;

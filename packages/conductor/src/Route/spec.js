@@ -20,6 +20,7 @@ describe('Stack', () => {
         }),
       });
 
+      expect(route.location).toBe('/myroute/123?search=hello#headline');
       expect(route.pathname).toBe('/myroute/123');
       expect(route.pattern).toBe('/myroute/:id');
       expect(route.params).toEqual({ id: '123' });
