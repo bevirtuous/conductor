@@ -205,7 +205,7 @@ class Router extends Component {
 
     return (
       <Fragment>
-        {this.routeStack.map((item, index) => {
+        {this.routeStack.map((item) => {
           let pathname = null;
           let open = false;
           let visible = false;
@@ -217,9 +217,10 @@ class Router extends Component {
           let updated;
 
           const { component, pattern, preload } = this.routes[item];
+          const { stack } = this.state;
 
           if (preload) {
-            const match = this.state.stack.find((stackItem, stackItemIndex) => {
+            const match = stack.find((stackItem, stackItemIndex) => {
               const isMatch = stackItem.pattern === pattern && !usedRoutes.includes(stackItemIndex);
 
               if (isMatch) {
@@ -227,7 +228,7 @@ class Router extends Component {
                 usedRoutes.push(stackItemIndex);
               }
 
-              if (isMatch && stackItemIndex === this.state.stack.length - 1) {
+              if (isMatch && stackItemIndex === stack.length - 1) {
                 visible = true;
               }
 
@@ -253,31 +254,29 @@ class Router extends Component {
             ignoredSingletons.push(pattern);
 
             const lastOccurence = this.getlastOccurence(
-              this.state.stack,
+              stack,
               pattern
             );
 
-            if (this.state.stack[lastOccurence]) {
-              id = this.state.stack[lastOccurence].id;
-              pathname = this.state.stack[lastOccurence].pathname;
-              params = this.state.stack[lastOccurence].params;
-              query = this.state.stack[lastOccurence].query;
-              state = this.state.stack[lastOccurence].state;
-              created = this.state.stack[lastOccurence].created;
-              updated = this.state.stack[lastOccurence].updated;
+            if (stack[lastOccurence]) {
+              id = stack[lastOccurence].id;
+              pathname = stack[lastOccurence].pathname;
+              params = stack[lastOccurence].params;
+              query = stack[lastOccurence].query;
+              state = stack[lastOccurence].state;
+              created = stack[lastOccurence].created;
+              updated = stack[lastOccurence].updated;
             }
 
             open = !!pathname;
-            visible = lastOccurence === this.state.stack.length - 1;
+            visible = lastOccurence === stack.length - 1;
           }
-
-          const key = `route-${index}`;
 
           return (
             <Route
               id={id}
               component={component}
-              key={key}
+              key={id || pattern}
               open={open}
               params={params}
               path={pathname}
@@ -295,11 +294,11 @@ class Router extends Component {
   }
 
   /**
-   * The render method.
    * @returns {JSX}
    */
   render() {
-    const current = this.state.stack[this.state.stack.length - 1];
+    const { stack } = this.state;
+    const current = stack[stack.length - 1];
 
     return (
       <RouterContext.Provider value={current}>
