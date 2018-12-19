@@ -34,11 +34,7 @@ class Router {
     // Unsubscribe to any other history module changes.
     if (typeof this.historyListener === 'function') {
       this.historyListener();
-
-      // Clear the internal Route stack.
-      const [id] = stack.first();
-      stack.reset();
-      stack.remove(id);
+      stack.clear();
     }
 
     // 

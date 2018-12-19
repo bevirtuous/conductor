@@ -74,6 +74,13 @@ class Stack {
   }
 
   /**
+   * Clers the stack of all Routes.
+   */
+  clear() {
+    this.stack.clear();
+  }
+
+  /**
    * @param {string} id The key to remove.
    */
   remove(id) {

@@ -10,7 +10,7 @@ import syncStore from './index';
 
 const dispatch = jest.fn();
 
-describe.skip('Redux Conductor - Setup', () => {
+describe('Redux Conductor - Setup', () => {
   beforeAll(() => {
     syncStore({ dispatch });
   });
