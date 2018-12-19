@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Router /> should render with children and context 1`] = `
-<Router>
+<Router
+  history={null}
+>
   <p />
 </Router>
 `;

@@ -130,5 +130,14 @@ describe('Stack', () => {
       expect(stack.get('123')).toEqual({ a: 1 });
     });
   });
+
+  describe('clear()', () => {
+    it('should remove all entries', () => {
+      stack.add('123', { a: 1 });
+      stack.clear();
+
+      expect(stack.getAll().size).toBe(0);
+    });
+  });
 });
 

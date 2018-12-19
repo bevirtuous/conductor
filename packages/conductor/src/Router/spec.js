@@ -22,6 +22,24 @@ describe('Conductor', () => {
       expect(stack.getAll().size).toBe(1);
       expect(entry.pathname).toBe(pathname1);
     });
+
+    it.only('should make use of a given custom history', () => {
+      // Get the initial first id.
+      const [id] = stack.first();
+
+      const { history } = router;
+
+      router.constructor();
+      const { history: newHistory } = router;
+      router.register(pattern1);
+
+      // Get the new first id.
+      const [newId] = stack.first();
+
+      expect(history).not.toEqual(newHistory);
+      expect(stack.getAll().size).toBe(1);
+      expect(id).not.toBe(newId);
+    });
   });
 
   describe('register()', () => {

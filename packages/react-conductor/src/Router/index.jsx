@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  router,
   stack as routeStack,
   onDidPush,
   onDidPop,
@@ -15,6 +16,11 @@ import { RouterContext } from '../context';
 class Router extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
+    history: PropTypes.func,
+  }
+
+  static defaultProps = {
+    history: null,
   }
 
   /**
@@ -22,6 +28,10 @@ class Router extends React.Component {
    */
   constructor(props) {
     super(props);
+
+    if (typeof props.history === 'function') {
+      router.constructor(props.history);
+    }
 
     this.state = {
       stack: Array.from(routeStack.getAll()),

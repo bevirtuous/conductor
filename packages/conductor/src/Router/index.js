@@ -31,11 +31,16 @@ class Router {
 
     this.action = constants.ACTION_PUSH;
 
+    // Unsubscribe to any other history module changes.
+    if (typeof this.historyListener === 'function') {
+      this.historyListener();
+      stack.clear();
+    }
+
     // 
     this.addInitialRoute();
 
-    // 
-    this.history.listen(this.handleNativeEvent);
+    this.historyListener = this.history.listen(this.handleNativeEvent);
   }
 
   /**
