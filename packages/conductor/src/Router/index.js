@@ -1,4 +1,3 @@
-import uuid from 'uuid/v4';
 import Route from '../Route';
 import * as errors from './errors';
 import emitter from '../emitter';
@@ -68,13 +67,20 @@ class Router {
   }
 
   /**
+   * @returns {string}
+   */
+  createId = () => (
+    Math.random().toString(36).substr(2, 5)
+  );
+
+  /**
    * Populate the stack with an initial entry to match the history module.
    * Note: we cannot match it against a pattern at this point.
    */
   addInitialRoute = () => {
     const { hash, pathname, search } = this.history.location;
     const fullPathname = `${pathname}${search}${hash}`;
-    const id = uuid();
+    const id = this.createId();
     stack.add(id, new Route({ id, pathname: fullPathname }));
   }
 
@@ -206,7 +212,7 @@ class Router {
         }
       }
 
-      const id = uuid();
+      const id = this.createId();
       const { transform } = this.patterns[pattern];
       const prev = stack.getByIndex(this.routeIndex);
       const next = new Route({
@@ -501,7 +507,7 @@ class Router {
         return;
       }
 
-      const id = uuid();
+      const id = this.createId();
       const prev = stack.getByIndex(this.routeIndex);
       const next = new Route({ id, pathname });
       const end = { prev, next };
