@@ -23,7 +23,7 @@ describe('Conductor', () => {
       expect(entry.pathname).toBe(pathname1);
     });
 
-    it.only('should make use of a given custom history', () => {
+    it('should make use of a given custom history', () => {
       // Get the initial first id.
       const [id] = stack.first();
 
@@ -479,6 +479,38 @@ describe('Conductor', () => {
       router.update(12345, { test: 123 }).catch(error => (
         expect(error).toEqual(new Error(errors.EINVALIDID))
       ));
+    });
+  });
+
+  describe('match()', () => {
+    it('should match a pathname correctly', () => {
+      expect(router.match('/myroute/123')).toBe(pattern1);
+    });
+
+    it('should not match a stranger pathname', () => {
+      expect(router.match('/test/123')).toBeFalsy();
+    });
+
+    it('should not match when no pathname is given', () => {
+      expect(router.match()).toBeFalsy();
+    });
+  });
+
+  describe('matches()', () => {
+    it('should match a pathname correctly', () => {
+      expect(router.matches(pattern1, '/myroute/123')).toBeTruthy();
+    });
+
+    it('should not match a stranger pattern', () => {
+      expect(router.matches('/hello/:id', '/myroute/123')).toBeFalsy();
+    });
+
+    it('should not match a stranger pathname', () => {
+      expect(router.matches(pattern1, '/test/123')).toBeFalsy();
+    });
+
+    it('should not match when params are missing', () => {
+      expect(router.matches(pattern1)).toBeFalsy();
     });
   });
 });

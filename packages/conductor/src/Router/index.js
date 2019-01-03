@@ -11,7 +11,7 @@ import * as constants from '../constants';
  */
 class Router {
   /**
-   * TODO:
+   * @param {Function} createHistory The function to create a history instance.
    */
   constructor(createHistory = history) {
     // Flag to indicate a native history event. Should always be reset to true.
@@ -43,7 +43,8 @@ class Router {
   }
 
   /**
-   * 
+   * @param {string} location The new history location.
+   * @param {string} action The most recent history action.
    */
   handleNativeEvent = (location, action) => {
     if (!this.nativeEvent) {
@@ -52,6 +53,7 @@ class Router {
 
     const next = stack.getByIndex(this.routeIndex + 1);
 
+    // TODO: What?
     if (next && location.state && location.state.route && next.id === location.state.route.id) {
       this.handlePush({
         pathname: location.pathname,
@@ -160,9 +162,10 @@ class Router {
 
   /**
    * @param {Object} params The params to use when navigating.
+   * @param {Object} [cleanStack=true] When true, the overhanging routes will be removed.
    * @returns {Promise}
    */
-  handlePush(params, override = true) {
+  handlePush(params, cleanStack = true) {
     return new Promise((resolve, reject) => {
       // Check for missing parameters.
       if (!params) {
@@ -205,7 +208,7 @@ class Router {
       this.routing = true;
 
       // Remove all unwanted items from the stack.
-      if (override) {
+      if (cleanStack) {
         while (this.routeIndex < stack.getAll().size - 1) {
           const [id] = stack.last();
           stack.remove(id);
@@ -459,7 +462,7 @@ class Router {
   }
 
   /**
-   * 
+   * @returns {Promise}
    */
   reset = () => {
     return new Promise((resolve, reject) => {
@@ -521,7 +524,10 @@ class Router {
   }
 
   /**
-   * 
+   * @param {string} id The route id to update.
+   * @param {Object} state The new state.
+   * @param {boolean} emit When true, will emit when the state was updated.
+   * @returns {Promise}
    */
   update = (id, state = {}, emit = true) => {
     return new Promise((resolve, reject) => {
@@ -554,10 +560,51 @@ class Router {
     });
   }
 
-  // TODO: Add deprecation warning
-  getCurrentRoute = () => (
-    stack.getByIndex(this.routeIndex)
-  )
+  getCurrentRoute = () => {
+    console.warn('Deprecation warning: getCurrentRoute will be removed in a future release.');
+    return stack.getByIndex(this.routeIndex);
+  }
+
+  /**
+   * Return true when the given pathname matches
+   * one of the registered patterns.
+   * @param {string} pathname The pathname to match.
+   * @returns {string|null}
+   */
+  match = (pathname = null) => {
+    let foundPattern = null;
+
+    if (!pathname) {
+      return null;
+    }
+
+    Object.entries(this.patterns).forEach(([pattern, properties]) => {
+      if (properties.match(pathname)) {
+        foundPattern = pattern;
+      }
+    });
+
+    return foundPattern;
+  }
+
+  /**
+   * Return true when the given pathname matches
+   * the given pattern.
+   * @param {string} pattern The pathname to match against.
+   * @param {string} pathname The pathname to match.
+   * @returns {string|null}
+   */
+  matches = (pattern = null, pathname = null) => {
+    if (!pattern || !pathname) {
+      return null;
+    }
+
+    if (!(pattern in this.patterns)) {
+      return null;
+    }
+
+    return this.patterns[pattern].match(pathname);
+  }
 }
 
 export default new Router();
