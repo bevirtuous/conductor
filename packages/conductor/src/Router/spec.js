@@ -66,10 +66,17 @@ describe('Conductor', () => {
     });
 
     it('should update initial entry when matching pattern is registered', () => {
+      router.constructor();
+      router.register(pattern1, ({ params }) => ({
+        params: {
+          ...params,
+          transformed: true,
+        },
+      }));
       const [, route] = stack.first();
 
       expect(route.pattern).toEqual(pattern1);
-      expect(route.params).toEqual({ id: '123' });
+      expect(route.params).toEqual({ id: '123', transformed: true });
     });
   });
 

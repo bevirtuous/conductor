@@ -33,8 +33,13 @@ class Route {
     this.created = Date.now();
     this.updated = null;
 
-    if (typeof transform === 'function') {
-      const transformed = transform(this);
+    this.transform = transform;
+    this.runTransform();
+  }
+
+  runTransform = () => {
+    if (typeof this.transform === 'function') {
+      const transformed = this.transform(this);
       this.params = {
         ...this.params,
         ...transformed.params,
@@ -49,7 +54,7 @@ class Route {
   /**
    * @param {string} pattern The pattern to set for this route.
    */
-  setPattern = (pattern) => {
+  setPattern = (pattern, transform) => {
     if (!pattern) {
       return;
     }
@@ -58,6 +63,9 @@ class Route {
 
     this.pattern = pattern;
     this.params = urlPattern.match(this.pathname) || {};
+
+    this.transform = transform;
+    this.runTransform();
   }
 
   /**

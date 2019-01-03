@@ -323,7 +323,7 @@ class Router {
 
     // 
     if (match(route.pathname)) {
-      route.setPattern(pattern);
+      route.setPattern(pattern, transform);
 
       const end = { prev: null, next: route };
 
