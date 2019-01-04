@@ -45,8 +45,10 @@ class SpringGroup extends Route {
       context.open = true;
       context.visible = true;
 
+      const key = `${entry.route.id}-${entry.route.pathname}`;
+
       return (
-        <RouteContext.Provider key={entry.route.id} value={context}>
+        <RouteContext.Provider key={key} value={context}>
           <Child
             component={component}
             current={current}
