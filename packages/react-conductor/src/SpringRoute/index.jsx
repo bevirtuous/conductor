@@ -11,6 +11,7 @@ import { RouteContext } from '../context';
 class SpringGroup extends Route {
   static propTypes = {
     ...Route.propTypes,
+    className: PropTypes.string,
     transition: PropTypes.shape(),
   };
 
@@ -36,18 +37,24 @@ class SpringGroup extends Route {
    * @returns {JSX}
    */
   render() {
-    const { component, transition } = this.props;
+    const { className, component, transition } = this.props;
     const routes = this.matchingRoutes;
 
     return routes.map((entry) => {
       const current = entry.index === router.routeIndex;
-      const { setPattern, ...context } = entry.route;
+      const {
+        runTransform,
+        setPattern,
+        transform,
+        ...context
+      } = entry.route;
       context.open = true;
       context.visible = true;
 
       return (
         <RouteContext.Provider key={entry.route.id} value={context}>
           <Child
+            className={className}
             component={component}
             current={current}
             index={entry.index}
