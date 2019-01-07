@@ -36,14 +36,14 @@ class Router {
       stack.clear();
     }
 
-    // 
+    //
     this.addInitialRoute();
 
     this.historyListener = this.history.listen(this.handleNativeEvent);
   }
 
   /**
-   * 
+   *
    */
   handleNativeEvent = (location, action) => {
     if (!this.nativeEvent) {
@@ -88,8 +88,7 @@ class Router {
    * @param {Object} params The router action params.
    * @returns {Promise}
    */
-  handlePop = (params = {}) => {
-    return new Promise((resolve, reject) => {
+  handlePop = (params = {}) => new Promise((resolve, reject) => {
       const {
         emitBefore = true,
         emitAfter = true,
@@ -127,7 +126,7 @@ class Router {
       }
 
       /**
-       * 
+       *
        */
       const callback = () => {
         unlisten();
@@ -155,8 +154,7 @@ class Router {
       } else {
         callback();
       }
-    });
-  }
+    })
 
   /**
    * @param {Object} params The params to use when navigating.
@@ -301,10 +299,10 @@ class Router {
       throw new Error(errors.EINVALIDPATTERN);
     }
 
-    // 
+    //
     const match = matcher(pattern);
 
-    // 
+    //
     this.patterns[pattern] = {
       match,
       transform,
@@ -318,7 +316,7 @@ class Router {
       return;
     }
 
-    // 
+    //
     if (match(route.pathname)) {
       route.setPattern(pattern);
 
@@ -329,8 +327,7 @@ class Router {
     }
   }
 
-  handleReplace = (params) => {
-    return new Promise((resolve, reject) => {
+  handleReplace = (params) => new Promise((resolve, reject) => {
       // Check for missing parameters.
       if (!params) {
         reject(new Error(errors.EPARAMSMISSING));
@@ -428,8 +425,7 @@ class Router {
       } else {
         callback();
       }
-    });
-  }
+    })
 
   /**
    * @param {Object} params The params when routing.
@@ -459,10 +455,9 @@ class Router {
   }
 
   /**
-   * 
+   *
    */
-  reset = () => {
-    return new Promise((resolve, reject) => {
+  reset = () => new Promise((resolve, reject) => {
       const { size } = stack.getAll();
       const [, route] = stack.first();
 
@@ -488,15 +483,13 @@ class Router {
         emitter.emit(constants.EVENT_DID_RESET, end);
         resolve(end);
       });
-    });
-  }
+    })
 
   /**
    * @param {string} pathname The pathname to reset to.
    * @returns {Promise}
    */
-  resetTo = (pathname) => {
-    return new Promise((resolve, reject) => {
+  resetTo = (pathname) => new Promise((resolve, reject) => {
       if (!pathname) {
         reject(new Error(errors.EMISSINGPATHNAME));
         return;
@@ -517,14 +510,12 @@ class Router {
       emitter.emit(constants.EVENT_DID_RESET, end);
 
       resolve(end);
-    });
-  }
+    })
 
   /**
-   * 
+   *
    */
-  update = (id, state = {}, emit = true) => {
-    return new Promise((resolve, reject) => {
+  update = (id, state = {}, emit = true) => new Promise((resolve, reject) => {
       //
       if (!id || Object.keys(state).length === 0) {
         reject(new Error(errors.EPARAMSINVALID));
@@ -551,8 +542,7 @@ class Router {
       }
 
       resolve(route);
-    });
-  }
+    })
 
   // TODO: Add deprecation warning
   getCurrentRoute = () => (
