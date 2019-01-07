@@ -17,7 +17,7 @@
     "enzyme-adapter-react-16": "^1.6.0",
     "jest": "^23.4.0",
     "lerna": "^2.9.0",
-    "nyc": "^11.4.1"
+    "nyc": "^13.1.0"
   },
   "workspaces": [
     "packages/*"

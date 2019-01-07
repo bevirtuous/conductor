@@ -19,7 +19,7 @@
   ],
   "contributors": [
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
-    "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
+    "Florian Müller <flomueller1981@gmail.com> (https://github.com/devbucket)"
   ],
   "main": "./src/index.js",
   "scripts": {
