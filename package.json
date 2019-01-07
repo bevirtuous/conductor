@@ -16,7 +16,7 @@
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "jest": "^23.4.0",
-    "lerna": "^2.9.0",
+    "lerna": "3.6.0",
     "nyc": "^13.1.0"
   },
   "workspaces": [

@@ -21,7 +21,7 @@
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
     "Florian Müller <flomueller1981@gmail.com> (https://github.com/devbucket)"
   ],
-  "main": "./src/index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "NODE_ENV=test ../../node_modules/.bin/jest",
     "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/jest --coverage"
