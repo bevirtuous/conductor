@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor",
-  "version": "2.0.5",
+  "version": "2.0.6-beta.3",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {
@@ -24,12 +24,13 @@
   ],
   "contributors": [
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
-    "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)"
+    "Florian Müller <flomueller1981@gmail.com> (https://github.com/devbucket)"
   ],
-  "main": "./src/index.js",
+  "main": "./index.js",
+  "typings": "./index.d.ts",
   "scripts": {
-    "test": "NODE_ENV=test ../../node_modules/.bin/jest",
-    "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/jest --coverage"
+    "test": "NODE_ENV=test npx jest",
+    "cover": "NODE_ENV=test npx nyc jest --coverage"
   },
   "dependencies": {
     "history": "^4.7.2",

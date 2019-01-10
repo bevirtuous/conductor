@@ -26,6 +26,10 @@ build:
 		make build-copypkg
 		make publish
 
+build-local:
+		make build-packages
+		make build-copypkg
+
 build-clean:
 		$(foreach package, $(PACKAGES), $(call do-build-clean, $(package)))
 
@@ -45,7 +49,7 @@ publish:
 		make build-clean
 
 define do-build
-		BABEL_ENV=production ./node_modules/.bin/babel ./packages/$(strip $(1))/src/ --out-dir ./packages/$(strip $(1))/dist --ignore tests,spec.js,spec.jsx,__snapshots__,.eslintrc.js,jest.config.js,dist,coverage,node_modules
+		npx babel ./packages/$(strip $(1))/src/ --out-dir ./packages/$(strip $(1))/dist --ignore tests,spec.js,spec.jsx,__snapshots__,.eslintrc.js,jest.config.js,dist,coverage,node_modules
 
 endef
 
@@ -55,8 +59,9 @@ define do-build-clean
 endef
 
 define do-copypkg
-		cp ./packages/$(strip $(1))/package.json ./packages/$(strip $(1))/dist/
-		cp ./packages/$(strip $(1))/README.md ./packages/$(strip $(1))/dist/
+		cp ./packages/$(strip $(1))/package.json ./packages/$(strip $(1))/dist/ 2>/dev/null || :
+		cp ./packages/$(strip $(1))/README.md ./packages/$(strip $(1))/dist/ 2>/dev/null || :
+		cp ./packages/$(strip $(1))/index.d.ts ./packages/$(strip $(1))/dist/ 2>/dev/null || :
 
 endef
 
