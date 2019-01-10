@@ -26,6 +26,10 @@ build:
 		make build-copypkg
 		make publish
 
+build-local:
+		make build-packages
+		make build-copypkg
+
 build-clean:
 		$(foreach package, $(PACKAGES), $(call do-build-clean, $(package)))
 
@@ -55,9 +59,9 @@ define do-build-clean
 endef
 
 define do-copypkg
-		cp ./packages/$(strip $(1))/package.json ./packages/$(strip $(1))/dist/
-		cp ./packages/$(strip $(1))/README.md ./packages/$(strip $(1))/dist/
-		cp ./packages/$(strip $(1))/index.d.ts ./packages/$(strip $(1))/dist/
+		cp ./packages/$(strip $(1))/package.json ./packages/$(strip $(1))/dist/ 2>/dev/null || :
+		cp ./packages/$(strip $(1))/README.md ./packages/$(strip $(1))/dist/ 2>/dev/null || :
+		cp ./packages/$(strip $(1))/index.d.ts ./packages/$(strip $(1))/dist/ 2>/dev/null || :
 
 endef
 
