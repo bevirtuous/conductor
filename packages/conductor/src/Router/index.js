@@ -475,7 +475,7 @@ class Router {
 
       emitter.emit(constants.EVENT_WILL_RESET, end);
 
-      this.pop({
+      this.handlePop({
         emitBefore: false,
         emitAfter: false,
         steps: size,
