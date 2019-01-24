@@ -23,7 +23,7 @@ describe('Conductor', () => {
       expect(entry.pathname).toBe(pathname1);
     });
 
-    it.only('should make use of a given custom history', () => {
+    it('should make use of a given custom history', () => {
       // Get the initial first id.
       const [id] = stack.first();
 
@@ -384,6 +384,8 @@ describe('Conductor', () => {
       const prevRoute = stack.getByIndex(router.routeIndex);
 
       router.reset().then((result) => {
+        expect(stack.getAll().size).toBe(1);
+        expect(router.history.location.pathname).toBe(pathname1);
         expect(firstRoute).toBe(result.next);
         expect(prevRoute).toBe(result.prev);
         expect(willCallback).toHaveBeenCalledWith(result);
