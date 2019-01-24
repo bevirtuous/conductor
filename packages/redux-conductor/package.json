@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/redux-conductor",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "A redux bridge for Conductor",
   "license": "MIT",
   "repository": {
@@ -30,7 +30,7 @@
     "redux": "^3.7.2"
   },
   "dependencies": {
-    "@virtuous/conductor": "2.0.7",
+    "@virtuous/conductor": "2.0.8",
     "lodash": "^4.17.11"
   },
   "peerDependencies": {
