@@ -22,8 +22,8 @@
     "jest": "^23.6.0",
     "lerna": "3.6.0",
     "nyc": "^13.1.0",
-    "react": "~16.6.0",
-    "react-dom": "~16.6.0"
+    "react": "^16.8.0-alpha.1",
+    "react-dom": "^16.8.0-alpha.1"
   },
   "workspaces": [
     "packages/*"
