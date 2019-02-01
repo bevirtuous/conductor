@@ -11,7 +11,7 @@ import * as constants from '../constants';
  */
 class Router {
   /**
-   * TODO:
+   * @param {Function} [createHistory] A function that creates a custom history.
    */
   constructor(createHistory = history) {
     // Flag to indicate a native history event. Should always be reset to true.
@@ -458,7 +458,7 @@ class Router {
   /**
    *
    */
-  reset = () => new Promise(async (resolve, reject) => {
+  reset = () => new Promise(async (resolve) => {
     const { size } = stack.getAll();
     const [, route] = stack.first();
 
@@ -468,20 +468,16 @@ class Router {
       next: route,
     };
 
-    if (size === 1) {
-      // TODO: Add error
-      reject();
-      return;
-    }
-
     emitter.emit(constants.EVENT_WILL_RESET, end);
 
-    await this.handlePop({
-      emitBefore: false,
-      emitAfter: false,
-      forceNative: true,
-      steps: size - 1,
-    });
+    if (this.routeIndex > 0) {
+      await this.handlePop({
+        emitBefore: false,
+        emitAfter: false,
+        forceNative: true,
+        steps: size - 1,
+      });
+    }
 
     stack.reset();
     emitter.emit(constants.EVENT_DID_RESET, end);
