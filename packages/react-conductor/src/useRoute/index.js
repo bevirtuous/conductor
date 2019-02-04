@@ -2,6 +2,10 @@ import { useContext } from 'react';
 import { router } from '@virtuous/conductor';
 import { RouterContext } from '../context';
 
+/**
+ * @param {string} id A route id.
+ * @returns {Object|null}
+ */
 function useRoute(id = null) {
   const routes = useContext(RouterContext);
 
@@ -9,7 +13,9 @@ function useRoute(id = null) {
     return routes[router.routeIndex][1];
   }
 
-  return routes.find(([routeId]) => (id === routeId))[1] || null;
+  const match = routes.find(([routeId]) => (id === routeId));
+
+  return match ? match[1] : {};
 }
 
 export default useRoute;

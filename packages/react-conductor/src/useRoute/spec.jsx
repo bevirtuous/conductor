@@ -17,9 +17,16 @@ function MyComponent({ id = null }) {
 }
 
 describe('useRoute()', () => {
-  it('should use the current route or the given route id', async () => {
+  beforeAll(() => {
     router.register('/test');
+  });
 
+  beforeEach(() => {
+    useRoute1 = null;
+    useRoute2 = null;
+  });
+
+  it('should use the current route or the given route id', async () => {
     const { id } = stack.getByIndex(router.routeIndex);
 
     render((
@@ -38,5 +45,13 @@ describe('useRoute()', () => {
     expect(useRoute2.id).toEqual(stack.get(id).id);
   });
 
-  // should return null when the given route id is invalid
+  it('should return empty object when route id is not found', () => {
+    render((
+      <Router>
+        <MyComponent id={12345} />
+      </Router>
+    ));
+
+    expect(useRoute2).toEqual({});
+  });
 });
