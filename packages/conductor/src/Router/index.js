@@ -43,7 +43,8 @@ class Router {
   }
 
   /**
-   *
+   * @param {Object} location The browser location.
+   * @param {string} action The history action.
    */
   handleNativeEvent = (location, action) => {
     if (!this.nativeEvent) {
@@ -159,6 +160,7 @@ class Router {
 
   /**
    * @param {Object} params The params to use when navigating.
+   * @param {boolean} [override=true] Whether to override the items in the stack.
    * @returns {Promise}
    */
   handlePush(params, override = true) {
@@ -456,7 +458,7 @@ class Router {
   }
 
   /**
-   *
+   * @returns {Promise}
    */
   reset = () => new Promise(async (resolve) => {
     const [, route] = stack.first();
@@ -478,7 +480,6 @@ class Router {
       });
     }
 
-    stack.reset();
     emitter.emit(constants.EVENT_DID_RESET, end);
     resolve(end);
   });
