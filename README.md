@@ -14,20 +14,35 @@
 </p>
 
 <p>
-  <img width="300" alt="conductor" src="https://user-images.githubusercontent.com/2123279/32792787-92996cdc-c964-11e7-96c6-ffd86f4ee087.png" />
+  <img width="200" alt="conductor" src="https://user-images.githubusercontent.com/2123279/32792787-92996cdc-c964-11e7-96c6-ffd86f4ee087.png" />
 </p>
 
-Conductor is a powerful JavaScript router for single-page applications.
+Conductor is a simple yet powerful JavaScript router for single-page applications.
+
+### Documentation
+
+[Read the DOCS](#)
+
+### Installation
+
+```
+npm i @virtuous/react-conductor -S
+```
+### Examples (with ReactJS)
+
+- [Simple application with routes](https://codesandbox.io/s/38xko4wn2m)
+- [Using React hooks](https://codesandbox.io/s/oq71k20q89)
+- Using data transforms (coming soon)
+- Usage with Redux (coming soon)
+- Route Transitions (coming soon)
 
 ### Packages
 
 | Package| Description |
 | - | - |
-| [`@virtuous/conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/conductor/README.md)  | The core of Conductor  |
-| [`@virtuous/conductor-events`](https://github.com/bevirtuous/conductor/blob/master/packages/conductor-events/README.md) | An event API |
-| [`@virtuous/conductor-helpers`](https://github.com/bevirtuous/conductor/blob/master/packages/conductor-helpers/README.md) | Useful helper functions |
-| [`@virtuous/react-conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/react-conductor/README.md) | Bindings for React |
-| [`@virtuous/redux-conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/redux-conductor/README.md) | Bindings for Redux |
+| [`@virtuous/conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/conductor)  | The core of Conductor  |
+| [`@virtuous/react-conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/react-conductor) | Bindings for React |
+| [`@virtuous/redux-conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/redux-conductor) | Bindings for Redux |
 
 ### About
 
