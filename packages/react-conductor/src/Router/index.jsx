@@ -7,6 +7,7 @@ import {
   onDidPop,
   onDidReplace,
   onDidReset,
+  onUpdate,
 } from '@virtuous/conductor';
 import { RouterContext } from '../context';
 
@@ -42,6 +43,7 @@ class Router extends React.Component {
     onDidPop(this.update);
     onDidReplace(this.update);
     onDidReset(this.update);
+    onUpdate(this.update);
   }
 
   /**

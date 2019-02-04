@@ -59,7 +59,7 @@ class Route extends React.Component {
     }
 
     return (
-      <RouteContext.Provider key={route.id} value={this.contextValue}>
+      <RouteContext.Provider key={`${route.id}-${route.pathname}`} value={this.contextValue}>
         <Component />
       </RouteContext.Provider>
     );

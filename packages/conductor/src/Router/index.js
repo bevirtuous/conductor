@@ -36,7 +36,7 @@ class Router {
       stack.clear();
     }
 
-    // 
+    //
     this.addInitialRoute();
 
     this.historyListener = this.history.listen(this.handleNativeEvent);
@@ -90,75 +90,74 @@ class Router {
    * @param {Object} params The router action params.
    * @returns {Promise}
    */
-  handlePop = (params = {}) => {
-    return new Promise((resolve, reject) => {
-      const {
-        emitBefore = true,
-        emitAfter = true,
-        steps = 1,
-        state = null,
-      } = params;
-      let unlisten = null;
-      const { size } = stack.getAll();
+  handlePop = (params = {}) => new Promise((resolve, reject) => {
+    const {
+      emitBefore = true,
+      emitAfter = true,
+      forceNative = false,
+      steps = 1,
+      state = null,
+    } = params;
+    let unlisten = null;
+    const { size } = stack.getAll();
 
-      if (size < 2) {
-        reject(new Error(errors.ESTACKLENGTH));
-        this.nativeEvent = true;
-        return;
+    if (size < 2) {
+      reject(new Error(errors.ESTACKLENGTH));
+      this.nativeEvent = true;
+      return;
+    }
+
+    if (steps <= 0) {
+      reject(new Error(errors.EINVALIDSTEPS));
+      this.nativeEvent = true;
+      return;
+    }
+
+    // Get id of target route.
+    const targetIndex = Math.max(this.routeIndex - steps, 0);
+    const prev = stack.getByIndex(this.routeIndex);
+    const next = stack.getByIndex(targetIndex);
+    const end = { prev, next };
+
+    // Emit creation event.
+    if (emitBefore) {
+      emitter.emit(constants.EVENT_WILL_POP, end);
+    }
+
+    if (state) {
+      next.state = Object.assign(next.state, state);
+    }
+
+    /**
+     *
+     */
+    const callback = () => {
+      unlisten();
+      this.routeIndex = targetIndex;
+      this.action = constants.ACTION_POP;
+
+      if (emitAfter) {
+        emitter.emit(constants.EVENT_DID_POP, end);
       }
 
-      if (steps <= 0) {
-        reject(new Error(errors.EINVALIDSTEPS));
-        this.nativeEvent = true;
-        return;
-      }
+      resolve(end);
+      this.nativeEvent = true;
+      this.routing = false;
+    };
 
-      // Get id of target route.
-      const targetIndex = Math.max(this.routeIndex - steps, 0);
-      const prev = stack.getByIndex(this.routeIndex);
-      const next = stack.getByIndex(targetIndex);
-      const end = { prev, next };
+    /**
+     * Create a reference to the history listener
+     * to be able to unsubscribe from inside the callback.
+     */
+    unlisten = this.history.listen(callback);
 
-      // Emit creation event.
-      if (emitBefore) {
-        emitter.emit(constants.EVENT_WILL_POP, end);
-      }
-
-      if (state) {
-        next.state = Object.assign(next.state, state);
-      }
-
-      /**
-       * 
-       */
-      const callback = () => {
-        unlisten();
-        this.routeIndex = targetIndex;
-        this.action = constants.ACTION_POP;
-
-        if (emitAfter) {
-          emitter.emit(constants.EVENT_DID_POP, end);
-        }
-
-        resolve(end);
-        this.nativeEvent = true;
-        this.routing = false;
-      };
-
-      /**
-       * Create a reference to the history listener
-       * to be able to unsubscribe from inside the callback.
-       */
-      unlisten = this.history.listen(callback);
-
-      // Perform the history back action.
-      if (!this.nativeEvent) {
-        this.history.go(steps * -1);
-      } else {
-        callback();
-      }
-    });
-  }
+    // Perform the history back action.
+    if (forceNative || !this.nativeEvent) {
+      this.history.go(steps * -1);
+    } else {
+      callback();
+    }
+  });
 
   /**
    * @param {Object} params The params to use when navigating.
@@ -304,10 +303,10 @@ class Router {
       throw new Error(errors.EINVALIDPATTERN);
     }
 
-    // 
+    //
     const match = matcher(pattern);
 
-    // 
+    //
     this.patterns[pattern] = {
       match,
       transform,
@@ -321,7 +320,7 @@ class Router {
       return;
     }
 
-    // 
+    //
     if (match(route.pathname)) {
       route.setPattern(pattern, transform);
 
@@ -332,107 +331,105 @@ class Router {
     }
   }
 
-  handleReplace = (params) => {
-    return new Promise((resolve, reject) => {
-      // Check for missing parameters.
-      if (!params) {
-        reject(new Error(errors.EPARAMSMISSING));
-        this.nativeEvent = true;
-        return;
-      }
+  handleReplace = params => new Promise((resolve, reject) => {
+    // Check for missing parameters.
+    if (!params) {
+      reject(new Error(errors.EPARAMSMISSING));
+      this.nativeEvent = true;
+      return;
+    }
 
-      // Check for empty params.
-      if (Object.keys(params).length === 0) {
-        reject(new Error(errors.EPARAMSEMPTY));
-        this.nativeEvent = true;
-        return;
-      }
+    // Check for empty params.
+    if (Object.keys(params).length === 0) {
+      reject(new Error(errors.EPARAMSEMPTY));
+      this.nativeEvent = true;
+      return;
+    }
 
-      // Check for ongoing router action.
-      if (this.routing) {
-        // TODO: create real error
-        reject(new Error('Error'));
-        this.nativeEvent = true;
-        return;
-      }
+    // Check for ongoing router action.
+    if (this.routing) {
+      // TODO: create real error
+      reject(new Error('Error'));
+      this.nativeEvent = true;
+      return;
+    }
 
-      const {
-        emitBefore = true,
-        emitAfter = true,
-        pathname,
-        state,
-      } = params;
-      const pattern = this.findPattern(pathname.split('?')[0]);
-      let unlisten = null;
+    const {
+      emitBefore = true,
+      emitAfter = true,
+      pathname,
+      state,
+    } = params;
+    const pattern = this.findPattern(pathname.split('?')[0]);
+    let unlisten = null;
 
-      if (!pattern) {
-        reject(new Error(errors.EINVALIDPATHNAME));
-        this.nativeEvent = true;
-        return;
-      }
+    if (!pattern) {
+      reject(new Error(errors.EINVALIDPATHNAME));
+      this.nativeEvent = true;
+      return;
+    }
 
-      // Block further router actions until this Promise has been returned.
-      this.routing = true;
+    // Block further router actions until this Promise has been returned.
+    this.routing = true;
 
-      const { id } = stack.getByIndex(this.routeIndex);
-      const { transform } = this.patterns[pattern];
-      const prev = stack.get(id);
-      const next = new Route({
-        id,
-        pathname,
-        pattern,
-        state,
-        transform,
-      });
-      const end = { prev, next };
-
-      // Add item to the stack
-      stack.add(id, next);
-
-      // Emit creation event.
-      if (emitBefore) {
-        emitter.emit(constants.EVENT_WILL_REPLACE, end);
-      }
-
-      /**
-       * The history event callback.
-       */
-      const callback = () => {
-        // Unsubscribe from the history events.
-        unlisten();
-
-        this.action = constants.ACTION_REPLACE;
-
-        // Emit completion event.
-        if (emitAfter) {
-          emitter.emit(constants.EVENT_DID_REPLACE, end);
-        }
-
-        resolve(end);
-        this.nativeEvent = true;
-        this.routing = false;
-      };
-
-      /**
-       * Create a reference to the history listener
-       * to be able to unsubscribe from inside the callback.
-       */
-      unlisten = this.history.listen(callback);
-
-      // Perform the history replace action.
-      if (!this.nativeEvent) {
-        this.history.replace({
-          pathname,
-          state: {
-            ...state,
-            route: { id },
-          },
-        });
-      } else {
-        callback();
-      }
+    const { id } = stack.getByIndex(this.routeIndex);
+    const { transform } = this.patterns[pattern];
+    const prev = stack.get(id);
+    const next = new Route({
+      id,
+      pathname,
+      pattern,
+      state,
+      transform,
     });
-  }
+    const end = { prev, next };
+
+    // Add item to the stack
+    stack.add(id, next);
+
+    // Emit creation event.
+    if (emitBefore) {
+      emitter.emit(constants.EVENT_WILL_REPLACE, end);
+    }
+
+    /**
+     * The history event callback.
+     */
+    const callback = () => {
+      // Unsubscribe from the history events.
+      unlisten();
+
+      this.action = constants.ACTION_REPLACE;
+
+      // Emit completion event.
+      if (emitAfter) {
+        emitter.emit(constants.EVENT_DID_REPLACE, end);
+      }
+
+      resolve(end);
+      this.nativeEvent = true;
+      this.routing = false;
+    };
+
+    /**
+     * Create a reference to the history listener
+     * to be able to unsubscribe from inside the callback.
+     */
+    unlisten = this.history.listen(callback);
+
+    // Perform the history replace action.
+    if (!this.nativeEvent) {
+      this.history.replace({
+        pathname,
+        state: {
+          ...state,
+          route: { id },
+        },
+      });
+    } else {
+      callback();
+    }
+  })
 
   /**
    * @param {Object} params The params when routing.
@@ -464,64 +461,56 @@ class Router {
   /**
    * @returns {Promise}
    */
-  reset = () => {
-    return new Promise((resolve, reject) => {
-      const { size } = stack.getAll();
-      const [, route] = stack.first();
+  reset = () => new Promise(async (resolve) => {
+    const [, route] = stack.first();
 
-      const prev = stack.getByIndex(this.routeIndex);
-      const end = {
-        prev,
-        next: route,
-      };
+    const prev = stack.getByIndex(this.routeIndex);
+    const end = {
+      prev,
+      next: route,
+    };
 
-      if (size === 1) {
-        // TODO: Add error
-        reject();
-        return;
-      }
+    emitter.emit(constants.EVENT_WILL_RESET, end);
 
-      emitter.emit(constants.EVENT_WILL_RESET, end);
-
-      this.pop({
+    if (this.routeIndex > 0) {
+      await this.handlePop({
         emitBefore: false,
         emitAfter: false,
-        steps: size,
-      }).then(() => {
-        emitter.emit(constants.EVENT_DID_RESET, end);
-        resolve(end);
+        forceNative: true,
+        steps: this.routeIndex,
       });
-    });
-  }
+    }
+
+    emitter.emit(constants.EVENT_DID_RESET, end);
+    resolve(end);
+  });
 
   /**
    * @param {string} pathname The pathname to reset to.
    * @returns {Promise}
    */
-  resetTo = (pathname) => {
-    return new Promise((resolve, reject) => {
-      if (!pathname) {
-        reject(new Error(errors.EMISSINGPATHNAME));
-        return;
-      }
+  resetTo = pathname => new Promise((resolve, reject) => {
+    if (!pathname) {
+      reject(new Error(errors.EMISSINGPATHNAME));
+      return;
+    }
 
-      if (!this.findPattern(pathname)) {
-        reject(new Error(errors.EINVALIDPATHNAME));
-        return;
-      }
+    if (!this.findPattern(pathname)) {
+      reject(new Error(errors.EINVALIDPATHNAME));
+      return;
+    }
 
-      const id = this.createId();
-      const prev = stack.getByIndex(this.routeIndex);
-      const next = new Route({ id, pathname });
-      const end = { prev, next };
+    const id = this.createId();
+    const prev = stack.getByIndex(this.routeIndex);
+    const next = new Route({ id, pathname });
+    const end = { prev, next };
 
-      emitter.emit(constants.EVENT_WILL_RESET, end);
-      stack.reset([id, next]);
-      emitter.emit(constants.EVENT_DID_RESET, end);
+    emitter.emit(constants.EVENT_WILL_RESET, end);
+    stack.reset([id, next]);
+    emitter.emit(constants.EVENT_DID_RESET, end);
 
-      resolve(end);
-    });
-  }
+    resolve(end);
+  });
 
   /**
    * @param {string} id The route id to update.
@@ -529,41 +518,36 @@ class Router {
    * @param {boolean} emit When true, will emit when the state was updated.
    * @returns {Promise}
    */
-  update = (id, state = {}, emit = true) => {
-    return new Promise((resolve, reject) => {
-      //
-      if (!id || Object.keys(state).length === 0) {
-        reject(new Error(errors.EPARAMSINVALID));
-        return;
-      }
+  update = (id, state = {}, emit = true) => new Promise((resolve, reject) => {
+    //
+    if (!id || Object.keys(state).length === 0) {
+      reject(new Error(errors.EPARAMSINVALID));
+      return;
+    }
 
-      const route = stack.get(id);
+    const route = stack.get(id);
 
-      if (!route) {
-        reject(new Error(errors.EINVALIDID));
-        return;
-      }
+    if (!route) {
+      reject(new Error(errors.EINVALIDID));
+      return;
+    }
 
-      route.state = {
-        ...route.state,
-        ...state,
-      };
-      route.updated = Date.now();
+    route.state = {
+      ...route.state,
+      ...state,
+    };
+    route.updated = Date.now();
 
-      stack.update(id, route);
+    stack.update(id, route);
 
-      if (emit) {
-        emitter.emit(constants.EVENT_UPDATE, route);
-      }
+    if (emit) {
+      emitter.emit(constants.EVENT_UPDATE, route);
+    }
 
-      resolve(route);
-    });
-  }
+    resolve(route);
+  });
 
-  getCurrentRoute = () => {
-    console.warn('Deprecation warning: getCurrentRoute will be removed in a future release.');
-    return stack.getByIndex(this.routeIndex);
-  }
+  getCurrentRoute = () => stack.getByIndex(this.routeIndex)
 
   /**
    * Return true when the given pathname matches
