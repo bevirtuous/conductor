@@ -395,10 +395,13 @@ describe('Conductor', () => {
 
     it('should not reset when there is only one route', (done) => {
       const willCallback = jest.fn();
+      const didCallback = jest.fn();
       emitter.once(constants.EVENT_WILL_RESET, willCallback);
+      emitter.once(constants.EVENT_DID_RESET, didCallback);
 
-      router.reset().catch(() => {
-        expect(willCallback).not.toHaveBeenCalled();
+      router.reset().then(() => {
+        expect(willCallback).toHaveBeenCalled();
+        expect(didCallback).toHaveBeenCalled();
         done();
       });
     });
