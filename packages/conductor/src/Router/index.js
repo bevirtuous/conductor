@@ -11,7 +11,7 @@ import * as constants from '../constants';
  */
 class Router {
   /**
-   * TODO:
+   * @param {Function} [createHistory] A function that creates a custom history.
    */
   constructor(createHistory = history) {
     // Flag to indicate a native history event. Should always be reset to true.
@@ -43,7 +43,8 @@ class Router {
   }
 
   /**
-   *
+   * @param {Object} location The browser location.
+   * @param {string} action The history action.
    */
   handleNativeEvent = (location, action) => {
     if (!this.nativeEvent) {
@@ -159,6 +160,7 @@ class Router {
 
   /**
    * @param {Object} params The params to use when navigating.
+   * @param {boolean} [override=true] Whether to override the items in the stack.
    * @returns {Promise}
    */
   handlePush(params, override = true) {
@@ -456,10 +458,9 @@ class Router {
   }
 
   /**
-   *
+   * @returns {Promise}
    */
-  reset = () => new Promise(async (resolve, reject) => {
-    const { size } = stack.getAll();
+  reset = () => new Promise(async (resolve) => {
     const [, route] = stack.first();
 
     const prev = stack.getByIndex(this.routeIndex);
@@ -468,22 +469,17 @@ class Router {
       next: route,
     };
 
-    if (size === 1) {
-      // TODO: Add error
-      reject();
-      return;
-    }
-
     emitter.emit(constants.EVENT_WILL_RESET, end);
 
-    await this.handlePop({
-      emitBefore: false,
-      emitAfter: false,
-      forceNative: true,
-      steps: size - 1,
-    });
+    if (this.routeIndex > 0) {
+      await this.handlePop({
+        emitBefore: false,
+        emitAfter: false,
+        forceNative: true,
+        steps: this.routeIndex,
+      });
+    }
 
-    stack.reset();
     emitter.emit(constants.EVENT_DID_RESET, end);
     resolve(end);
   });

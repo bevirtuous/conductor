@@ -384,7 +384,6 @@ describe('Conductor', () => {
       const prevRoute = stack.getByIndex(router.routeIndex);
 
       router.reset().then((result) => {
-        expect(stack.getAll().size).toBe(1);
         expect(router.history.location.pathname).toBe(pathname1);
         expect(firstRoute).toBe(result.next);
         expect(prevRoute).toBe(result.prev);
