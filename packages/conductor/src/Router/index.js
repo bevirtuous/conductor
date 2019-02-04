@@ -459,7 +459,6 @@ class Router {
    *
    */
   reset = () => new Promise(async (resolve) => {
-    const { size } = stack.getAll();
     const [, route] = stack.first();
 
     const prev = stack.getByIndex(this.routeIndex);
@@ -475,7 +474,7 @@ class Router {
         emitBefore: false,
         emitAfter: false,
         forceNative: true,
-        steps: size - 1,
+        steps: this.routeIndex,
       });
     }
 
