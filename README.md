@@ -2,8 +2,8 @@
   <a href="https://travis-ci.org/bevirtuous/conductor">
     <img alt="Travis CI Build" src="https://travis-ci.org/bevirtuous/conductor.svg?branch=master">
   </a>
-  <a href='https://coveralls.io/github/bevirtuous/conductor?branch=%28HEAD+detached+at+048517b%29'>
-    <img src='https://coveralls.io/repos/github/bevirtuous/conductor/badge.svg?branch=%28HEAD+detached+at+048517b%29' alt='Coverage Status' />
+  <a href='https://coveralls.io/github/bevirtuous/conductor?branch=master'>
+    <img src='https://coveralls.io/repos/github/bevirtuous/conductor/badge.svg?branch=master' alt='Coverage Status' />
   </a>
   <a href="https://github.com/bevirtuous/conductor/releases">
     <img alt="GitHub release" src="https://img.shields.io/github/release/bevirtuous/conductor.svg">
