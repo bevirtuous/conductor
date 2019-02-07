@@ -34,7 +34,10 @@
   },
   "devDependencies": {
     "prop-types": "^15.6.2",
-    "react": "^16.8.0-alpha.1"
+    "react": "^16.8.0"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.0"
   },
   "sideEffects": false
 }
