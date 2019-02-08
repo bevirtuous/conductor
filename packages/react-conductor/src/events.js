@@ -1,4 +1,4 @@
-import addCallback from '@virtuous/conductor/src/events/addCallback';
+import { addCallback } from '@virtuous/conductor';
 import * as events from './constants';
 
 /**
