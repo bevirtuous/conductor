@@ -1,7 +1,7 @@
 {
   "name": "@virtuous/redux-conductor",
   "version": "2.1.1",
-  "description": "A redux bridge for Conductor",
+  "description": "Redux bindings for Conductor",
   "license": "MIT",
   "repository": {
     "type": "git",
