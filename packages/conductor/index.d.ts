@@ -132,8 +132,6 @@ export class Route {
   state: State;
   created: number;
   updated: number | null;
-  setPattern: (pattern: string) => void;
-  setState: (state: object) => void;
 }
 
 /**

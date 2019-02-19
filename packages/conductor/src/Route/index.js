@@ -37,7 +37,7 @@ class Route {
     this.runTransform();
   }
 
-  runTransform = () => {
+  runTransform() {
     if (typeof this.transform === 'function') {
       const transformed = this.transform(this);
       this.params = {
@@ -53,8 +53,9 @@ class Route {
 
   /**
    * @param {string} pattern The pattern to set for this route.
+   * @param {Function} transform The transformer function.
    */
-  setPattern = (pattern, transform) => {
+  setPattern(pattern, transform) {
     if (!pattern) {
       return;
     }
@@ -66,19 +67,6 @@ class Route {
 
     this.transform = transform;
     this.runTransform();
-  }
-
-  /**
-   * Updates the state of the Route by merging the given state with the existing state.
-   * @param {Object} state The state to merge with the existing state.
-   */
-  set setState(state) {
-    if (typeof state !== 'object' || Object.keys(state).length === 0) {
-      return;
-    }
-
-    this.state = Object.assign(this.state, state);
-    this.updated = Date.now();
   }
 }
 
