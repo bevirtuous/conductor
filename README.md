@@ -28,6 +28,26 @@ Conductor is a simple yet powerful JavaScript router for single-page application
 ```
 npm i @virtuous/react-conductor -S
 ```
+
+### Basic usage
+```
+import React from 'react';
+
+function MyApp() {
+  return (
+    <Router>
+     <Menu />
+     <Route pattern="/" component={Homepage} />
+     <Route pattern="/browse" component={Browse} />
+     <Route pattern="/login" component={Login} />
+     <Route pattern="/profile" component={Profile} />
+   </Router>
+  );
+}
+
+export default MyApp;
+```
+
 ### Examples (with ReactJS)
 
 - [Simple application with routes](https://codesandbox.io/s/38xko4wn2m)
