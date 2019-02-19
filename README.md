@@ -30,8 +30,10 @@ npm i @virtuous/react-conductor -S
 ```
 
 ### Basic usage
-```
+```javascript
 import React from 'react';
+import { Router, Route } from '@virtuous/react-conductor';
+import { Homepage, Browse, Login, Profile } from './routes';
 
 function MyApp() {
   return (
@@ -40,7 +42,7 @@ function MyApp() {
      <Route pattern="/" component={Homepage} />
      <Route pattern="/browse" component={Browse} />
      <Route pattern="/login" component={Login} />
-     <Route pattern="/profile" component={Profile} />
+     <Route pattern="/profile/:userId" component={Profile} />
    </Router>
   );
 }
