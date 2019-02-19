@@ -465,12 +465,12 @@ class Router {
     const [, route] = stack.first();
 
     const prev = stack.getByIndex(this.routeIndex);
-    const end = {
+    const next = {
       prev,
       next: route,
     };
 
-    emitter.emit(constants.EVENT_WILL_RESET, end);
+    emitter.emit(constants.EVENT_WILL_RESET, next);
 
     if (this.routeIndex > 0) {
       await this.handlePop({
@@ -481,45 +481,57 @@ class Router {
       });
     }
 
-    emitter.emit(constants.EVENT_DID_RESET, end);
-    resolve(end);
+    emitter.emit(constants.EVENT_DID_RESET, next);
+    resolve(next);
   });
 
   /**
    * @param {string} pathname The pathname to reset to.
+   * @param {Object} [state={}] The state of the new route.
    * @returns {Promise}
    */
-  resetTo = pathname => new Promise((resolve, reject) => {
+  resetTo = (pathname, state = {}) => new Promise(async (resolve, reject) => {
+    // Missing pathname.
     if (!pathname) {
       reject(new Error(errors.EMISSINGPATHNAME));
       return;
     }
 
+    // Ensure that the pathname matches a registered pattern.
     if (!this.findPattern(pathname)) {
       reject(new Error(errors.EINVALIDPATHNAME));
       return;
     }
 
-    const id = this.createId();
-    const prev = stack.getByIndex(this.routeIndex);
-    const next = new Route({ id, pathname });
-    const end = { prev, next };
+    const previous = this.getCurrentRoute();
+    await this.handlePop({
+      emitBefore: false,
+      emitAfter: false,
+      forceNative: true,
+      steps: this.routeIndex,
+    });
 
-    emitter.emit(constants.EVENT_WILL_RESET, end);
-    stack.reset([id, next]);
-    emitter.emit(constants.EVENT_DID_RESET, end);
+    await this.handleReplace({ pathname, state });
 
-    resolve(end);
+    const [, route] = stack.first();
+    const next = {
+      prev: previous,
+      next: route,
+    };
+
+    emitter.emit(constants.EVENT_WILL_RESET, next);
+    emitter.emit(constants.EVENT_DID_RESET, next);
+    resolve(next);
   });
 
   /**
+   * // TODO: Refactor to take an object as a parameter.
    * @param {string} id The route id to update.
    * @param {Object} state The new state.
    * @param {boolean} emit When true, will emit when the state was updated.
    * @returns {Promise}
    */
   update = (id, state = {}, emit = true) => new Promise((resolve, reject) => {
-    //
     if (!id || Object.keys(state).length === 0) {
       reject(new Error(errors.EPARAMSINVALID));
       return;
@@ -547,6 +559,9 @@ class Router {
     resolve(route);
   });
 
+  /**
+   * @returns {Route}
+   */
   getCurrentRoute = () => stack.getByIndex(this.routeIndex)
 
   /**

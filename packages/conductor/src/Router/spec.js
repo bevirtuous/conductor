@@ -424,11 +424,17 @@ describe('Conductor', () => {
 
       await router.push({ pathname: '/myroute/456' });
 
+      const previous = router.getCurrentRoute();
+
       router.resetTo('/myroute/789').then((result) => {
         const [, route] = stack.first();
         expect(route).toBe(result.next);
+        expect(previous).toBe(result.prev);
         expect(route.pathname).toBe('/myroute/789');
-        expect(stack.getAll().size).toBe(1);
+
+        // Should contain the newly pushed route and the new first route.
+        expect(stack.getAll().size).toBe(2);
+
         expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
         done();
