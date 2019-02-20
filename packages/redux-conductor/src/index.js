@@ -5,21 +5,25 @@ import {
   onDidReset,
   onUpdate,
 } from '@virtuous/conductor';
-import * as actions from './action-creators';
-import { getStack } from './helpers';
+import * as actions from './actions';
 
 export { default as reducer } from './reducer';
 export * from './constants';
 
 /**
- * @param {Object} store The redux store instance.
+ * @param {Object} store A Redux store instance.
  */
 export const sync = ({ dispatch }) => {
-  onDidPush(() => dispatch(actions.conductorPush(getStack())));
-  onDidPop(() => dispatch(actions.conductorPop(getStack())));
-  onDidReplace(() => dispatch(actions.conductorReplace(getStack())));
-  onDidReset(() => dispatch(actions.conductorReset(getStack())));
-  onUpdate(() => dispatch(actions.conductorUpdate(getStack())));
+  onDidPush((routes, ignore = false) => {
+    // Ignore the initial push when registering routes.
+    if (!ignore) {
+      dispatch(actions.conductorPush(routes));
+    }
+  });
+  onDidPop(() => dispatch(actions.conductorPop()));
+  onDidReplace(routes => dispatch(actions.conductorReplace(routes)));
+  onDidReset(routes => dispatch(actions.conductorReset(routes)));
+  onUpdate(route => dispatch(actions.conductorUpdate(route)));
 };
 
 export default sync;

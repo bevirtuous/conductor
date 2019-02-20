@@ -35,7 +35,6 @@ class Router extends React.Component {
     }
 
     this.state = {
-      stack: Array.from(routeStack.getAll()),
       updated: null,
     };
 
@@ -56,12 +55,8 @@ class Router extends React.Component {
     return updated !== nextState.updated;
   }
 
-  /**
-   * Update the local stack with the route stack.
-   */
   update = () => {
     this.setState({
-      stack: Array.from(routeStack.getAll()),
       updated: Date.now(),
     });
   }
@@ -71,7 +66,7 @@ class Router extends React.Component {
    */
   render() {
     const { children } = this.props;
-    const { stack } = this.state;
+    const stack = Array.from(routeStack.getAll());
 
     return (
       <RouterContext.Provider value={stack}>

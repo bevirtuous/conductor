@@ -43,8 +43,6 @@ class SpringGroup extends Route {
     return routes.map((entry) => {
       const current = entry.index === router.routeIndex;
       const {
-        runTransform,
-        setPattern,
         transform,
         ...context
       } = entry.route;

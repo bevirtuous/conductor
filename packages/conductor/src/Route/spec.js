@@ -56,41 +56,5 @@ describe('Stack', () => {
       expect(route.hash).toBeNull();
     });
   });
-
-  describe('setState()', () => {
-    it('should correctly update the state', () => {
-      const route = new Route({
-        pathname: '/myroute/123',
-        pattern: '/myroute/:id',
-        state: {
-          a: 1,
-        },
-      });
-
-      route.setState = {
-        a: 2,
-        b: 4,
-      };
-
-      expect(route.state).toEqual({
-        a: 2,
-        b: 4,
-      });
-    });
-
-    it('should not update when state is empty', () => {
-      const route = new Route({
-        pathname: '/myroute/123',
-        pattern: '/myroute/:id',
-        state: {
-          a: 1,
-        },
-      });
-
-      route.setState = {};
-
-      expect(route.state).toEqual({ a: 1 });
-    });
-  });
 });
 

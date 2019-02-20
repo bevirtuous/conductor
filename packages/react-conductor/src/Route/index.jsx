@@ -28,19 +28,10 @@ class Route extends React.Component {
   }
 
   /**
-   * TODO: Move to router
-   */
-  get currentRoute() {
-    const { [router.routeIndex]: [, route] } = this.context;
-
-    return route;
-  }
-
-  /**
    * @returns {Object}
    */
-  get contextValue() {
-    const { setPattern, ...context } = this.currentRoute;
+  getContextValue = () => {
+    const { ...context } = router.getCurrentRoute();
     context.open = true;
     context.visible = true;
 
@@ -52,14 +43,14 @@ class Route extends React.Component {
    */
   render() {
     const { component: Component, pattern } = this.props;
-    const route = this.currentRoute;
+    const route = router.getCurrentRoute();
 
     if (route.pattern !== pattern) {
       return null;
     }
 
     return (
-      <RouteContext.Provider key={`${route.id}-${route.pathname}`} value={this.contextValue}>
+      <RouteContext.Provider key={`${route.id}-${route.pathname}`} value={this.getContextValue()}>
         <Component />
       </RouteContext.Provider>
     );
