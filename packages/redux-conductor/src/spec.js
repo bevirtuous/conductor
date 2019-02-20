@@ -7,8 +7,17 @@ import {
   EVENT_UPDATE,
 } from '@virtuous/conductor';
 import syncStore from './index';
+import * as actions from './actions';
 
 const dispatch = jest.fn();
+const routes = {
+  prev: {
+    pthname: '/myroute/123',
+  },
+  next: {
+    pathname: '/myroute/789',
+  },
+};
 
 describe('Redux Conductor - Setup', () => {
   beforeAll(() => {
@@ -20,27 +29,48 @@ describe('Redux Conductor - Setup', () => {
   });
 
   it('should dispatch when pushed', () => {
-    emitter.emit(EVENT_DID_PUSH);
+    const spy = jest.spyOn(actions, 'conductorPush');
+
+    emitter.emit(EVENT_DID_PUSH, routes);
+
     expect(dispatch).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(routes);
   });
 
   it('should dispatch when popped', () => {
+    const spy = jest.spyOn(actions, 'conductorPop');
+
     emitter.emit(EVENT_DID_POP);
+
     expect(dispatch).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should dispatch when replaced', () => {
-    emitter.emit(EVENT_DID_REPLACE);
+    const spy = jest.spyOn(actions, 'conductorReplace');
+
+    emitter.emit(EVENT_DID_REPLACE, routes);
+
     expect(dispatch).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(routes);
   });
 
   it('should dispatch when reset', () => {
-    emitter.emit(EVENT_DID_RESET);
+    const spy = jest.spyOn(actions, 'conductorReset');
+
+    emitter.emit(EVENT_DID_RESET, routes);
+
     expect(dispatch).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(routes);
   });
 
   it('should dispatch when updated', () => {
-    emitter.emit(EVENT_UPDATE);
+    const spy = jest.spyOn(actions, 'conductorUpdate');
+    const route = {};
+
+    emitter.emit(EVENT_UPDATE, route);
+
     expect(dispatch).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(route);
   });
 });

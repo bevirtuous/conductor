@@ -7,12 +7,17 @@ describe('Redux Conductor - Action Creators', () => {
   ];
 
   it('should create an action to PUSH', () => {
-    const expectedAction = {
-      type: constants.CONDUCTOR_PUSH,
-      stack,
+    const routes = {
+      prev: {},
+      next: {},
     };
 
-    expect(actions.conductorPush(stack)).toEqual(expectedAction);
+    const expectedAction = {
+      type: constants.CONDUCTOR_PUSH,
+      routes,
+    };
+
+    expect(actions.conductorPush(routes)).toEqual(expectedAction);
   });
 
   it('should create an action to POP', () => {
@@ -34,20 +39,27 @@ describe('Redux Conductor - Action Creators', () => {
   });
 
   it('should create an action to RESET', () => {
-    const expectedAction = {
-      type: constants.CONDUCTOR_RESET,
-      stack,
+    const routes = {
+      prev: {},
+      next: {},
     };
 
-    expect(actions.conductorReset(stack)).toEqual(expectedAction);
+    const expectedAction = {
+      type: constants.CONDUCTOR_RESET,
+      routes,
+    };
+
+    expect(actions.conductorReset(routes)).toEqual(expectedAction);
   });
 
   it('should create an action to UPDATE', () => {
+    const route = {};
+
     const expectedAction = {
       type: constants.CONDUCTOR_UPDATE,
-      stack,
+      route,
     };
 
-    expect(actions.conductorUpdate(stack)).toEqual(expectedAction);
+    expect(actions.conductorUpdate(route)).toEqual(expectedAction);
   });
 });
