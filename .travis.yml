@@ -1,6 +1,8 @@
 language: node_js
 node_js:
-- 8.10.0
+- "9"
+- "10"
+- "11"
 script: jest --coverage --coverageReporters=text-lcov | coveralls
 notifications:
   slack: virtuous-coding:qsxYU1TMf0AAzcCALg4C8t17
