@@ -1,14 +1,13 @@
+import { router, stack } from '@virtuous/conductor';
 import * as constants from '../constants';
-import cloneDeep from 'lodash/cloneDeep';
-import { getStack } from '../helpers';
 
 /**
- * The default state definition.
  * @type {Object}
  */
-const defaultState = {
+const initialState = {
+  index: 0,
   routing: false,
-  stack: getStack(),
+  stack: Array.from(stack.getAll().values()),
 };
 
 /**
@@ -16,20 +15,57 @@ const defaultState = {
  * @param {Object} action The action object.
  * @returns {Object} The new state.
  */
-export default (state = defaultState, { type, stack }) => {
-  switch (type) {
-    case constants.CONDUCTOR_PUSH:
+export default (state = initialState, action) => {
+  switch (action.type) {
     case constants.CONDUCTOR_POP:
+      return {
+        ...state,
+        index: router.routeIndex,
+        stack: Array.from(stack.getAll().values()),
+      };
+    case constants.CONDUCTOR_PUSH: {
+      const index = state.index + 1;
+      const clipped = state.stack.slice(0, index);
+
+      return {
+        ...state,
+        index,
+        stack: clipped.concat(action.routes.next),
+      };
+    }
     case constants.CONDUCTOR_REPLACE:
+      return {
+        ...state,
+        stack: state.stack.map((route, index) => {
+          if (index === router.routeIndex) {
+            return action.routes.next;
+          }
+
+          return route;
+        }),
+      };
+    case constants.CONDUCTOR_RESET: {
+      const clipped = state.stack.slice(1, state.stack.length);
+
+      return {
+        ...state,
+        index: 0,
+        stack: [action.routes.next].concat(clipped),
+      };
+    }
     case constants.CONDUCTOR_UPDATE:
       return {
-        routing: false,
-        stack: cloneDeep(stack),
-      };
-    case constants.CONDUCTOR_RESET:
-      return {
-        routing: false,
-        stack: [cloneDeep(stack[0])],
+        ...state,
+        stack: state.stack.map((route) => {
+          if (route.id !== action.route.id) {
+            return route;
+          }
+
+          return {
+            ...route,
+            state: action.route.state,
+          };
+        }),
       };
     default:
       return state;

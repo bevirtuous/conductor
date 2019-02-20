@@ -30,8 +30,7 @@
     "redux": "^3.7.2"
   },
   "dependencies": {
-    "@virtuous/conductor": "2.1.1",
-    "lodash": "^4.17.11"
+    "@virtuous/conductor": "2.1.1"
   },
   "peerDependencies": {
     "redux": "3.x"

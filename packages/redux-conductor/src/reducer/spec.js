@@ -1,3 +1,4 @@
+import { router } from '@virtuous/conductor';
 import reducer from './index';
 import * as constants from '../constants';
 
@@ -6,92 +7,135 @@ describe('Redux Conductor - Reducer', () => {
     const state = reducer(undefined, {});
 
     expect(state.stack.length).toEqual(1);
+    expect(state.stack[0]).toEqual(router.getCurrentRoute());
   });
 
   it('should handle a PUSH action', () => {
-    const stack = [{
-      pathname: 'mypage',
-    }];
+    const initialState = {
+      index: 0,
+      stack: [{
+        pathname: '123',
+      }, {
+        pathname: '456',
+      }, {
+        pathname: '789',
+      }],
+    };
 
-    const state = reducer(undefined, {
+    const action = {
       type: constants.CONDUCTOR_PUSH,
-      stack,
-    });
+      routes: {
+        next: {
+          pathname: 'abc',
+        },
+      },
+    };
 
-    expect(state.stack).not.toBe(stack);
+    const state = reducer(initialState, action);
 
     expect(state).toEqual({
-      routing: false,
+      index: 1,
       stack: [{
-        pathname: 'mypage',
+        pathname: '123',
+      }, {
+        pathname: 'abc',
       }],
     });
   });
 
   it('should handle a POP action', () => {
-    const state = reducer(undefined, {
+    const action = {
       type: constants.CONDUCTOR_POP,
-      stack: [{
-        pathname: 'mypage',
-      }],
-    });
+    };
+
+    const state = reducer({}, action);
 
     expect(state).toEqual({
-      routing: false,
-      stack: [{
-        pathname: 'mypage',
-      }],
+      index: 0,
+      stack: [router.getCurrentRoute()],
     });
   });
 
   it('should handle a REPLACE action', () => {
-    const state = reducer(undefined, {
-      type: constants.CONDUCTOR_REPLACE,
+    const initialState = {
       stack: [{
-        pathname: 'mypage',
+        pathname: '/myroute/123',
+      }, {
+        pathname: '/myroute/456',
       }],
-    });
+    };
+
+    const action = {
+      type: constants.CONDUCTOR_REPLACE,
+      routes: {
+        next: {
+          pathname: '/myroute/789',
+        },
+      },
+    };
+
+    const state = reducer(initialState, action);
 
     expect(state).toEqual({
-      routing: false,
       stack: [{
-        pathname: 'mypage',
+        pathname: '/myroute/789',
+      }, {
+        pathname: '/myroute/456',
       }],
     });
   });
 
   it('should handle a RESET action', () => {
-    const state = reducer(undefined, {
-      type: constants.CONDUCTOR_RESET,
+    const initialState = {
+      index: 1,
       stack: [{
-        pathname: 'mypage',
+        pathname: '/myroute/123',
+      }, {
+        pathname: '/myroute/456',
       }],
-    });
+    };
+
+    const action = {
+      type: constants.CONDUCTOR_RESET,
+      routes: {
+        next: {
+          pathname: '/myroute/789',
+        },
+      },
+    };
+
+    const state = reducer(initialState, action);
 
     expect(state).toEqual({
-      routing: false,
+      index: 0,
       stack: [{
-        pathname: 'mypage',
+        pathname: '/myroute/789',
+      }, {
+        pathname: '/myroute/456',
       }],
     });
   });
 
   it('should handle a UPDATE action', () => {
-    const stack = [{
-      pathname: 'mypage',
-    }];
+    const route = router.getCurrentRoute();
 
     const state = reducer(undefined, {
       type: constants.CONDUCTOR_UPDATE,
-      stack,
+      route: {
+        id: route.id,
+        state: {
+          a: 1,
+        },
+      },
     });
 
-    expect(state.stack).not.toBe(stack);
-
-    expect(state).toEqual({
+    expect(state).toMatchObject({
       routing: false,
       stack: [{
-        pathname: 'mypage',
+        ...route,
+        state: {
+          a: 1,
+        },
       }],
     });
   });
