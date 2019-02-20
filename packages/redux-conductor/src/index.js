@@ -14,7 +14,12 @@ export * from './constants';
  * @param {Object} store A Redux store instance.
  */
 export const sync = ({ dispatch }) => {
-  onDidPush(routes => dispatch(actions.conductorPush(routes)));
+  onDidPush((routes, ignore = false) => {
+    // Ignore the initial push when registering routes.
+    if (!ignore) {
+      dispatch(actions.conductorPush(routes));
+    }
+  });
   onDidPop(() => dispatch(actions.conductorPop()));
   onDidReplace(routes => dispatch(actions.conductorReplace(routes)));
   onDidReset(routes => dispatch(actions.conductorReset(routes)));

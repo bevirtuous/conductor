@@ -3,13 +3,6 @@ import reducer from './index';
 import * as constants from '../constants';
 
 describe('Redux Conductor - Reducer', () => {
-  it('should return the initial state', () => {
-    const state = reducer(undefined, {});
-
-    expect(state.stack.length).toEqual(1);
-    expect(state.stack[0]).toEqual(router.getCurrentRoute());
-  });
-
   it('should handle a PUSH action', () => {
     const initialState = {
       index: 0,
@@ -48,10 +41,11 @@ describe('Redux Conductor - Reducer', () => {
       type: constants.CONDUCTOR_POP,
     };
 
-    const state = reducer({}, action);
+    const state = reducer(undefined, action);
 
     expect(state).toEqual({
       index: 0,
+      routing: false,
       stack: [router.getCurrentRoute()],
     });
   });
@@ -116,10 +110,12 @@ describe('Redux Conductor - Reducer', () => {
     });
   });
 
-  it('should handle a UPDATE action', () => {
+  it('should handle an UPDATE action', () => {
     const route = router.getCurrentRoute();
-
-    const state = reducer(undefined, {
+    const initialState = {
+      stack: [route],
+    };
+    const action = {
       type: constants.CONDUCTOR_UPDATE,
       route: {
         id: route.id,
@@ -127,10 +123,11 @@ describe('Redux Conductor - Reducer', () => {
           a: 1,
         },
       },
-    });
+    };
+
+    const state = reducer(initialState, action);
 
     expect(state).toMatchObject({
-      routing: false,
       stack: [{
         ...route,
         state: {

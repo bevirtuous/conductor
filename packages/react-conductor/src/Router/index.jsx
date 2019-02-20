@@ -55,9 +55,6 @@ class Router extends React.Component {
     return updated !== nextState.updated;
   }
 
-  /**
-   * Update the local stack with the route stack.
-   */
   update = () => {
     this.setState({
       updated: Date.now(),

@@ -36,7 +36,6 @@ class Router {
       stack.clear();
     }
 
-    //
     this.addInitialRoute();
 
     this.historyListener = this.history.listen(this.handleNativeEvent);
@@ -99,9 +98,8 @@ class Router {
       state = null,
     } = params;
     let unlisten = null;
-    const { size } = stack.getAll();
 
-    if (size < 2) {
+    if (this.routeIndex === 0) {
       reject(new Error(errors.ESTACKLENGTH));
       this.nativeEvent = true;
       return;
@@ -326,8 +324,8 @@ class Router {
 
       const end = { prev: null, next: route };
 
-      emitter.emit(constants.EVENT_WILL_PUSH, end);
-      emitter.emit(constants.EVENT_DID_PUSH, end);
+      emitter.emit(constants.EVENT_WILL_PUSH, end, true);
+      emitter.emit(constants.EVENT_DID_PUSH, end, true);
     }
   }
 

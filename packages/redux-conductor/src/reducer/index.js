@@ -21,7 +21,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         index: router.routeIndex,
-        stack: Array.from(stack.getAll().values()),
       };
     case constants.CONDUCTOR_PUSH: {
       const index = state.index + 1;
