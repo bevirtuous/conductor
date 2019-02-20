@@ -32,8 +32,7 @@ npm i @virtuous/react-conductor -S
 
 - [Simple application with routes](https://codesandbox.io/s/38xko4wn2m)
 - [Using React hooks](https://codesandbox.io/s/oq71k20q89)
-- Using data transforms (coming soon)
-- Usage with Redux (coming soon)
+- [Usage with Redux](https://codesandbox.io/s/kmz7962r43)
 - Route Transitions (coming soon)
 
 ### Packages
