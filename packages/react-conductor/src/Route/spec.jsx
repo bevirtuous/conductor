@@ -9,7 +9,7 @@ const pattern = '/myroute/:id';
 const spy = jest.spyOn(router, 'register');
 const transform = route => route;
 
-describe.skip('<Route />', () => {
+describe('<Route />', () => {
   it('should render component', () => {
     const route = mount((
       <Router>

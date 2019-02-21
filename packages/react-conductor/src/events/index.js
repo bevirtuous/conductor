@@ -1,5 +1,5 @@
 import { addCallback } from '@virtuous/conductor';
-import * as events from './constants';
+import * as events from '../constants';
 
 /**
  * @param {Function} callback The callback to register.
