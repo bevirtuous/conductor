@@ -24,6 +24,7 @@ Object {
       </a>
       <a
         class="sausage"
+        href="/myroute/123"
       >
         Reset!
       </a>
@@ -55,6 +56,7 @@ Object {
     </a>
     <a
       class="sausage"
+      href="/myroute/123"
     >
       Reset!
     </a>
