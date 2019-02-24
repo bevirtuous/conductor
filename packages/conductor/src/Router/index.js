@@ -457,9 +457,10 @@ class Router {
   }
 
   /**
+   * @param {Object} [state=null] The new state of the first route.
    * @returns {Promise}
    */
-  reset = () => new Promise(async (resolve) => {
+  reset = (state = null) => new Promise(async (resolve) => {
     const [, route] = stack.first();
 
     const prev = stack.getByIndex(this.routeIndex);
@@ -467,6 +468,10 @@ class Router {
       prev,
       next: route,
     };
+
+    if (state) {
+      this.update(route.id, state, false);
+    }
 
     emitter.emit(constants.EVENT_WILL_RESET, next);
 

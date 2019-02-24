@@ -12,8 +12,8 @@ export function replace(params) {
   return router.replace(params);
 }
 
-export function reset() {
-  return router.reset();
+export function reset(state = null) {
+  return router.reset(state);
 }
 
 export function resetTo(params) {

@@ -23,13 +23,13 @@ describe('useRouter()', () => {
     push(params);
     pop(params);
     replace(params);
-    reset();
+    reset(params.state);
     resetTo(params);
 
     expect(spyPush).toHaveBeenCalledWith(params);
     expect(spyPop).toHaveBeenCalledWith(params);
     expect(spyReplace).toHaveBeenCalledWith(params);
-    expect(spyReset).toHaveBeenCalled();
+    expect(spyReset).toHaveBeenCalledWith(params.state);
     expect(spyResetTo).toHaveBeenCalledWith(params.pathname, params.state);
   });
 });
