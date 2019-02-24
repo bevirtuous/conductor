@@ -7,15 +7,18 @@ import {
   resetTo,
 } from './index';
 
-const params = { pathname: '123' };
+const params = {
+  pathname: '123',
+  state: { something: true },
+};
 
 describe('useRouter()', () => {
   it('should provide router actions', () => {
     const spyPush = jest.spyOn(router, 'push');
-    const spyPop = jest.spyOn(router, 'push');
-    const spyReplace = jest.spyOn(router, 'push');
-    const spyReset = jest.spyOn(router, 'push');
-    const spyResetTo = jest.spyOn(router, 'push');
+    const spyPop = jest.spyOn(router, 'pop');
+    const spyReplace = jest.spyOn(router, 'replace');
+    const spyReset = jest.spyOn(router, 'reset');
+    const spyResetTo = jest.spyOn(router, 'resetTo');
 
     push(params);
     pop(params);
@@ -27,6 +30,6 @@ describe('useRouter()', () => {
     expect(spyPop).toHaveBeenCalledWith(params);
     expect(spyReplace).toHaveBeenCalledWith(params);
     expect(spyReset).toHaveBeenCalled();
-    expect(spyResetTo).toHaveBeenCalledWith(params);
+    expect(spyResetTo).toHaveBeenCalledWith(params.pathname, params.state);
   });
 });

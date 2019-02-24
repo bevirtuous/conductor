@@ -17,5 +17,5 @@ export function reset() {
 }
 
 export function resetTo(params) {
-  return router.resetTo(params);
+  return router.resetTo(params.pathname, params.state);
 }
