@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Router.{Action} /> should render as expected 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <a
+        class="sausage"
+        href="/"
+      >
+        Push!
+      </a>
+      <a
+        class="sausage"
+      >
+        Pop!
+      </a>
+      <a
+        class="sausage"
+        href="/"
+      >
+        Replace!
+      </a>
+      <a
+        class="sausage"
+        href="/myroute/123"
+      >
+        Reset!
+      </a>
+      <a
+        class="sausage"
+        href="/"
+      >
+        Reset to!
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <a
+      class="sausage"
+      href="/"
+    >
+      Push!
+    </a>
+    <a
+      class="sausage"
+    >
+      Pop!
+    </a>
+    <a
+      class="sausage"
+      href="/"
+    >
+      Replace!
+    </a>
+    <a
+      class="sausage"
+      href="/myroute/123"
+    >
+      Reset!
+    </a>
+    <a
+      class="sausage"
+      href="/"
+    >
+      Reset to!
+    </a>
+  </div>,
+  "debug": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
