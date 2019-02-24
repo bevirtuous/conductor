@@ -4,14 +4,14 @@ import { router, stack } from '@virtuous/conductor';
 
 function Pop({ children, className, state, steps }) {
   const targetIndex = router.routeIndex - steps;
-  const { pathname = null } = stack.getByIndex(targetIndex) || {};
+  const { location = null } = stack.getByIndex(targetIndex) || {};
 
   function handleClick(event) {
     event.preventDefault();
     router.pop({ state, steps });
   }
 
-  return <a className={className} href={pathname} onClick={handleClick}>{children}</a>;
+  return <a className={className} href={location} onClick={handleClick}>{children}</a>;
 }
 
 Pop.propTypes = {
