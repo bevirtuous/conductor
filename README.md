@@ -17,17 +17,26 @@
   <img width="200" alt="conductor" src="https://user-images.githubusercontent.com/2123279/32792787-92996cdc-c964-11e7-96c6-ffd86f4ee087.png" />
 </p>
 
-Conductor is a simple yet powerful JavaScript router for single-page applications.
+Conductor is a simple, yet powerful JavaScript router for single-page applications.
 
-### Documentation
-
-[Read the DOCS](#)
+<h3><a href="#" target="_blank">Documentation</a></h3>
 
 ### Installation
 
 ```
 npm i @virtuous/react-conductor -S
 ```
+
+### Features
+- Promise based routing API
+- Event API
+- Route based state
+- Route transitions (coming soon)
+- React integration
+  - Declarative
+  - Hooks
+  - Contexts
+- Redux integration
 
 ### Basic usage
 ```javascript
