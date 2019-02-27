@@ -13,7 +13,7 @@ const params = {
 };
 
 describe('useRouter()', () => {
-  it('should provide router actions', () => {
+  it('should provide router functions', () => {
     const spyPush = jest.spyOn(router, 'push');
     const spyPop = jest.spyOn(router, 'pop');
     const spyReplace = jest.spyOn(router, 'replace');
