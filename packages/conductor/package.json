@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/conductor",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "A javascript router",
   "license": "MIT",
   "repository": {

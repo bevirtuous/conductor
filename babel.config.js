@@ -12,12 +12,6 @@ module.exports = (api) => {
       '@babel/plugin-proposal-class-properties',
       '@babel/plugin-proposal-object-rest-spread',
       'babel-plugin-transform-react-remove-prop-types',
-      ['@babel/plugin-transform-runtime', {
-        corejs: false,
-        helpers: false,
-        regenerator: true,
-        useESModules: false,
-      }],
     ],
   };
 };
