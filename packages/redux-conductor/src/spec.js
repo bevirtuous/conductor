@@ -37,6 +37,12 @@ describe('Redux Conductor - Setup', () => {
     expect(spy).toHaveBeenCalledWith(routes);
   });
 
+  it('should not dispatch for push', () => {
+    emitter.emit(EVENT_DID_PUSH, routes, true);
+
+    expect(dispatch).not.toHaveBeenCalled();
+  });
+
   it('should dispatch when popped', () => {
     const spy = jest.spyOn(actions, 'conductorPop');
 
