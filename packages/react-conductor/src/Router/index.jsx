@@ -10,6 +10,11 @@ import {
   onUpdate,
 } from '@virtuous/conductor';
 import { RouterContext } from '../context';
+import Push from './actions/Push';
+import Pop from './actions/Pop';
+import Replace from './actions/Replace';
+import Reset from './actions/Reset';
+import ResetTo from './actions/ResetTo';
 
 /**
  * The Router component.
@@ -23,6 +28,14 @@ class Router extends React.Component {
   static defaultProps = {
     history: null,
   }
+
+  /* eslint-disable */
+  static Push = Push;
+  static Pop = Pop;
+  static Replace = Replace;
+  static Reset = Reset;
+  static ResetTo = ResetTo;
+  /* eslint-enable */
 
   /**
    * @param {Object} props The component props.

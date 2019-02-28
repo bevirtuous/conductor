@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/redux-conductor",
-  "version": "2.1.3",
+  "version": "2.2.0-beta.1",
   "description": "Redux bindings for Conductor",
   "license": "MIT",
   "repository": {
@@ -30,7 +30,7 @@
     "redux": "^3.7.2"
   },
   "dependencies": {
-    "@virtuous/conductor": "2.1.3"
+    "@virtuous/conductor": "2.2.0-beta.1"
   },
   "peerDependencies": {
     "redux": "3.x"

@@ -389,10 +389,12 @@ describe('Conductor', () => {
       router.push({ pathname: '/myroute/789' });
 
       const prevRoute = stack.getByIndex(router.routeIndex);
+      const state = { reset: true };
 
-      router.reset().then((result) => {
+      router.reset(state).then((result) => {
         expect(router.history.location.pathname).toBe(pathname1);
         expect(firstRoute).toBe(result.next);
+        expect(result.next.state).toEqual(state);
         expect(prevRoute).toBe(result.prev);
         expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
