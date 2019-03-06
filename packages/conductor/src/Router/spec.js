@@ -507,29 +507,29 @@ describe('Conductor', () => {
     });
 
     it('should not match a stranger pathname', () => {
-      expect(router.match('/test/123')).toBeFalsy();
+      expect(router.match('/test/123')).toBe(false);
     });
 
     it('should not match when no pathname is given', () => {
-      expect(router.match()).toBeFalsy();
+      expect(router.match()).toBe(false);
     });
   });
 
   describe('matches()', () => {
     it('should match a pathname correctly', () => {
-      expect(router.matches(pattern1, '/myroute/123')).toBeTruthy();
+      expect(router.matches(pattern1, '/myroute/123')).toBe(true);
+    });
+
+    it('should return false when there is a mismatch', () => {
+      expect(router.matches(pattern1, '/test/123')).toBe(false);
     });
 
     it('should not match a stranger pattern', () => {
-      expect(router.matches('/hello/:id', '/myroute/123')).toBeFalsy();
-    });
-
-    it('should not match a stranger pathname', () => {
-      expect(router.matches(pattern1, '/test/123')).toBeFalsy();
+      expect(router.matches('/hello/:id', '/myroute/123')).toBe(false);
     });
 
     it('should not match when params are missing', () => {
-      expect(router.matches(pattern1)).toBeFalsy();
+      expect(router.matches(pattern1)).toBe(false);
     });
   });
 });

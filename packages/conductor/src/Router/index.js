@@ -574,10 +574,10 @@ class Router {
    * @returns {string|null}
    */
   match = (pathname = null) => {
-    let foundPattern = null;
+    let foundPattern = false;
 
     if (!pathname) {
-      return null;
+      return false;
     }
 
     Object.entries(this.patterns).forEach(([pattern, properties]) => {
@@ -594,18 +594,18 @@ class Router {
    * the given pattern.
    * @param {string} pattern The pathname to match against.
    * @param {string} pathname The pathname to match.
-   * @returns {string|null}
+   * @returns {boolean}
    */
   matches = (pattern = null, pathname = null) => {
     if (!pattern || !pathname) {
-      return null;
+      return false;
     }
 
     if (!(pattern in this.patterns)) {
-      return null;
+      return false;
     }
 
-    return this.patterns[pattern].match(pathname);
+    return !!this.patterns[pattern].match(pathname);
   }
 }
 
