@@ -23,6 +23,7 @@ module.exports = {
     '!**/coverage/**',
     '!**/react-conductor/*.js',
     '!**/redux-conductor/*.js',
+    '!**/SpringRoute/**',
     '!babel.config.js',
     '!.eslintrc.js',
     '!**/jest.config.js',
