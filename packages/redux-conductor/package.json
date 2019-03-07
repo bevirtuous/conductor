@@ -26,14 +26,8 @@
     "test": "NODE_ENV=test ../../node_modules/.bin/jest",
     "cover": "NODE_ENV=test ../../node_modules/.bin/nyc ../../node_modules/.bin/jest --coverage"
   },
-  "devDependencies": {
-    "redux": "^3.7.2"
-  },
   "dependencies": {
     "@virtuous/conductor": "2.2.1"
-  },
-  "peerDependencies": {
-    "redux": "3.x"
   },
   "nyc": {
     "include": [
