@@ -34,8 +34,6 @@ class SpringRoute extends React.Component {
     const { current, transition } = this.props;
     const subset = transition[router.action.toLowerCase()];
 
-    // TODO: check for transition passed through route action.
-
     if (!current) {
       return subset.out;
     }

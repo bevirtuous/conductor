@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@virtuous/conductor": "2.3.0",
-    "react-spring": "^6.1.4"
+    "react-spring": "^8.0.15"
   },
   "devDependencies": {
     "prop-types": "^15.6.2",

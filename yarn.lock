@@ -653,7 +653,7 @@
     "@babel/plugin-transform-react-jsx-self" "^7.0.0"
     "@babel/plugin-transform-react-jsx-source" "^7.0.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.5", "@babel/runtime@^7.3.1":
+"@babel/runtime@^7.1.5", "@babel/runtime@^7.3.1":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.1.tgz#574b03e8e8a9898eaf4a872a92ea20b7846f6f2a"
   integrity sha512-7jGW8ppV0ant637pIqAcFfQDDH1orEPGJb8aXfUozuCU3QqX7rX4DA8iwrbPrR1hcH0FTTHz47yQnk+bl5xHQA==
@@ -6786,12 +6786,12 @@ react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.2.tgz#09891d324cad1cb0c1f2d91f70a71a4bee34df0f"
   integrity sha512-D+NxhSR2HUCjYky1q1DwpNUD44cDpUXzSmmFyC3ug1bClcU/iDNy0YNn1iwme28fn+NFhpA13IndOd42CrFb+Q==
 
-react-spring@^6.1.4:
-  version "6.1.10"
-  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-6.1.10.tgz#ae28796dccfb32baa02d34fb94289c2088f63a1b"
-  integrity sha512-msMoHyXHzb3KdHNY6Yo6wm1t+1GKjy6k2kqaYT3bG6nM//HOL5798OD6Qg719SEDskRDh2vXxIyJ5KEoAUbecA==
+react-spring@^8.0.15:
+  version "8.0.15"
+  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-8.0.15.tgz#050d54edc334582c858bc100182d37bd7ab61d59"
+  integrity sha512-VXeqy7FCaNPiIPe1Yk4R4yfQn+BwJEofJ1Jkib7iAFouJJE7eUMhiReszYWYztCekmCAQvmsCxlOEKGK8J2O1w==
   dependencies:
-    "@babel/runtime" "^7.0.0"
+    "@babel/runtime" "^7.3.1"
 
 react-test-renderer@^16.0.0-0:
   version "16.8.2"
