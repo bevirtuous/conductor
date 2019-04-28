@@ -9,7 +9,24 @@ exports[`<Route /> should render component 1`] = `
     pattern="/myroute/:id"
     transform={[Function]}
   >
-    <component>
+    <component
+      route={
+        Object {
+          "created": 1556395116133,
+          "hash": null,
+          "id": "ruz2u",
+          "location": "/myroute/123",
+          "params": Object {
+            "id": "123",
+          },
+          "pathname": "/myroute/123",
+          "pattern": "/myroute/:id",
+          "query": Object {},
+          "state": Object {},
+          "updated": null,
+        }
+      }
+    >
       <div />
     </component>
   </Route>

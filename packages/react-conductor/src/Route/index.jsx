@@ -49,9 +49,12 @@ class Route extends React.Component {
       return null;
     }
 
+    const { transform, ...props } = route;
+    const key = `${route.id}-${route.pathname}`;
+
     return (
-      <RouteContext.Provider key={`${route.id}-${route.pathname}`} value={this.getContextValue()}>
-        <Component />
+      <RouteContext.Provider key={key} value={this.getContextValue()}>
+        <Component route={props} />
       </RouteContext.Provider>
     );
   }
