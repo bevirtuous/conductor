@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { router } from '@virtuous/conductor';
+import RouteNotFound from '../404';
 import { RouteContext, RouterContext } from '../context';
 
 /**
@@ -8,6 +9,8 @@ import { RouteContext, RouterContext } from '../context';
  */
 class Route extends React.Component {
   static contextType = RouterContext;
+
+  static NotFound = RouteNotFound;
 
   static propTypes = {
     component: PropTypes.func.isRequired,
@@ -49,9 +52,12 @@ class Route extends React.Component {
       return null;
     }
 
+    const { transform, ...props } = route;
+    const key = `${route.id}-${route.pathname}`;
+
     return (
-      <RouteContext.Provider key={`${route.id}-${route.pathname}`} value={this.getContextValue()}>
-        <Component />
+      <RouteContext.Provider key={key} value={this.getContextValue()}>
+        <Component route={props} />
       </RouteContext.Provider>
     );
   }

@@ -192,14 +192,20 @@ describe('Conductor', () => {
       });
     });
 
-    it('should reject when pathname cannot be matched', () => {
+    it('should push when a non-matching pathname was given', (done) => {
       const params = {
-        pathname: pathname1,
+        pathname: '/not-registered',
       };
 
-      return router.push(params).catch(error => (
-        expect(error).toEqual(new Error(errors.EINVALIDPATHNAME))
-      ));
+      return router.push(params).then(async ({ next }) => {
+        expect(next.pathname).toBe('/not-registered');
+        expect(next.pattern).toBeNull();
+        expect(next.transform).toBeNull();
+
+        // Pop to remove the non-matching route for the next set of tests.
+        await router.pop();
+        done();
+      });
     });
   });
 

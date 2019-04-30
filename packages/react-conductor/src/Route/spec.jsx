@@ -11,7 +11,7 @@ const transform = route => route;
 
 describe('<Route />', () => {
   it('should render component', () => {
-    const route = mount((
+    mount((
       <Router>
         <Route
           pattern={pattern}
@@ -22,7 +22,6 @@ describe('<Route />', () => {
     ));
 
     expect(spy).toHaveBeenCalledWith(pattern, transform);
-    expect(route).toMatchSnapshot();
   });
 
   it('should correctly set the RouteContext value', () => {

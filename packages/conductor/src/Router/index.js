@@ -195,12 +195,6 @@ class Router {
       const pattern = this.findPattern(pathname.split('?')[0]);
       let unlisten = null;
 
-      if (!pattern) {
-        reject(new Error(errors.EINVALIDPATHNAME));
-        this.nativeEvent = true;
-        return;
-      }
-
       // Block further router actions until this Promise has been returned.
       this.routing = true;
 
@@ -213,7 +207,7 @@ class Router {
       }
 
       const id = this.createId();
-      const { transform } = this.patterns[pattern];
+      const { transform } = pattern ? this.patterns[pattern] : {};
       const prev = stack.getByIndex(this.routeIndex);
       const next = new Route({
         id,
@@ -568,8 +562,7 @@ class Router {
   getCurrentRoute = () => stack.getByIndex(this.routeIndex)
 
   /**
-   * Return true when the given pathname matches
-   * one of the registered patterns.
+   * Returns the matches pattern for the given pathname.
    * @param {string} pathname The pathname to match.
    * @returns {string|null}
    */
@@ -580,10 +573,13 @@ class Router {
       return false;
     }
 
-    Object.entries(this.patterns).forEach(([pattern, properties]) => {
+    Object.entries(this.patterns).some(([pattern, properties]) => {
       if (properties.match(pathname)) {
         foundPattern = pattern;
+        return true;
       }
+
+      return false;
     });
 
     return foundPattern;

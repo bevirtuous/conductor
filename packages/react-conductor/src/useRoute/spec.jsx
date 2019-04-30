@@ -4,6 +4,8 @@ import { router, stack } from '@virtuous/conductor';
 import { Router } from '../index';
 import useRoute from './index';
 
+const spy = jest.spyOn(router, 'update');
+
 let useRoute1 = null;
 let useRoute2 = null;
 
@@ -43,9 +45,19 @@ describe('useRoute()', () => {
     expect(useRoute1.id).toEqual(stack.getByIndex(router.routeIndex).id);
     // Ensure that the used context id was updated when a new route was pushed.
     expect(useRoute2.id).toEqual(stack.get(id).id);
+
+    const newState = {
+      hi: 5,
+    };
+
+    useRoute1.update(newState);
+    useRoute2.update(newState);
+
+    expect(spy).toHaveBeenCalledWith(useRoute1.id, newState);
+    expect(spy).toHaveBeenCalledWith(useRoute2.id, newState);
   });
 
-  it('should return empty object when route id is not found', () => {
+  it('should return empty object when no matching route is found', () => {
     render((
       <Router>
         <MyComponent id={12345} />
