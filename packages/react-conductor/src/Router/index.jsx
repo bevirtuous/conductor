@@ -29,13 +29,15 @@ class Router extends React.Component {
     history: null,
   }
 
-  /* eslint-disable */
   static Push = Push;
+
   static Pop = Pop;
+
   static Replace = Replace;
+
   static Reset = Reset;
+
   static ResetTo = ResetTo;
-  /* eslint-enable */
 
   /**
    * @param {Object} props The component props.
