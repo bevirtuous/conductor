@@ -50,6 +50,8 @@ class Router extends React.Component {
     }
 
     this.state = {
+      prev: null,
+      next: null,
       updated: null,
     };
 
@@ -70,8 +72,10 @@ class Router extends React.Component {
     return updated !== nextState.updated;
   }
 
-  update = () => {
+  update = ({ prev, next }) => {
     this.setState({
+      prev: prev ? prev.id : null,
+      next: next.id,
       updated: Date.now(),
     });
   }
@@ -81,10 +85,11 @@ class Router extends React.Component {
    */
   render() {
     const { children } = this.props;
+    const { prev, next } = this.state;
     const stack = Array.from(routeStack.getAll());
 
     return (
-      <RouterContext.Provider value={stack}>
+      <RouterContext.Provider value={{ prev, next, stack }}>
         {children}
       </RouterContext.Provider>
     );

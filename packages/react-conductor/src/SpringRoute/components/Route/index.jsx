@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spring } from 'react-spring';
-import { emitter, router } from '@virtuous/conductor';
+import { animated, Spring } from 'react-spring/renderprops';
+import { emitter, router, stack } from '@virtuous/conductor';
 import { RouteContext } from '../../../context';
-import * as constants from '../../../constants';
+import {
+  EVENT_WILL_ENTER,
+  EVENT_WILL_LEAVE,
+  EVENT_DID_ENTER,
+  EVENT_DID_LEAVE,
+} from '../../../constants';
 
-/**
- * The SpringRoute Component.
- */
+let immediate = true;
+
 class SpringRoute extends React.Component {
   static contextType = RouteContext;
 
@@ -15,7 +19,7 @@ class SpringRoute extends React.Component {
     component: PropTypes.func.isRequired,
     current: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
-    transition: PropTypes.shape().isRequired,
+    transition: PropTypes.func.isRequired,
     className: PropTypes.string,
   }
 
@@ -25,20 +29,6 @@ class SpringRoute extends React.Component {
 
   state = {
     render: true,
-  }
-
-  /**
-   * @returns {Object}
-   */
-  get transition() {
-    const { current, transition } = this.props;
-    const subset = transition[router.action.toLowerCase()];
-
-    if (!current) {
-      return subset.out;
-    }
-
-    return subset.in;
   }
 
   /**
@@ -56,7 +46,9 @@ class SpringRoute extends React.Component {
 
   handleStart = () => {
     const { current } = this.props;
-    const eventName = current ? constants.EVENT_WILL_ENTER : constants.EVENT_WILL_LEAVE;
+    const eventName = current ? EVENT_WILL_ENTER : EVENT_WILL_LEAVE;
+
+    immediate = false;
 
     emitter.emit(eventName, this.context);
   }
@@ -68,13 +60,14 @@ class SpringRoute extends React.Component {
   handleRest = () => {
     const { current } = this.props;
 
-    if (!current) {
-      this.setState(
-        { render: true },
-        () => emitter.emit(constants.EVENT_DID_LEAVE, this.context)
-      );
+    if (current) {
+      emitter.emit(EVENT_DID_ENTER, this.context);
     } else {
-      emitter.emit(constants.EVENT_DID_ENTER, this.context);
+      this.setState(
+        { render: false },
+        // TODO: move to class method
+        () => emitter.emit(EVENT_DID_LEAVE, this.context)
+      );
     }
   }
 
@@ -88,14 +81,39 @@ class SpringRoute extends React.Component {
       return null;
     }
 
-    const { className, component: Component, index } = this.props;
+    const {
+      className,
+      component: Component,
+      current,
+      index,
+      nextRoute,
+      prevRoute,
+      transition,
+    } = this.props;
+
+    const prev = stack.get(prevRoute);
+    const next = stack.get(nextRoute);
+
+    const params = {
+      action: router.action,
+      current,
+      index,
+      prev,
+      next,
+    };
 
     return (
-      <Spring {...this.transition} onStart={this.handleStart} onRest={this.handleRest}>
+      <Spring
+        {...transition(params)}
+        immediate={immediate}
+        native
+        onStart={this.handleStart}
+        onRest={this.handleRest}
+      >
         {props => (
-          <div className={className} style={{ ...props, zIndex: index }}>
-            <Component />
-          </div>
+          <animated.div className={className} style={{ ...props, zIndex: index }}>
+            <Component route={current ? next : prev} />
+          </animated.div>
         )}
       </Spring>
     );

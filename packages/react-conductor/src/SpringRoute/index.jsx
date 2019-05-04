@@ -11,8 +11,8 @@ import { RouteContext } from '../context';
 class SpringGroup extends Route {
   static propTypes = {
     ...Route.propTypes,
+    transition: PropTypes.func.isRequired,
     className: PropTypes.string,
-    transition: PropTypes.shape(),
   };
 
   /**
@@ -21,7 +21,7 @@ class SpringGroup extends Route {
   get matchingRoutes() {
     const { pattern } = this.props;
 
-    return this.context.reduce((acc, [, route], index) => {
+    return this.context.stack.reduce((acc, [, route], index) => {
       if (pattern === route.pattern) {
         acc.push({
           index,
@@ -41,7 +41,7 @@ class SpringGroup extends Route {
     const routes = this.matchingRoutes;
 
     return routes.map((entry) => {
-      const current = entry.index === router.routeIndex;
+      const current = (entry.index === router.routeIndex);
       const {
         transform,
         ...context
@@ -59,6 +59,8 @@ class SpringGroup extends Route {
             current={current}
             index={entry.index}
             transition={transition}
+            prevRoute={this.context.prev}
+            nextRoute={this.context.next}
           />
         </RouteContext.Provider>
       );
