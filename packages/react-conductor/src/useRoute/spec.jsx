@@ -6,6 +6,8 @@ import useRoute from '.';
 
 const spy = jest.spyOn(router, 'update');
 
+const spy = jest.spyOn(router, 'update');
+
 let useRoute1 = null;
 let useRoute2 = null;
 
