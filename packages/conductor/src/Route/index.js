@@ -56,10 +56,6 @@ class Route {
    * @param {Function} transform The transformer function.
    */
   setPattern(pattern, transform) {
-    if (!pattern) {
-      return;
-    }
-
     const urlPattern = new UrlPattern(pattern);
 
     this.pattern = pattern;

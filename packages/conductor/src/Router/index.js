@@ -179,14 +179,6 @@ class Router {
         return;
       }
 
-      // Check for ongoing router action.
-      if (this.routing) {
-        // TODO: create real error
-        reject(new Error('Error'));
-        this.nativeEvent = true;
-        return;
-      }
-
       const {
         emitBefore = true,
         emitAfter = true,
@@ -336,14 +328,6 @@ class Router {
     // Check for empty params.
     if (Object.keys(params).length === 0) {
       reject(new Error(errors.EPARAMSEMPTY));
-      this.nativeEvent = true;
-      return;
-    }
-
-    // Check for ongoing router action.
-    if (this.routing) {
-      // TODO: create real error
-      reject(new Error('Error'));
       this.nativeEvent = true;
       return;
     }

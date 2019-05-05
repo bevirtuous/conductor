@@ -62,4 +62,9 @@ describe('Events', () => {
     emitter.emit(constants.EVENT_UPDATE);
     expect(mockCallback).toHaveBeenCalled();
   });
+
+  it('should not register with no callback', () => {
+    events.onUpdate({});
+    expect(emitter.listenerCount()).toBe(0);
+  });
 });

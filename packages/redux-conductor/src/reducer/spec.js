@@ -113,7 +113,7 @@ describe('Redux Conductor - Reducer', () => {
   it('should handle an UPDATE action', () => {
     const route = router.getCurrentRoute();
     const initialState = {
-      stack: [route],
+      stack: [route, { id: 'other-route' }],
     };
     const action = {
       type: constants.CONDUCTOR_UPDATE,
@@ -133,7 +133,24 @@ describe('Redux Conductor - Reducer', () => {
         state: {
           a: 1,
         },
+      }, {
+        id: 'other-route',
       }],
     });
+  });
+
+  it('should ignore non-router actions', () => {
+    const route = router.getCurrentRoute();
+    const initialState = {
+      stack: [route],
+    };
+
+    const action = {
+      type: 'OTHER_ACTION',
+    };
+
+    const state = reducer(initialState, action);
+
+    expect(state).toBe(initialState);
   });
 });

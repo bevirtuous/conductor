@@ -534,6 +534,10 @@ describe('Conductor', () => {
       expect(router.matches('/hello/:id', '/myroute/123')).toBe(false);
     });
 
+    it('should not match when pattern is missing', () => {
+      expect(router.matches()).toBe(false);
+    });
+
     it('should not match when params are missing', () => {
       expect(router.matches(pattern1)).toBe(false);
     });
