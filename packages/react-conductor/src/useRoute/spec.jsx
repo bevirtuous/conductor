@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-testing-library';
 import { router, stack } from '@virtuous/conductor';
-import { Router } from '../index';
-import useRoute from './index';
+import Router from '../Router';
+import useRoute from '.';
 
 const spy = jest.spyOn(router, 'update');
 

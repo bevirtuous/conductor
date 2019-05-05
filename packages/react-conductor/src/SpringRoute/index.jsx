@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { router } from '@virtuous/conductor';
+import { router, stack } from '@virtuous/conductor';
 import Route from '../Route';
 import Child from './components/Route';
 import { RouteContext } from '../context';
@@ -20,17 +20,29 @@ class SpringGroup extends Route {
    */
   get matchingRoutes() {
     const { pattern } = this.props;
+    const matches = [];
+    const prev = stack.get(this.context.prev);
+    const next = stack.get(this.context.next);
 
-    return this.context.stack.reduce((acc, [, route], index) => {
-      if (pattern === route.pattern) {
-        acc.push({
-          index,
-          route,
-        });
-      }
+    if (prev && prev.pattern === pattern) {
+      const index = this.context.stack.findIndex(([id]) => id === prev.id);
 
-      return acc;
-    }, []);
+      matches.push({
+        index,
+        route: prev,
+      });
+    }
+
+    if (next && next.pattern === pattern) {
+      const index = this.context.stack.findIndex(([id]) => id === next.id);
+
+      matches.push({
+        index,
+        route: next,
+      });
+    }
+
+    return matches;
   }
 
   /**

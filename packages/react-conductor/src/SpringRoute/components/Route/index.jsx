@@ -32,7 +32,7 @@ class SpringRoute extends React.Component {
   }
 
   /**
-   * When the route is the current route, make sure that it can render.
+   * When the route is the current route then make sure that it renders.
    * @param {Object} props The new component props.
    * @returns {Object|null}
    */
@@ -54,21 +54,28 @@ class SpringRoute extends React.Component {
   }
 
   /**
-   * When the animation has completed, we need to set the render state of the component.
+   * When the animation has completed we need to tell the component to not output anything.
    * If the component animated out then it should not be rendered.
    */
   handleRest = () => {
     const { current } = this.props;
 
     if (current) {
-      emitter.emit(EVENT_DID_ENTER, this.context);
+      this.emitDidEnter();
     } else {
       this.setState(
         { render: false },
-        // TODO: move to class method
-        () => emitter.emit(EVENT_DID_LEAVE, this.context)
+        this.emitDidLeave
       );
     }
+  }
+
+  emitDidEnter = () => {
+    emitter.emit(EVENT_DID_ENTER, this.context);
+  }
+
+  emitDidLeave = () => {
+    emitter.emit(EVENT_DID_LEAVE, this.context);
   }
 
   /**
@@ -111,9 +118,9 @@ class SpringRoute extends React.Component {
         onRest={this.handleRest}
       >
         {props => (
-          <animated.div className={className} style={{ ...props, zIndex: index }}>
+          <animated.article className={className} style={{ ...props, zIndex: index }}>
             <Component route={current ? next : prev} />
-          </animated.div>
+          </animated.article>
         )}
       </Spring>
     );

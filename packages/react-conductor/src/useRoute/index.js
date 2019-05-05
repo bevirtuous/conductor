@@ -7,18 +7,18 @@ import { RouterContext } from '../context';
  * @returns {Object|null}
  */
 function useRoute(id = null) {
-  const routes = useContext(RouterContext);
+  const { stack } = useContext(RouterContext);
 
   if (!id) {
     return {
-      ...routes[router.routeIndex][1],
+      ...stack[router.routeIndex][1],
       update: (state) => {
-        router.update(routes[router.routeIndex][1].id, state);
+        router.update(stack[router.routeIndex][1].id, state);
       },
     };
   }
 
-  const match = routes.find(([routeId]) => (id === routeId));
+  const match = stack.find(([routeId]) => (id === routeId));
 
   if (!match) {
     return {};

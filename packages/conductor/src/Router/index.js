@@ -52,12 +52,11 @@ class Router {
 
     const next = stack.getByIndex(this.routeIndex + 1);
 
-    // TODO: What?
     if (next && location.state && location.state.route && next.id === location.state.route.id) {
       this.handlePush({
         pathname: location.pathname,
         state: location.state,
-      }, false);
+      }, false, true);
 
       return;
     }
@@ -159,10 +158,12 @@ class Router {
 
   /**
    * @param {Object} params The params to use when navigating.
-   * @param {Object} [cleanStack=true] When true, the overhanging routes will be removed.
+   * @param {boolean} [cleanStack=true] When true, the overhanging routes will be removed.
+   * @param {boolean} [nativePush=false] When true, the process of adding a route to
+   * the stack is skipped.
    * @returns {Promise}
    */
-  handlePush(params, cleanStack = true) {
+  handlePush(params, cleanStack = true, nativePush = false) {
     return new Promise((resolve, reject) => {
       // Check for missing parameters.
       if (!params) {
@@ -209,7 +210,7 @@ class Router {
       const id = this.createId();
       const { transform } = pattern ? this.patterns[pattern] : {};
       const prev = stack.getByIndex(this.routeIndex);
-      const next = new Route({
+      const next = nativePush ? stack.getByIndex(this.routeIndex + 1) : new Route({
         id,
         pathname,
         pattern,
@@ -217,8 +218,10 @@ class Router {
         transform,
       });
 
-      // Add item to the stack
-      stack.add(id, next);
+      if (!nativePush) {
+        // Add item to the stack
+        stack.add(id, next);
+      }
 
       // Emit creation event.
       if (emitBefore) {
@@ -285,7 +288,6 @@ class Router {
    * @param {string} pattern The pattern to register.
    * @param {Function} transform The route transformer.
    */
-  // TODO: convert to Promise
   register = (pattern, transform = null) => {
     if (!pattern) {
       throw new Error(errors.EMISSINGPATTERN);
