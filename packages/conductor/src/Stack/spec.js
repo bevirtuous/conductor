@@ -51,6 +51,12 @@ describe('Stack', () => {
     });
   });
 
+  describe('getByIndex()', () => {
+    it('should return null when no index is given', () => {
+      expect(stack.getByIndex()).toBeNull();
+    });
+  });
+
   describe('getAll()', () => {
     it('should correctly return the complete map', () => {
       stack.add('123', {});
