@@ -19,4 +19,4 @@ RouteNotFound.propTypes = {
   component: PropTypes.func.isRequired,
 };
 
-export default React.memo(RouteNotFound, () => true);
+export default RouteNotFound;
