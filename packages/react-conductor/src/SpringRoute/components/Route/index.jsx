@@ -118,9 +118,9 @@ class SpringRoute extends React.Component {
         onRest={this.handleRest}
       >
         {props => (
-          <animated.article className={className} style={{ ...props, zIndex: index }}>
+          <animated.div className={className} style={{ ...props, zIndex: index }}>
             <Component route={current ? next : prev} />
-          </animated.article>
+          </animated.div>
         )}
       </Spring>
     );
