@@ -19,7 +19,7 @@ class SpringRoute extends React.Component {
     component: PropTypes.func.isRequired,
     current: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
-    transition: PropTypes.func.isRequired,
+    spring: PropTypes.func.isRequired,
     className: PropTypes.string,
   }
 
@@ -95,7 +95,7 @@ class SpringRoute extends React.Component {
       index,
       nextRoute,
       prevRoute,
-      transition,
+      spring,
     } = this.props;
 
     const prev = stack.get(prevRoute);
@@ -111,7 +111,7 @@ class SpringRoute extends React.Component {
 
     return (
       <Spring
-        {...transition(params)}
+        {...spring(params)}
         immediate={immediate}
         native
         onStart={this.handleStart}

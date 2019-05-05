@@ -11,7 +11,7 @@ import { RouteContext } from '../context';
 class SpringGroup extends Route {
   static propTypes = {
     ...Route.propTypes,
-    transition: PropTypes.func.isRequired,
+    spring: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
 
@@ -49,7 +49,7 @@ class SpringGroup extends Route {
    * @returns {JSX}
    */
   render() {
-    const { className, component, transition } = this.props;
+    const { className, component, spring } = this.props;
     const routes = this.matchingRoutes;
 
     return routes.map((entry) => {
@@ -70,7 +70,7 @@ class SpringGroup extends Route {
             component={component}
             current={current}
             index={entry.index}
-            transition={transition}
+            spring={spring}
             prevRoute={this.context.prev}
             nextRoute={this.context.next}
           />
