@@ -1,5 +1,42 @@
-// Test for no matching routes
-// Test for only next route
-// Test for prev and next route
-// Test for multiple routes with same pattern rendering
-// Test props of rendered children??
+import React from 'react';
+import { mount } from 'enzyme';
+import { router } from '@virtuous/conductor';
+import Router from '../Router';
+import SpringRoute from '.';
+
+describe('SpringRoute()', () => {
+  it('should render nothing when no routes match', async () => {
+    const app = mount((
+      <Router>
+        <SpringRoute
+          component={() => <div>hello</div>}
+          pattern="/myroute/:id"
+          spring={() => {}}
+        />
+      </Router>
+    ));
+
+    await router.push({ pathname: '/no-match' });
+
+    expect(app.html()).toBeNull();
+  });
+
+  it('should render a matching route', async () => {
+    const app = mount((
+      <Router>
+        <SpringRoute
+          component={() => <div>hello</div>}
+          pattern="/myroute/:id"
+          spring={() => ({
+            from: { left: 0 },
+            to: { left: 50 },
+          })}
+        />
+      </Router>
+    ));
+
+    await router.push({ pathname: '/myroute/456' });
+
+    expect(app.html()).toMatchSnapshot();
+  });
+});

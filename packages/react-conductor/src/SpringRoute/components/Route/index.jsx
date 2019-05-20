@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { animated, Spring } from 'react-spring/renderprops';
+import { animated } from 'react-spring';
+import { Spring } from 'react-spring/renderprops.cjs';
 import { emitter, router, stack } from '@virtuous/conductor';
 import { RouteContext } from '../../../context';
 import {
@@ -111,8 +112,8 @@ class SpringRoute extends React.Component {
 
     return (
       <Spring
-        {...spring(params)}
         immediate={immediate}
+        {...spring(params)}
         native
         onStart={this.handleStart}
         onRest={this.handleRest}
