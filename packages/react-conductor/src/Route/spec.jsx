@@ -59,7 +59,7 @@ describe('<Route />', () => {
       </Router>
     ));
 
-    expect(route.html()).toBeNull();
+    expect(route.html()).toBe('');
   });
 
   it('should react to router events and update', async () => {
@@ -77,13 +77,15 @@ describe('<Route />', () => {
     ));
 
     // Should initially render the component (match found).
-    expect(route.find('Route').at(0).html()).toBe('<div></div>');
-    expect(route.find('Route').at(1).html()).toBeNull();
+    expect(route.find(Route).at(0).html()).toBe('<div></div>');
+    expect(route.find(Route).at(1).html()).toBeNull();
 
     await router.push({ pathname: '/other' });
 
+    route.update();
+
     // Should now render null (first route does not match).
-    expect(route.find('Route').at(0).html()).toBeNull();
-    expect(route.find('Route').at(1).html()).toBe('<div></div>');
+    expect(route.find(Route).at(0).html()).toBeNull();
+    expect(route.find(Route).at(1).html()).toBe('<div></div>');
   });
 });
