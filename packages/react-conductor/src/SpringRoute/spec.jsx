@@ -18,7 +18,7 @@ describe('SpringRoute()', () => {
 
     await router.push({ pathname: '/no-match' });
 
-    expect(app.html()).toBe('');
+    expect(app.html()).toMatchSnapshot();
   });
 
   it('should render a matching route', async () => {

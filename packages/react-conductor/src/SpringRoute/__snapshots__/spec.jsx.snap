@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SpringRoute() should render a matching route 1`] = `"<div style=\\"z-index: 2;\\"><div>hello</div></div>"`;
+
+exports[`SpringRoute() should render nothing when no routes match 1`] = `""`;
