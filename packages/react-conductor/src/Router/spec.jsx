@@ -24,7 +24,7 @@ describe('<Router />', () => {
     // TODO: Test Router context value
   });
 
-  it.only('should pass the history function to core', () => {
+  it('should pass the history function to core', () => {
     const mockHistory = () => ({
       listen: () => {},
       location: {},

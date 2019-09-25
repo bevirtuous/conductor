@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpringRoute Child should not render when \`render\` state is false 1`] = `
+<SpringRoute
+  className="my-classname"
+  component={[Function]}
+  current={false}
+  index={1}
+  spring={[Function]}
+/>
+`;
+
+exports[`SpringRoute Child should render as expected 1`] = `
+<SpringRoute
+  className="my-classname"
+  component={[Function]}
+  current={true}
+  index={1}
+  spring={[Function]}
+>
+  <Spring
+    config={
+      Object {
+        "friction": 26,
+        "tension": 170,
+      }
+    }
+    force={false}
+    from={Object {}}
+    immediate={true}
+    inject={[Function]}
+    native={true}
+    onRest={[Function]}
+    onStart={[Function]}
+    reset={false}
+    to={Object {}}
+  />
+</SpringRoute>
+`;
