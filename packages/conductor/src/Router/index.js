@@ -492,12 +492,15 @@ class Router {
     }
 
     const previous = this.getCurrentRoute();
-    await this.handlePop({
-      emitBefore: false,
-      emitAfter: false,
-      forceNative: true,
-      steps: this.routeIndex,
-    });
+
+    if (this.routeIndex > 0) {
+      await this.handlePop({
+        emitBefore: false,
+        emitAfter: false,
+        forceNative: true,
+        steps: this.routeIndex,
+      });
+    }
 
     await this.handleReplace({ pathname, state });
 
