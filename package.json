@@ -12,6 +12,7 @@
     "@babel/runtime": "^7.6.0",
     "@babel/runtime-corejs3": "^7.6.0",
     "@virtuous/eslint-config": "^2.0.0-beta.3",
+    "@virtuous/react-unit-test-suite": "^1.2.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.21",
