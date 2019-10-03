@@ -244,12 +244,6 @@ describe('Conductor', () => {
       });
     });
 
-    it('should not pop when stack has less than 2 entries', async () => {
-      await router.pop().catch(error => (
-        expect(error).toEqual(new Error(errors.ESTACKLENGTH))
-      ));
-    });
-
     it('should not pop when steps is negative', async () => {
       await router.push({ pathname: '/myroute/456' });
       await router.pop({ steps: -3 }).catch(error => (

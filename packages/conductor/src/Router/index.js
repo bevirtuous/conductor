@@ -6,9 +6,6 @@ import matcher from '../matcher';
 import stack from '../Stack';
 import * as constants from '../constants';
 
-/**
- * The Router class.
- */
 class Router {
   /**
    * @param {Function} createHistory The function to create a history instance.
@@ -97,12 +94,6 @@ class Router {
       state = null,
     } = params;
     let unlisten = null;
-
-    if (this.routeIndex === 0) {
-      reject(new Error(errors.ESTACKLENGTH));
-      this.nativeEvent = true;
-      return;
-    }
 
     if (steps <= 0) {
       reject(new Error(errors.EINVALIDSTEPS));
@@ -487,12 +478,15 @@ class Router {
     }
 
     const previous = this.getCurrentRoute();
-    await this.handlePop({
-      emitBefore: false,
-      emitAfter: false,
-      forceNative: true,
-      steps: this.routeIndex,
-    });
+
+    if (this.routeIndex > 0) {
+      await this.handlePop({
+        emitBefore: false,
+        emitAfter: false,
+        forceNative: true,
+        steps: this.routeIndex,
+      });
+    }
 
     await this.handleReplace({ pathname, state });
 
