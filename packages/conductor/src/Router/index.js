@@ -19,9 +19,6 @@ class Router {
     // The patterns are collected to match against pathnames.
     this.patterns = {};
 
-    // Flag to indicate whether or not there is an ongoing history change.
-    this.routing = false;
-
     // The `routeIndex` is used to track which stack entry is the current route.
     this.routeIndex = 0;
 
@@ -130,7 +127,6 @@ class Router {
 
       resolve(end);
       this.nativeEvent = true;
-      this.routing = false;
     };
 
     /**
@@ -178,9 +174,6 @@ class Router {
       } = params;
       const pattern = this.findPattern(pathname.split('?')[0]);
       let unlisten = null;
-
-      // Block further router actions until this Promise has been returned.
-      this.routing = true;
 
       // Remove all unwanted items from the stack.
       if (cleanStack) {
@@ -232,7 +225,6 @@ class Router {
         // Resolve the Promise.
         resolve({ prev, next });
         this.nativeEvent = true;
-        this.routing = false;
       };
 
       /**
@@ -338,9 +330,6 @@ class Router {
       return;
     }
 
-    // Block further router actions until this Promise has been returned.
-    this.routing = true;
-
     const { id } = stack.getByIndex(this.routeIndex);
     const { transform } = this.patterns[pattern];
     const prev = stack.get(id);
@@ -377,7 +366,6 @@ class Router {
 
       resolve(end);
       this.nativeEvent = true;
-      this.routing = false;
     };
 
     /**
