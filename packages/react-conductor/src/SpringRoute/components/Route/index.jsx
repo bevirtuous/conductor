@@ -114,7 +114,7 @@ class SpringRoute extends React.Component {
       <Spring
         immediate={immediate}
         {...spring(params)}
-        native
+        native={false}
         onStart={this.handleStart}
         onRest={this.handleRest}
       >
