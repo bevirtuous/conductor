@@ -25,5 +25,3 @@ export const sync = ({ dispatch }) => {
   onDidReset(routes => dispatch(actions.conductorReset(routes)));
   onUpdate(route => dispatch(actions.conductorUpdate(route)));
 };
-
-export default sync;

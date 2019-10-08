@@ -6,7 +6,7 @@ import {
   EVENT_DID_RESET,
   EVENT_UPDATE,
 } from '@virtuous/conductor';
-import syncStore from './index';
+import { sync } from './index';
 import * as actions from './actions';
 
 const dispatch = jest.fn();
@@ -21,7 +21,7 @@ const routes = {
 
 describe('Redux Conductor - Setup', () => {
   beforeAll(() => {
-    syncStore({ dispatch });
+    sync({ dispatch });
   });
 
   afterEach(() => {
