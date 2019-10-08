@@ -45,6 +45,9 @@ class SpringRoute extends React.Component {
     return null;
   }
 
+  /**
+   * When the animation begins then remove immediate override and emit event.
+   */
   handleStart = () => {
     const { current } = this.props;
     const eventName = current ? EVENT_WILL_ENTER : EVENT_WILL_LEAVE;
