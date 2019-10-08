@@ -49,7 +49,7 @@ class SpringGroup extends Route {
    * @returns {JSX}
    */
   render() {
-    const { className, component, spring } = this.props;
+    const { children, className, spring } = this.props;
     const routes = this.matchingRoutes;
 
     return routes.map((entry) => {
@@ -61,13 +61,14 @@ class SpringGroup extends Route {
         <RouteContext.Provider key={key} value={context}>
           <Child
             className={className}
-            component={component}
             current={current}
             index={entry.index}
             spring={spring}
             prevRoute={this.context.prev}
             nextRoute={this.context.next}
-          />
+          >
+            {children}
+          </Child>
         </RouteContext.Provider>
       );
     });

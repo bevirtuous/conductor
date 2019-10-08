@@ -13,7 +13,7 @@ class Route extends React.Component {
   static NotFound = RouteNotFound;
 
   static propTypes = {
-    component: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
     path: PropTypes.string.isRequired,
     transform: PropTypes.func,
   }
@@ -34,19 +34,19 @@ class Route extends React.Component {
    * @returns {JSX}
    */
   render() {
-    const { component: Component, path } = this.props;
+    const { children, path } = this.props;
     const route = router.getCurrentRoute();
 
     if (route.pattern !== path) {
       return null;
     }
 
-    const { transform, ...props } = route;
+    const { transform, ...rest } = route;
     const key = `${route.id}-${route.pathname}`;
 
     return (
-      <RouteContext.Provider key={key} value={props}>
-        <Component route={props} />
+      <RouteContext.Provider key={key} value={rest}>
+        {children}
       </RouteContext.Provider>
     );
   }

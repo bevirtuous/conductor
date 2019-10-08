@@ -8,11 +8,9 @@ describe('SpringRoute()', () => {
   it('should render nothing when no routes match', async () => {
     const app = mount((
       <Router>
-        <SpringRoute
-          component={() => <div>hello</div>}
-          path="/myroute/:id"
-          spring={() => {}}
-        />
+        <SpringRoute path="/myroute/:id" spring={() => {}}>
+          <div>hello</div>
+        </SpringRoute>
       </Router>
     ));
 
@@ -25,13 +23,14 @@ describe('SpringRoute()', () => {
     const app = mount((
       <Router>
         <SpringRoute
-          component={() => <div>hello</div>}
           path="/myroute/:id"
           spring={() => ({
             from: { left: 0 },
             to: { left: 50 },
           })}
-        />
+        >
+          <div>hello</div>
+        </SpringRoute>
       </Router>
     ));
 

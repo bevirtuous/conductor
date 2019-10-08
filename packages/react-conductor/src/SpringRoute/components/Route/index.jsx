@@ -17,7 +17,7 @@ class SpringRoute extends React.Component {
   static contextType = RouteContext;
 
   static propTypes = {
-    component: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
     current: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
     spring: PropTypes.func.isRequired,
@@ -93,8 +93,8 @@ class SpringRoute extends React.Component {
     }
 
     const {
+      children,
       className,
-      component: Component,
       current,
       index,
       nextRoute,
@@ -123,7 +123,7 @@ class SpringRoute extends React.Component {
       >
         {props => (
           <animated.div className={className} style={{ ...props, zIndex: index }}>
-            <Component route={current ? next : prev} />
+            {children}
           </animated.div>
         )}
       </Spring>

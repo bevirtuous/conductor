@@ -13,11 +13,9 @@ describe('<Route />', () => {
   it('should render component', () => {
     mount((
       <Router>
-        <Route
-          path={path}
-          component={() => <div />}
-          transform={transform}
-        />
+        <Route path={path} transform={transform}>
+          <div />
+        </Route>
       </Router>
     ));
 
@@ -39,10 +37,9 @@ describe('<Route />', () => {
 
     mount((
       <Router>
-        <Route
-          path={path}
-          component={MyComponent}
-        />
+        <Route path={path}>
+          <MyComponent />
+        </Route>
       </Router>
     ));
 
@@ -52,10 +49,9 @@ describe('<Route />', () => {
   it('should render null when does not match current route', () => {
     const route = mount((
       <Router>
-        <Route
-          path="/wrong"
-          component={() => <div />}
-        />
+        <Route path="/wrong">
+          <div />
+        </Route>
       </Router>
     ));
 
@@ -65,14 +61,12 @@ describe('<Route />', () => {
   it('should react to router events and update', async () => {
     const route = mount((
       <Router>
-        <Route
-          path={path}
-          component={() => <div />}
-        />
-        <Route
-          path="/other"
-          component={() => <div />}
-        />
+        <Route path={path}>
+          <div />
+        </Route>
+        <Route path="/other">
+          <div />
+        </Route>
       </Router>
     ));
 
