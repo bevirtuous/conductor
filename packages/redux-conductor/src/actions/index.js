@@ -1,7 +1,6 @@
 import * as constants from '../constants';
 
 /**
- * Creates the CONDUCTOR_PUSH action object.
  * @param {Object} routes The previous and next routes.
  * @return {Object} A Redux action.
  */
@@ -11,7 +10,6 @@ export const conductorPush = routes => ({
 });
 
 /**
- * Creates the CONDUCTOR_POP action object.
  * @param {Array} stack The new stack.
  * @return {Object} A Redux action.
  */
@@ -21,7 +19,6 @@ export const conductorPop = stack => ({
 });
 
 /**
- * Creates the CONDUCTOR_REPLACE action object.
  * @param {Array} stack The new stack.
  * @return {Object} A Redux action.
  */
@@ -31,7 +28,6 @@ export const conductorReplace = stack => ({
 });
 
 /**
- * Creates the CONDUCTOR_RESET action object.
  * @param {Object} routes The previous and next routes.
  * @return {Object} A Redux action.
  */
@@ -41,7 +37,6 @@ export const conductorReset = routes => ({
 });
 
 /**
- * Creates the CONDUCTOR_UPDATE action object.
  * @param {Route} route The updated route.
  * @return {Object} A Redux action.
  */

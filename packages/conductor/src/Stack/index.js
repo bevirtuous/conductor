@@ -1,6 +1,3 @@
-/**
- * The Stack class.
- */
 class Stack {
   stack = new Map();
 
