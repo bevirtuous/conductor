@@ -31,17 +31,6 @@ class Route extends React.Component {
   }
 
   /**
-   * @returns {Object}
-   */
-  getContextValue = () => {
-    const { ...context } = router.getCurrentRoute();
-    context.open = true;
-    context.visible = true;
-
-    return context;
-  }
-
-  /**
    * @returns {JSX}
    */
   render() {
@@ -56,7 +45,7 @@ class Route extends React.Component {
     const key = `${route.id}-${route.pathname}`;
 
     return (
-      <RouteContext.Provider key={key} value={this.getContextValue()}>
+      <RouteContext.Provider key={key} value={props}>
         <Component route={props} />
       </RouteContext.Provider>
     );

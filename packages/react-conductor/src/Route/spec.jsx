@@ -46,7 +46,7 @@ describe('<Route />', () => {
       </Router>
     ));
 
-    expect({ ...current, open: true, visible: true }).toMatchObject(contextValue);
+    expect(current).toMatchObject(contextValue);
   });
 
   it('should render null when does not match current route', () => {
