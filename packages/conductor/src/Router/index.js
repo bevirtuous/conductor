@@ -272,10 +272,8 @@ class Router {
       throw new Error(errors.EINVALIDPATTERN);
     }
 
-    //
     const match = matcher(pattern);
 
-    //
     this.patterns[pattern] = {
       match,
       transform,
@@ -298,6 +296,10 @@ class Router {
       emitter.emit(constants.EVENT_WILL_PUSH, end, true);
       emitter.emit(constants.EVENT_DID_PUSH, end, true);
     }
+  }
+
+  deregister = (pattern) => {
+    delete this.patterns[pattern];
   }
 
   handleReplace = params => new Promise((resolve, reject) => {

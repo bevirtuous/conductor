@@ -80,6 +80,20 @@ describe('Conductor', () => {
     });
   });
 
+  describe('deregister()', () => {
+    it('should correctly deregister a pattern with', () => {
+      router.register('/test');
+      router.register('/test2');
+      router.register('/test3');
+
+      router.deregister('/test2');
+
+      expect(router.patterns['/test']).toBeTruthy();
+      expect(router.patterns['/test2']).toBeFalsy();
+      expect(router.patterns['/test3']).toBeTruthy();
+    });
+  });
+
   describe('push()', () => {
     it('should resolve correctly', () => {
       const params = {
