@@ -14,7 +14,7 @@ class Route extends React.Component {
 
   static propTypes = {
     component: PropTypes.func.isRequired,
-    pattern: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
     transform: PropTypes.func,
   }
 
@@ -27,17 +27,17 @@ class Route extends React.Component {
    */
   constructor(props) {
     super(props);
-    router.register(props.pattern, props.transform);
+    router.register(props.path, props.transform);
   }
 
   /**
    * @returns {JSX}
    */
   render() {
-    const { component: Component, pattern } = this.props;
+    const { component: Component, path } = this.props;
     const route = router.getCurrentRoute();
 
-    if (route.pattern !== pattern) {
+    if (route.pattern !== path) {
       return null;
     }
 

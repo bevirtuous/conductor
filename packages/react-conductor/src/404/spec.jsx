@@ -19,7 +19,7 @@ describe('<Route.NotFound />', () => {
     const app = shallow((
       <Router>
         <Route
-          pattern="/myroute/123"
+          path="/myroute/123"
           component={() => <div>My Route page</div>}
         />
         <Route.NotFound component={ErrorPage} />

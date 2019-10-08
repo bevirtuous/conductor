@@ -5,7 +5,7 @@ import Router from '../Router/index';
 import { RouteContext } from '../context';
 import Route from './index';
 
-const pattern = '/myroute/:id';
+const path = '/myroute/:id';
 const spy = jest.spyOn(router, 'register');
 const transform = route => route;
 
@@ -14,14 +14,14 @@ describe('<Route />', () => {
     mount((
       <Router>
         <Route
-          pattern={pattern}
+          path={path}
           component={() => <div />}
           transform={transform}
         />
       </Router>
     ));
 
-    expect(spy).toHaveBeenCalledWith(pattern, transform);
+    expect(spy).toHaveBeenCalledWith(path, transform);
   });
 
   it('should correctly set the RouteContext value', () => {
@@ -40,7 +40,7 @@ describe('<Route />', () => {
     mount((
       <Router>
         <Route
-          pattern={pattern}
+          path={path}
           component={MyComponent}
         />
       </Router>
@@ -53,7 +53,7 @@ describe('<Route />', () => {
     const route = mount((
       <Router>
         <Route
-          pattern="/wrong"
+          path="/wrong"
           component={() => <div />}
         />
       </Router>
@@ -66,11 +66,11 @@ describe('<Route />', () => {
     const route = mount((
       <Router>
         <Route
-          pattern={pattern}
+          path={path}
           component={() => <div />}
         />
         <Route
-          pattern="/other"
+          path="/other"
           component={() => <div />}
         />
       </Router>

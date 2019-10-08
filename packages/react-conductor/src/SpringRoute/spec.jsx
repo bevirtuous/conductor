@@ -10,7 +10,7 @@ describe('SpringRoute()', () => {
       <Router>
         <SpringRoute
           component={() => <div>hello</div>}
-          pattern="/myroute/:id"
+          path="/myroute/:id"
           spring={() => {}}
         />
       </Router>
@@ -26,7 +26,7 @@ describe('SpringRoute()', () => {
       <Router>
         <SpringRoute
           component={() => <div>hello</div>}
-          pattern="/myroute/:id"
+          path="/myroute/:id"
           spring={() => ({
             from: { left: 0 },
             to: { left: 50 },

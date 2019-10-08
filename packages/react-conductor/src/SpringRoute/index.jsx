@@ -19,12 +19,12 @@ class SpringGroup extends Route {
    * @returns {Object}
    */
   get matchingRoutes() {
-    const { pattern } = this.props;
+    const { path } = this.props;
     const matches = [];
     const prev = stack.get(this.context.prev);
     const next = stack.get(this.context.next);
 
-    if (prev && prev.pattern === pattern) {
+    if (prev && prev.pattern === path) {
       const index = this.context.stack.findIndex(([id]) => id === prev.id);
 
       matches.push({
@@ -33,7 +33,7 @@ class SpringGroup extends Route {
       });
     }
 
-    if (next && next.pattern === pattern) {
+    if (next && next.pattern === path) {
       const index = this.context.stack.findIndex(([id]) => id === next.id);
 
       matches.push({
