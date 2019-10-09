@@ -1,6 +1,6 @@
 {
   "name": "@virtuous/react-conductor",
-  "version": "2.5.0",
+  "version": "3.0.0-beta.1",
   "description": "React bindings for Conductor",
   "license": "MIT",
   "repository": {
@@ -29,7 +29,7 @@
     "cover": "NODE_ENV=test npx jest --coverage"
   },
   "dependencies": {
-    "@virtuous/conductor": "2.5.0",
+    "@virtuous/conductor": "3.0.0-beta.1",
     "react-spring": "^8.0.19"
   },
   "devDependencies": {
