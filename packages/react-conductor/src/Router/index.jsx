@@ -51,7 +51,7 @@ class Router extends React.Component {
 
     this.state = {
       prev: null,
-      next: null,
+      next: router.getCurrentRoute().id,
       updated: null,
     };
 

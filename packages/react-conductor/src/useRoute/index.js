@@ -1,33 +1,17 @@
 import { useContext } from 'react';
 import { router } from '@virtuous/conductor';
-import { RouterContext } from '../context';
+import { RouteContext } from '../context';
 
 /**
- * @param {string} id A route id.
  * @returns {Object|null}
  */
-function useRoute(id = null) {
-  const { stack } = useContext(RouterContext);
-
-  if (!id) {
-    return {
-      ...stack[router.routeIndex][1],
-      update: (state) => {
-        router.update(stack[router.routeIndex][1].id, state);
-      },
-    };
-  }
-
-  const match = stack.find(([routeId]) => (id === routeId));
-
-  if (!match) {
-    return {};
-  }
+function useRoute() {
+  const { transform, ...rest } = useContext(RouteContext);
 
   return {
-    ...match[1],
+    ...rest,
     update: (state) => {
-      router.update(match[1].id, state);
+      router.update(rest.id, state);
     },
   };
 }
