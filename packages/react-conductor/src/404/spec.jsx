@@ -21,7 +21,9 @@ describe('<Route.NotFound />', () => {
         <Route path="/myroute/123">
           <div>My Route page</div>
         </Route>
-        <Route.NotFound component={ErrorPage} />
+        <Route.NotFound>
+          <ErrorPage />
+        </Route.NotFound>
       </Router>
     ));
 
@@ -31,7 +33,9 @@ describe('<Route.NotFound />', () => {
   it('should render the given component when no route matches', () => {
     const app = shallow((
       <Router>
-        <Route.NotFound component={ErrorPage} />
+        <Route.NotFound>
+          <ErrorPage />
+        </Route.NotFound>
       </Router>
     ));
 

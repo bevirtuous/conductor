@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { router } from '@virtuous/conductor';
 import { RouterContext } from '../context';
 
-function RouteNotFound({ component: Component }) {
+function RouteNotFound({ children }) {
   const { stack } = useContext(RouterContext);
   const { pathname } = stack[router.routeIndex][1];
 
@@ -11,13 +11,11 @@ function RouteNotFound({ component: Component }) {
     return null;
   }
 
-  return (
-    <Component />
-  );
+  return children;
 }
 
 RouteNotFound.propTypes = {
-  component: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default RouteNotFound;
