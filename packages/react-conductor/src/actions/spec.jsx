@@ -1,9 +1,14 @@
 import React from 'react';
 import { fireEvent, render } from 'react-testing-library';
 import { router } from '@virtuous/conductor';
-import Router from '../index';
+import Router from '../Router';
+import Push from './Push';
+import Pop from './Pop';
+import Replace from './Replace';
+import Reset from './Reset';
+import ResetTo from './ResetTo';
 
-describe('<Router.{Action} />', () => {
+describe('<{Action} />', () => {
   it('should render as expected', () => {
     const className = 'sausage';
     const state = {
@@ -18,21 +23,21 @@ describe('<Router.{Action} />', () => {
 
     const app = render((
       <Router>
-        <Router.Push className={className} to="/" state={state}>
+        <Push className={className} to="/" state={state}>
           Push!
-        </Router.Push>
-        <Router.Pop className={className} steps={2} state={state}>
+        </Push>
+        <Pop className={className} steps={2} state={state}>
           Pop!
-        </Router.Pop>
-        <Router.Replace className={className} to="/" state={state}>
+        </Pop>
+        <Replace className={className} to="/" state={state}>
           Replace!
-        </Router.Replace>
-        <Router.Reset className={className}>
+        </Replace>
+        <Reset className={className}>
           Reset!
-        </Router.Reset>
-        <Router.ResetTo className={className} to="/" state={state}>
+        </Reset>
+        <ResetTo className={className} to="/" state={state}>
           Reset to!
-        </Router.ResetTo>
+        </ResetTo>
       </Router>
     ));
 

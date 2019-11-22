@@ -4,5 +4,6 @@ export { default as SpringRoute } from './SpringRoute';
 export { default as useParams } from './useParams';
 export { default as useRoute } from './useRoute';
 export { default as useRouter } from './useRouter';
+export * from './actions';
 export * from './context';
 export * from './events';
