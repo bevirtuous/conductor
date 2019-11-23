@@ -3,20 +3,20 @@ import { render } from 'react-testing-library';
 import { router, stack } from '@virtuous/conductor';
 import Router from '../Router';
 import Route from '../Route';
-import useRoute from '.';
+import useCurrentRoute from './index';
 
-let useRoute1 = null;
+let useCurrentRoute1 = null;
 
 /**
  * @returns {null}
  */
 function MyComponent() {
-  useRoute1 = useRoute();
+  useCurrentRoute1 = useCurrentRoute();
   return null;
 }
 
-describe('useRoute()', () => {
-  it('should use the parent route', () => {
+describe('useCurrentRoute()', () => {
+  it('should use the current route or the given route id', () => {
     render((
       <Router>
         <Route path="/myroute/123">
@@ -25,9 +25,9 @@ describe('useRoute()', () => {
       </Router>
     ));
 
-    const { transform, ...route } = stack.getByIndex(router.routeIndex);
+    const { transform, ...route } = router.getCurrentRoute();
 
-    expect(useRoute1).toMatchObject({
+    expect(useCurrentRoute1).toMatchObject({
       ...route,
       update: expect.any(Function),
     });
@@ -37,8 +37,8 @@ describe('useRoute()', () => {
       hi: 5,
     };
 
-    useRoute1.update(newState);
+    useCurrentRoute1.update(newState);
 
-    expect(stack.get(useRoute1.id).state).toEqual({ hi: 5 });
+    expect(stack.get(useCurrentRoute1.id).state).toEqual({ hi: 5 });
   });
 });
