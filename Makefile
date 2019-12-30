@@ -1,4 +1,4 @@
-PACKAGES = conductor react-conductor redux-conductor
+PACKAGES = conductor react-conductor
 
 release:
 		make clean

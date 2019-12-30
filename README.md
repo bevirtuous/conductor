@@ -72,7 +72,6 @@ export default MyApp;
 | - | - |
 | [`@virtuous/conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/conductor)  | The core of Conductor  |
 | [`@virtuous/react-conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/react-conductor) | Bindings for React |
-| [`@virtuous/redux-conductor`](https://github.com/bevirtuous/conductor/blob/master/packages/redux-conductor) | Bindings for Redux |
 
 ### About
 
