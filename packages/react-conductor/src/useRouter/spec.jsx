@@ -4,13 +4,9 @@ import {
   emitter,
   router,
   EVENT_DID_PUSH,
-  EVENT_WILL_PUSH,
   EVENT_DID_POP,
-  EVENT_WILL_POP,
   EVENT_DID_REPLACE,
-  EVENT_WILL_REPLACE,
   EVENT_DID_RESET,
-  EVENT_WILL_RESET,
 } from '@virtuous/conductor';
 import useRouter from './index';
 
@@ -20,13 +16,9 @@ const {
   replace,
   reset,
   resetTo,
-  willPush,
   didPush,
-  willPop,
   didPop,
-  willReplace,
   didReplace,
-  willReset,
   didReset,
 } = useRouter();
 
@@ -60,16 +52,9 @@ describe('useRouter()', () => {
 
   it('should register and de-register events', async () => {
     function MyComponent() {
-      willPush(() => {});
       didPush(() => {});
-
-      willPop(() => {});
       didPop(() => {});
-
-      willReplace(() => {});
       didReplace(() => {});
-
-      willReset(() => {});
       didReset(() => {});
 
       return <div />;
@@ -78,26 +63,18 @@ describe('useRouter()', () => {
     render(<MyComponent />);
 
     // Make sure that the listeners are setup.
-    expect(emitter.listenerCount(EVENT_WILL_PUSH)).toBe(1);
     expect(emitter.listenerCount(EVENT_DID_PUSH)).toBe(1);
-    expect(emitter.listenerCount(EVENT_WILL_POP)).toBe(1);
     expect(emitter.listenerCount(EVENT_DID_POP)).toBe(1);
-    expect(emitter.listenerCount(EVENT_WILL_REPLACE)).toBe(1);
     expect(emitter.listenerCount(EVENT_DID_REPLACE)).toBe(1);
-    expect(emitter.listenerCount(EVENT_WILL_RESET)).toBe(1);
     expect(emitter.listenerCount(EVENT_DID_RESET)).toBe(1);
 
     // Unmount everything to trigger useEffect cleanup.
     cleanup();
 
     // Make sure that the listeners were reset.
-    expect(emitter.listenerCount(EVENT_WILL_PUSH)).toBe(0);
     expect(emitter.listenerCount(EVENT_DID_PUSH)).toBe(0);
-    expect(emitter.listenerCount(EVENT_WILL_POP)).toBe(0);
     expect(emitter.listenerCount(EVENT_DID_POP)).toBe(0);
-    expect(emitter.listenerCount(EVENT_WILL_REPLACE)).toBe(0);
     expect(emitter.listenerCount(EVENT_DID_REPLACE)).toBe(0);
-    expect(emitter.listenerCount(EVENT_WILL_RESET)).toBe(0);
     expect(emitter.listenerCount(EVENT_DID_RESET)).toBe(0);
   });
 });

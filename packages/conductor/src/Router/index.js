@@ -84,7 +84,6 @@ class Router {
    */
   handlePop = (params = {}) => new Promise((resolve, reject) => {
     const {
-      emitBefore = true,
       emitAfter = true,
       forceNative = false,
       steps = 1,
@@ -103,11 +102,6 @@ class Router {
     const prev = stack.getByIndex(this.routeIndex);
     const next = stack.getByIndex(targetIndex);
     const end = { prev, next };
-
-    // Emit creation event.
-    if (emitBefore) {
-      emitter.emit(constants.EVENT_WILL_POP, end);
-    }
 
     if (state) {
       next.state = Object.assign(next.state, state);
@@ -167,7 +161,6 @@ class Router {
       }
 
       const {
-        emitBefore = true,
         emitAfter = true,
         pathname,
         state,
@@ -197,11 +190,6 @@ class Router {
       if (!nativePush) {
         // Add item to the stack
         stack.add(id, next);
-      }
-
-      // Emit creation event.
-      if (emitBefore) {
-        emitter.emit(constants.EVENT_WILL_PUSH, { prev, next });
       }
 
       /**
@@ -293,7 +281,6 @@ class Router {
 
       const end = { prev: null, next: route };
 
-      emitter.emit(constants.EVENT_WILL_PUSH, end, true);
       emitter.emit(constants.EVENT_DID_PUSH, end, true);
     }
   }
@@ -318,7 +305,6 @@ class Router {
     }
 
     const {
-      emitBefore = true,
       emitAfter = true,
       pathname,
       state,
@@ -346,11 +332,6 @@ class Router {
 
     // Add item to the stack
     stack.add(id, next);
-
-    // Emit creation event.
-    if (emitBefore) {
-      emitter.emit(constants.EVENT_WILL_REPLACE, end);
-    }
 
     /**
      * The history event callback.
@@ -434,8 +415,6 @@ class Router {
       this.update(route.id, state, false);
     }
 
-    emitter.emit(constants.EVENT_WILL_RESET, next);
-
     if (this.routeIndex > 0) {
       await this.handlePop({
         emitBefore: false,
@@ -486,7 +465,6 @@ class Router {
       next: route,
     };
 
-    emitter.emit(constants.EVENT_WILL_RESET, next);
     emitter.emit(constants.EVENT_DID_RESET, next);
     resolve(next);
   });

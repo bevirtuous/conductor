@@ -103,10 +103,8 @@ describe('Conductor', () => {
         },
       };
 
-      const willCallback = jest.fn();
       const didCallback = jest.fn();
 
-      emitter.once(constants.EVENT_WILL_PUSH, willCallback);
       emitter.once(constants.EVENT_DID_PUSH, didCallback);
 
       return router.push(params).then((result) => {
@@ -118,7 +116,6 @@ describe('Conductor', () => {
         expect(route.query).toEqual({ s: 'phrase' });
         expect(route.state).toEqual({ test: 123 });
 
-        expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
 
         expect(result.prev.constructor.name === 'Route').toBeTruthy();
@@ -177,21 +174,6 @@ describe('Conductor', () => {
       ))
     ));
 
-    it('should not emit willPush event', () => {
-      const params = {
-        pathname: pathname1,
-        emitBefore: false,
-      };
-
-      const callback = jest.fn();
-
-      emitter.once(constants.EVENT_WILL_PUSH, callback);
-
-      return router.push(params).then(() => {
-        expect(callback).not.toHaveBeenCalled();
-      });
-    });
-
     it('should not emit didPush event', () => {
       const params = {
         pathname: pathname1,
@@ -225,10 +207,8 @@ describe('Conductor', () => {
 
   describe('pop()', () => {
     it('should resolve correctly', async (done) => {
-      const willCallback = jest.fn();
       const didCallback = jest.fn();
 
-      emitter.once(constants.EVENT_WILL_POP, willCallback);
       emitter.once(constants.EVENT_DID_POP, didCallback);
 
       await router.push({ pathname: '/myroute/456' });
@@ -239,7 +219,6 @@ describe('Conductor', () => {
         expect(stack.getAll().size).toBe(2);
         expect(router.routeIndex).toBe(0);
         expect(route).toEqual(result.next);
-        expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
         expect(router.history.location.pathname).toBe(pathname1);
 
@@ -293,17 +272,6 @@ describe('Conductor', () => {
       });
     });
 
-    it('should not emit willPop event', async () => {
-      const callback = jest.fn();
-      emitter.once(constants.EVENT_WILL_POP, callback);
-
-      await router.push({ pathname: '/myroute/456' });
-
-      return router.pop({ emitBefore: false }).then(() => {
-        expect(callback).not.toHaveBeenCalled();
-      });
-    });
-
     it('should not emit didPop event', async () => {
       const callback = jest.fn();
       emitter.once(constants.EVENT_DID_POP, callback);
@@ -318,9 +286,7 @@ describe('Conductor', () => {
 
   describe('replace()', () => {
     it('should replace correctly', (done) => {
-      const willCallback = jest.fn();
       const didCallback = jest.fn();
-      emitter.once(constants.EVENT_WILL_REPLACE, willCallback);
       emitter.once(constants.EVENT_DID_REPLACE, didCallback);
 
       router.replace({
@@ -332,7 +298,6 @@ describe('Conductor', () => {
         expect(stack.getAll().size).toBe(1);
         expect(route.pathname).toBe('/myroute/456');
         expect(route.state).toEqual({ test: 123 });
-        expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
         done();
       });
@@ -349,21 +314,6 @@ describe('Conductor', () => {
         expect(error).toEqual(new Error(errors.EPARAMSEMPTY))
       ))
     ));
-
-    it('should not emit willPush event', () => {
-      const params = {
-        pathname: pathname1,
-        emitBefore: false,
-      };
-
-      const callback = jest.fn();
-
-      emitter.once(constants.EVENT_WILL_REPLACE, callback);
-
-      return router.replace(params).then(() => {
-        expect(callback).not.toHaveBeenCalled();
-      });
-    });
 
     it('should not emit didPush event', () => {
       const params = {
@@ -393,10 +343,8 @@ describe('Conductor', () => {
   describe('reset()', () => {
     it('should correctly reset to the first route', (done) => {
       const [, firstRoute] = stack.first();
-
-      const willCallback = jest.fn();
       const didCallback = jest.fn();
-      emitter.once(constants.EVENT_WILL_RESET, willCallback);
+
       emitter.once(constants.EVENT_DID_RESET, didCallback);
 
       router.push({ pathname: '/myroute/456' });
@@ -410,20 +358,16 @@ describe('Conductor', () => {
         expect(firstRoute).toBe(result.next);
         expect(result.next.state).toEqual(state);
         expect(prevRoute).toBe(result.prev);
-        expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
         done();
       });
     });
 
     it('should not reset when there is only one route', (done) => {
-      const willCallback = jest.fn();
       const didCallback = jest.fn();
-      emitter.once(constants.EVENT_WILL_RESET, willCallback);
       emitter.once(constants.EVENT_DID_RESET, didCallback);
 
       router.reset().then(() => {
-        expect(willCallback).toHaveBeenCalled();
         expect(didCallback).toHaveBeenCalled();
         done();
       });
@@ -432,10 +376,8 @@ describe('Conductor', () => {
 
   describe('resetTo()', () => {
     it('should correctly reset to the specified route', async (done) => {
-      const willCallback = jest.fn();
       const didCallback = jest.fn();
 
-      emitter.once(constants.EVENT_WILL_RESET, willCallback);
       emitter.once(constants.EVENT_DID_RESET, didCallback);
 
       await router.push({ pathname: '/myroute/456' });
@@ -450,8 +392,6 @@ describe('Conductor', () => {
 
         // Should contain the newly pushed route and the new first route.
         expect(stack.getAll().size).toBe(2);
-
-        expect(willCallback).toHaveBeenCalledWith(result);
         expect(didCallback).toHaveBeenCalledWith(result);
         done();
       });

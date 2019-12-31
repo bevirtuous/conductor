@@ -9,21 +9,9 @@ describe('Events', () => {
     mockCallback.mockClear();
   });
 
-  it('registers for onWillPush event', () => {
-    events.onWillPush(mockCallback);
-    emitter.emit(constants.EVENT_WILL_PUSH);
-    expect(mockCallback).toHaveBeenCalled();
-  });
-
   it('registers for onDidPush event', () => {
     events.onDidPush(mockCallback);
     emitter.emit(constants.EVENT_DID_PUSH);
-    expect(mockCallback).toHaveBeenCalled();
-  });
-
-  it('registers for onWillPop event', () => {
-    events.onWillPop(mockCallback);
-    emitter.emit(constants.EVENT_WILL_POP);
     expect(mockCallback).toHaveBeenCalled();
   });
 
@@ -33,21 +21,9 @@ describe('Events', () => {
     expect(mockCallback).toHaveBeenCalled();
   });
 
-  it('registers for onWillReplace event', () => {
-    events.onWillReplace(mockCallback);
-    emitter.emit(constants.EVENT_WILL_REPLACE);
-    expect(mockCallback).toHaveBeenCalled();
-  });
-
   it('registers for onDidReplace event', () => {
     events.onDidReplace(mockCallback);
     emitter.emit(constants.EVENT_DID_REPLACE);
-    expect(mockCallback).toHaveBeenCalled();
-  });
-
-  it('registers for onWillReset event', () => {
-    events.onWillReset(mockCallback);
-    emitter.emit(constants.EVENT_WILL_RESET);
     expect(mockCallback).toHaveBeenCalled();
   });
 
