@@ -3,10 +3,10 @@ import { cleanup, render } from 'react-testing-library';
 import {
   emitter,
   router,
-  EVENT_DID_PUSH,
-  EVENT_DID_POP,
-  EVENT_DID_REPLACE,
-  EVENT_DID_RESET,
+  ON_PUSH,
+  ON_POP,
+  ON_REPLACE,
+  ON_RESET,
 } from '@virtuous/conductor';
 import useRouter from './index';
 
@@ -63,18 +63,18 @@ describe('useRouter()', () => {
     render(<MyComponent />);
 
     // Make sure that the listeners are setup.
-    expect(emitter.listenerCount(EVENT_DID_PUSH)).toBe(1);
-    expect(emitter.listenerCount(EVENT_DID_POP)).toBe(1);
-    expect(emitter.listenerCount(EVENT_DID_REPLACE)).toBe(1);
-    expect(emitter.listenerCount(EVENT_DID_RESET)).toBe(1);
+    expect(emitter.listenerCount(ON_PUSH)).toBe(1);
+    expect(emitter.listenerCount(ON_POP)).toBe(1);
+    expect(emitter.listenerCount(ON_REPLACE)).toBe(1);
+    expect(emitter.listenerCount(ON_RESET)).toBe(1);
 
     // Unmount everything to trigger useEffect cleanup.
     cleanup();
 
     // Make sure that the listeners were reset.
-    expect(emitter.listenerCount(EVENT_DID_PUSH)).toBe(0);
-    expect(emitter.listenerCount(EVENT_DID_POP)).toBe(0);
-    expect(emitter.listenerCount(EVENT_DID_REPLACE)).toBe(0);
-    expect(emitter.listenerCount(EVENT_DID_RESET)).toBe(0);
+    expect(emitter.listenerCount(ON_PUSH)).toBe(0);
+    expect(emitter.listenerCount(ON_POP)).toBe(0);
+    expect(emitter.listenerCount(ON_REPLACE)).toBe(0);
+    expect(emitter.listenerCount(ON_RESET)).toBe(0);
   });
 });

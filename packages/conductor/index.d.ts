@@ -21,22 +21,10 @@ export interface CallbackParams {
 export type Callback = (p: CallbackParams) => void;
 
 /**
- * Will be triggered when ever the router *will push* a new route.
- * @param callback {Function} The callback function to call once the event has been triggered.
- */
-export function onWillPush(callback: Callback): void;
-
-/**
  * Will be triggered when ever the router *did push* a new route.
  * @param callback {Function} The callback function to call once the event has been triggered.
  */
 export function onDidPush(callback: Callback): void;
-
-/**
- * Will be triggered when ever the router *will pop* from a route.
- * @param callback {Function} The callback function to call once the event has been triggered.
- */
-export function onWillPop(callback: Callback): void;
 
 /**
  * Will be triggered when ever the router *did pop* from a route.
@@ -45,22 +33,10 @@ export function onWillPop(callback: Callback): void;
 export function onDidPop(callback: Callback): void;
 
 /**
- * Will be triggered when ever the router *will replace* a route.
- * @param callback {Function} The callback function to call once the event has been triggered.
- */
-export function onWillReplace(callback: Callback): void;
-
-/**
  * Will be triggered when ever the router *did replace* a route.
  * @param callback {Function} The callback function to call once the event has been triggered.
  */
 export function onDidReplace(callback: Function): void;
-
-/**
- * Will be triggered when ever the router *will reset* the history.
- * @param callback {Function} The callback function to call once the event has been triggered.
- */
-export function onWillReset(callback: Callback): void;
 
 /**
  * Will be triggered when ever the router *did reset* the history.

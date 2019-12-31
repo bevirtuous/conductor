@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import {
   emitter,
   router,
-  EVENT_DID_PUSH,
-  EVENT_DID_POP,
-  EVENT_DID_REPLACE,
-  EVENT_DID_RESET,
+  ON_PUSH,
+  ON_POP,
+  ON_REPLACE,
+  ON_RESET,
 } from '@virtuous/conductor';
 
 function eventHook(event, callback) {
@@ -20,7 +20,7 @@ function push(params) {
 }
 
 function didPush(callback) {
-  return eventHook(EVENT_DID_PUSH, callback);
+  return eventHook(ON_PUSH, callback);
 }
 
 function pop(params) {
@@ -28,7 +28,7 @@ function pop(params) {
 }
 
 function didPop(callback) {
-  return eventHook(EVENT_DID_POP, callback);
+  return eventHook(ON_POP, callback);
 }
 
 function replace(params) {
@@ -36,7 +36,7 @@ function replace(params) {
 }
 
 function didReplace(callback) {
-  return eventHook(EVENT_DID_REPLACE, callback);
+  return eventHook(ON_REPLACE, callback);
 }
 
 function reset(state = null) {
@@ -44,7 +44,7 @@ function reset(state = null) {
 }
 
 function didReset(callback) {
-  return eventHook(EVENT_DID_RESET, callback);
+  return eventHook(ON_RESET, callback);
 }
 
 function resetTo(params) {

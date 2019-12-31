@@ -8,7 +8,7 @@ export { addCallback };
  * @param {Function} callback The callback to register.
  */
 export const onDidPush = (callback) => {
-  addCallback(events.EVENT_DID_PUSH, callback);
+  addCallback(events.ON_PUSH, callback);
 };
 
 /**
@@ -16,7 +16,7 @@ export const onDidPush = (callback) => {
  * @param {Function} callback The callback to register.
  */
 export const onDidPop = (callback) => {
-  addCallback(events.EVENT_DID_POP, callback);
+  addCallback(events.ON_POP, callback);
 };
 
 /**
@@ -24,7 +24,7 @@ export const onDidPop = (callback) => {
  * @param {Function} callback The callback to register.
  */
 export const onDidReplace = (callback) => {
-  addCallback(events.EVENT_DID_REPLACE, callback);
+  addCallback(events.ON_REPLACE, callback);
 };
 
 /**
@@ -32,7 +32,7 @@ export const onDidReplace = (callback) => {
  * @param {Function} callback The callback to register.
  */
 export const onDidReset = (callback) => {
-  addCallback(events.EVENT_DID_RESET, callback);
+  addCallback(events.ON_RESET, callback);
 };
 
 /**
@@ -40,5 +40,5 @@ export const onDidReset = (callback) => {
  * @param {Function} callback The callback to register.
  */
 export const onUpdate = (callback) => {
-  addCallback(events.EVENT_UPDATE, callback);
+  addCallback(events.ON_UPDATE, callback);
 };

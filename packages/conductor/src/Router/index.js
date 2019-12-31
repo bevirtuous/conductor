@@ -22,7 +22,7 @@ class Router {
     // The `routeIndex` is used to track which stack entry is the current route.
     this.routeIndex = 0;
 
-    this.action = constants.ACTION_PUSH;
+    this.action = constants.PUSH;
 
     // Unsubscribe to any other history module changes.
     if (typeof this.historyListener === 'function') {
@@ -55,7 +55,7 @@ class Router {
       return;
     }
 
-    if (action === constants.ACTION_POP) {
+    if (action === constants.POP) {
       this.handlePop();
     }
   }
@@ -113,10 +113,10 @@ class Router {
     const callback = () => {
       unlisten();
       this.routeIndex = targetIndex;
-      this.action = constants.ACTION_POP;
+      this.action = constants.POP;
 
       if (emit) {
-        emitter.emit(constants.EVENT_DID_POP, end);
+        emitter.emit(constants.ON_POP, end);
       }
 
       resolve(end);
@@ -203,11 +203,11 @@ class Router {
         // Increment the route index.
         this.routeIndex += 1;
 
-        this.action = constants.ACTION_PUSH;
+        this.action = constants.PUSH;
 
         // Emit completion event.
         if (emit) {
-          emitter.emit(constants.EVENT_DID_PUSH, { prev, next });
+          emitter.emit(constants.ON_PUSH, { prev, next });
         }
 
         // Resolve the Promise.
@@ -281,7 +281,7 @@ class Router {
 
       const end = { prev: null, next: route };
 
-      emitter.emit(constants.EVENT_DID_PUSH, end, true);
+      emitter.emit(constants.ON_PUSH, end, true);
     }
   }
 
@@ -340,11 +340,11 @@ class Router {
       // Unsubscribe from the history events.
       unlisten();
 
-      this.action = constants.ACTION_REPLACE;
+      this.action = constants.REPLACE;
 
       // Emit completion event.
       if (emit) {
-        emitter.emit(constants.EVENT_DID_REPLACE, end);
+        emitter.emit(constants.ON_REPLACE, end);
       }
 
       resolve(end);
@@ -423,7 +423,7 @@ class Router {
       });
     }
 
-    emitter.emit(constants.EVENT_DID_RESET, next);
+    emitter.emit(constants.ON_RESET, next);
     resolve(next);
   });
 
@@ -463,7 +463,7 @@ class Router {
       next: route,
     };
 
-    emitter.emit(constants.EVENT_DID_RESET, next);
+    emitter.emit(constants.ON_RESET, next);
     resolve(next);
   });
 
@@ -496,7 +496,7 @@ class Router {
     stack.update(id, route);
 
     if (emit) {
-      emitter.emit(constants.EVENT_UPDATE, route);
+      emitter.emit(constants.ON_UPDATE, route);
     }
 
     resolve(route);
