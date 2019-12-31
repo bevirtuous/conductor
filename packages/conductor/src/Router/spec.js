@@ -177,7 +177,7 @@ describe('Conductor', () => {
     it('should not emit didPush event', () => {
       const params = {
         pathname: pathname1,
-        emitAfter: false,
+        emit: false,
       };
 
       const callback = jest.fn();
@@ -278,7 +278,7 @@ describe('Conductor', () => {
 
       await router.push({ pathname: '/myroute/456' });
 
-      return router.pop({ emitAfter: false }).then(() => {
+      return router.pop({ emit: false }).then(() => {
         expect(callback).not.toHaveBeenCalled();
       });
     });
@@ -318,7 +318,7 @@ describe('Conductor', () => {
     it('should not emit didPush event', () => {
       const params = {
         pathname: pathname1,
-        emitAfter: false,
+        emit: false,
       };
 
       const callback = jest.fn();

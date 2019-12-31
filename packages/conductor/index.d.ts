@@ -154,8 +154,7 @@ export class Stack {
  * The parameters for every route *actions* that can be emitted.
  */
 export type ActionParams = {
-  emitBefore: boolean;
-  emitAfter: boolean;
+  emit: boolean;
   steps: Number;
   state: Object | null;
 }

@@ -84,7 +84,7 @@ class Router {
    */
   handlePop = (params = {}) => new Promise((resolve, reject) => {
     const {
-      emitAfter = true,
+      emit = true,
       forceNative = false,
       steps = 1,
       state = null,
@@ -115,7 +115,7 @@ class Router {
       this.routeIndex = targetIndex;
       this.action = constants.ACTION_POP;
 
-      if (emitAfter) {
+      if (emit) {
         emitter.emit(constants.EVENT_DID_POP, end);
       }
 
@@ -161,7 +161,7 @@ class Router {
       }
 
       const {
-        emitAfter = true,
+        emit = true,
         pathname,
         state,
       } = params;
@@ -206,7 +206,7 @@ class Router {
         this.action = constants.ACTION_PUSH;
 
         // Emit completion event.
-        if (emitAfter) {
+        if (emit) {
           emitter.emit(constants.EVENT_DID_PUSH, { prev, next });
         }
 
@@ -305,7 +305,7 @@ class Router {
     }
 
     const {
-      emitAfter = true,
+      emit = true,
       pathname,
       state,
     } = params;
@@ -343,7 +343,7 @@ class Router {
       this.action = constants.ACTION_REPLACE;
 
       // Emit completion event.
-      if (emitAfter) {
+      if (emit) {
         emitter.emit(constants.EVENT_DID_REPLACE, end);
       }
 
@@ -417,8 +417,7 @@ class Router {
 
     if (this.routeIndex > 0) {
       await this.handlePop({
-        emitBefore: false,
-        emitAfter: false,
+        emit: false,
         forceNative: true,
         steps: this.routeIndex,
       });
@@ -450,8 +449,7 @@ class Router {
 
     if (this.routeIndex > 0) {
       await this.handlePop({
-        emitBefore: false,
-        emitAfter: false,
+        emit: false,
         forceNative: true,
         steps: this.routeIndex,
       });
