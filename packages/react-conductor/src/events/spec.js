@@ -10,9 +10,9 @@ describe('Events', () => {
     expect(mockCallback).toHaveBeenCalled();
   });
 
-  it('registers for onDidEnter event', () => {
+  it('registers for onEnter event', () => {
     const mockCallback = jest.fn();
-    events.onDidEnter(mockCallback);
+    events.onEnter(mockCallback);
     emitter.emit(constants.EVENT_DID_ENTER);
     expect(mockCallback).toHaveBeenCalled();
   });
@@ -24,9 +24,9 @@ describe('Events', () => {
     expect(mockCallback).toHaveBeenCalled();
   });
 
-  it('registers for onDidLeave event', () => {
+  it('registers for onLeave event', () => {
     const mockCallback = jest.fn();
-    events.onDidLeave(mockCallback);
+    events.onLeave(mockCallback);
     emitter.emit(constants.EVENT_DID_LEAVE);
     expect(mockCallback).toHaveBeenCalled();
   });

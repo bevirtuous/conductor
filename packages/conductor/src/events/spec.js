@@ -9,26 +9,26 @@ describe('Events', () => {
     mockCallback.mockClear();
   });
 
-  it('registers for onDidPush event', () => {
-    events.onDidPush(mockCallback);
+  it('registers for onPush event', () => {
+    events.onPush(mockCallback);
     emitter.emit(constants.ON_PUSH);
     expect(mockCallback).toHaveBeenCalled();
   });
 
-  it('registers for onDidPop event', () => {
-    events.onDidPop(mockCallback);
+  it('registers for onPop event', () => {
+    events.onPop(mockCallback);
     emitter.emit(constants.ON_POP);
     expect(mockCallback).toHaveBeenCalled();
   });
 
-  it('registers for onDidReplace event', () => {
-    events.onDidReplace(mockCallback);
+  it('registers for onReplace event', () => {
+    events.onReplace(mockCallback);
     emitter.emit(constants.ON_REPLACE);
     expect(mockCallback).toHaveBeenCalled();
   });
 
-  it('registers for onDidReset event', () => {
-    events.onDidReset(mockCallback);
+  it('registers for onReset event', () => {
+    events.onReset(mockCallback);
     emitter.emit(constants.ON_RESET);
     expect(mockCallback).toHaveBeenCalled();
   });

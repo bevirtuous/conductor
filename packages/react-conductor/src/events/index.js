@@ -11,7 +11,7 @@ export const onWillEnter = (callback) => {
 /**
  * @param {Function} callback The callback to register.
  */
-export const onDidEnter = (callback) => {
+export const onEnter = (callback) => {
   addCallback(events.EVENT_DID_ENTER, callback);
 };
 
@@ -25,6 +25,6 @@ export const onWillLeave = (callback) => {
 /**
  * @param {Function} callback The callback to register.
  */
-export const onDidLeave = (callback) => {
+export const onLeave = (callback) => {
   addCallback(events.EVENT_DID_LEAVE, callback);
 };

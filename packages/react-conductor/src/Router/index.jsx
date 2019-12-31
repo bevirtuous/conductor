@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {
   router,
   stack as routeStack,
-  onDidPush,
-  onDidPop,
-  onDidReplace,
-  onDidReset,
+  onPush,
+  onPop,
+  onReplace,
+  onReset,
   onUpdate,
 } from '@virtuous/conductor';
 import { RouterContext } from '../context';
@@ -40,10 +40,10 @@ class Router extends React.Component {
       updated: null,
     };
 
-    onDidPush(this.update);
-    onDidPop(this.update);
-    onDidReplace(this.update);
-    onDidReset(this.update);
+    onPush(this.update);
+    onPop(this.update);
+    onReplace(this.update);
+    onReset(this.update);
     onUpdate(this.update);
   }
 
