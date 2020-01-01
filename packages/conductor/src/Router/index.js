@@ -402,7 +402,7 @@ class Router {
    * @param {Object} [state=null] The new state of the first route.
    * @returns {Promise}
    */
-  reset = (state = null) => new Promise(async (resolve) => {
+  reset = (state = null) => new Promise((resolve, reject) => {
     const [, route] = stack.first();
 
     const prev = stack.getByIndex(this.routeIndex);
@@ -411,20 +411,25 @@ class Router {
       next: route,
     };
 
+    if (this.routeIndex === 0) {
+      return reject();
+    }
+
     if (state) {
       this.update(route.id, state, false);
     }
 
-    if (this.routeIndex > 0) {
-      await this.handlePop({
-        emit: false,
-        forceNative: true,
-        steps: this.routeIndex,
-      });
-    }
+    const params = {
+      emit: false,
+      forceNative: true,
+      steps: this.routeIndex,
+    };
 
-    emitter.emit(constants.ON_RESET, next);
-    resolve(next);
+    return this.handlePop(params)
+      .then(() => {
+        emitter.emit(constants.ON_RESET, next);
+        resolve(next);
+      });
   });
 
   /**

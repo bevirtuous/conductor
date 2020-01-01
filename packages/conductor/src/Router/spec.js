@@ -367,8 +367,8 @@ describe('Conductor', () => {
       const didCallback = jest.fn();
       emitter.once(constants.ON_RESET, didCallback);
 
-      router.reset().then(() => {
-        expect(didCallback).toHaveBeenCalled();
+      router.reset().catch(() => {
+        expect(didCallback).not.toHaveBeenCalled();
         done();
       });
     });
