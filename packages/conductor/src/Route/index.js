@@ -1,9 +1,6 @@
 import queryString from 'query-string';
-import UrlPattern from 'url-pattern';
+import matcher from '../matcher';
 
-/**
- * Route Class
- */
 class Route {
   /**
    * @param {Object} params The route parameters.
@@ -18,14 +15,15 @@ class Route {
     } = params;
     const [path, hash = null] = pathname.split('#');
     const { query, url } = queryString.parseUrl(path);
-    const urlPattern = pattern ? new UrlPattern(pattern) : null;
+
+    this.matcher = matcher(pattern || '');
 
     this.id = id;
     this.pathname = url;
     this.pattern = pattern;
     this.location = pathname;
 
-    this.params = urlPattern ? (urlPattern.match(url) || {}) : {};
+    this.params = this.matcher(url) || {};
     this.query = query;
     this.hash = hash;
     this.state = state;
@@ -56,10 +54,10 @@ class Route {
    * @param {Function} transform The transformer function.
    */
   setPattern(pattern, transform) {
-    const urlPattern = new UrlPattern(pattern);
+    this.matcher = matcher(pattern);
 
     this.pattern = pattern;
-    this.params = urlPattern.match(this.pathname) || {};
+    this.params = this.matcher(this.pathname) || {};
 
     this.transform = transform;
     this.runTransform();
