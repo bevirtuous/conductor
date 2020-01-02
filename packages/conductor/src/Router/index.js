@@ -437,7 +437,7 @@ class Router {
    * @param {Object} [state={}] The state of the new route.
    * @returns {Promise}
    */
-  resetTo = (pathname, state = {}) => new Promise(async (resolve, reject) => {
+  resetTo = (pathname, state = {}) => new Promise((resolve, reject) => {
     // Missing pathname.
     if (!pathname) {
       reject(new Error(errors.EMISSINGPATHNAME));
@@ -450,26 +450,30 @@ class Router {
       return;
     }
 
-    const previous = this.getCurrentRoute();
-
-    if (this.routeIndex > 0) {
-      await this.handlePop({
-        emit: false,
-        forceNative: true,
-        steps: this.routeIndex,
-      });
+    if (this.routeIndex === 0) {
+      reject();
+      return;
     }
 
-    await this.handleReplace({ pathname, state });
-
-    const [, route] = stack.first();
-    const next = {
-      prev: previous,
-      next: route,
+    const previous = this.getCurrentRoute();
+    const popParams = {
+      emit: false,
+      forceNative: true,
+      steps: this.routeIndex,
     };
 
-    emitter.emit(constants.ON_RESET, next);
-    resolve(next);
+    this.handlePop(popParams).then(() => {
+      this.handleReplace({ pathname, state }).then(() => {
+        const [, route] = stack.first();
+        const next = {
+          prev: previous,
+          next: route,
+        };
+
+        emitter.emit(constants.ON_RESET, next);
+        resolve(next);
+      });
+    });
   });
 
   /**
