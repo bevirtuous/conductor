@@ -4,9 +4,6 @@ import { router, stack } from '@virtuous/conductor';
 import RouteNotFound from '../404';
 import { RouteContext, RouterContext } from '../context';
 
-/**
- * The Route component.
- */
 class Route extends React.Component {
   static contextType = RouterContext;
 
@@ -22,17 +19,11 @@ class Route extends React.Component {
     transform: null,
   }
 
-  /**
-   * @param {Object} props The component props.
-   */
   constructor(props) {
     super(props);
     router.register(props.path, props.transform);
   }
 
-  /**
-   * @returns {JSX}
-   */
   render() {
     const { children, path } = this.props;
     const route = stack.get(this.context.next);
