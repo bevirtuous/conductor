@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { router } from '@virtuous/conductor';
 import Router from './index';
 
@@ -24,7 +24,7 @@ describe('<Router />', () => {
       location: {},
     });
 
-    shallow((
+    mount((
       <Router history={mockHistory}>
         <p />
       </Router>

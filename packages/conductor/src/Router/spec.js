@@ -120,15 +120,12 @@ describe('Conductor', () => {
 
         expect(result.prev.constructor.name === 'Route').toBeTruthy();
         expect(result.next.constructor.name === 'Route').toBeTruthy();
-        expect(router.history.location.pathname).toBe(`${pathname1}?s=phrase`);
+        expect(router.history.location.pathname).toBe(pathname1);
+        expect(router.history.location.search).toBe('?s=phrase');
       });
     });
 
     it('should transform the route when pushed', async () => {
-      /**
-       * @param {Object} route The route object.
-       * @returns {Object}
-       */
       const transform = route => ({
         params: {
           test: route.query.search,
