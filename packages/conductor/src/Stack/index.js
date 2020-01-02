@@ -1,112 +1,117 @@
-class Stack {
-  stack = new Map();
+function Stack() {
+  const stack = new Map();
 
   /**
    * @param {string} id The key.
    * @param {Object} entry The entry to add.
    */
-  add(id, entry) {
+  function add(id, entry) {
     if (!id || !entry) {
       return;
     }
 
-    this.stack.set(id, entry);
+    stack.set(id, entry);
   }
 
   /**
    * @returns {Array|null}
    */
-  first() {
-    if (!this.stack.size) {
+  function first() {
+    if (!stack.size) {
       return null;
     }
 
-    return this.stack.entries().next().value;
+    return stack.entries().next().value;
   }
 
   /**
    * @param {string} id The key to lookup.
    * @returns {Object|null}
    */
-  get(id) {
-    if (!id || !this.stack.has(id)) {
+  function get(id) {
+    if (!id || !stack.has(id)) {
       return null;
     }
 
-    return this.stack.get(id);
+    return stack.get(id);
   }
 
   /**
    * @param {number} index The index to find.
    * @returns {Object|null}
    */
-  getByIndex(index = null) {
+  function getByIndex(index = null) {
     if (index === null) {
       return null;
     }
 
-    if (index > this.stack.size - 1) {
+    if (index > stack.size - 1) {
       return null;
     }
 
-    return this.stack.get(Array.from(this.stack.keys())[index]);
+    return stack.get(Array.from(stack.keys())[index]);
   }
 
   /**
    * @returns {Map}
    */
-  getAll() {
+  function getAll() {
     return this.stack;
   }
 
   /**
    * @returns {Array|null}
    */
-  last() {
-    if (!this.stack.size) {
+  function last() {
+    if (!stack.size) {
       return null;
     }
 
-    return Array.from(this.stack.entries()).pop();
+    return Array.from(stack.entries()).pop();
   }
 
   /**
    * Clers the stack of all Routes.
    */
-  clear() {
-    this.stack.clear();
+  function clear() {
+    stack.clear();
   }
 
   /**
    * @param {string} id The key to remove.
    */
-  remove(id) {
-    this.stack.delete(id);
-  }
-
-  /**
-   * @param {Array} The key and value to reset to.
-   */
-  reset([id, entry] = this.first()) {
-    this.stack.clear();
-    this.add(id, entry);
+  function remove(id) {
+    stack.delete(id);
   }
 
   /**
    * @param {string} id The key to update.
    * @param {Object} entry The value to update at the given id.
    */
-  update(id, entry) {
+  function update(id, entry) {
     if (!id || !entry) {
       return;
     }
 
-    if (!this.stack.has(id)) {
+    if (!stack.has(id)) {
       return;
     }
 
-    this.stack.set(id, entry);
+    stack.set(id, entry);
   }
+
+  return {
+    add,
+    clear,
+    first,
+    get,
+    getAll,
+    getByIndex,
+    last,
+    remove,
+    stack,
+    update,
+  };
 }
 
 export default new Stack();

@@ -411,7 +411,8 @@ class Router {
     };
 
     if (this.routeIndex === 0) {
-      return reject();
+      reject();
+      return;
     }
 
     if (state) {
@@ -424,7 +425,7 @@ class Router {
       steps: this.routeIndex,
     };
 
-    return this.handlePop(params)
+    this.handlePop(params)
       .then(() => {
         emitter.emit(constants.ON_RESET, next);
         resolve(next);

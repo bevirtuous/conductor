@@ -2,7 +2,7 @@ import stack from './index';
 
 describe('Stack', () => {
   beforeEach(() => {
-    stack.constructor();
+    stack.clear();
   });
 
   describe('add()', () => {
@@ -87,29 +87,6 @@ describe('Stack', () => {
 
       expect(stack.get('123')).toBeNull();
       expect(stack.get('456')).toBeTruthy();
-      expect(stack.getAll().size).toBe(1);
-    });
-  });
-
-  describe('remove()', () => {
-    it('should correctly reset the stack to the first entry', () => {
-      stack.add('123', {});
-      stack.add('456', {});
-      stack.add('789', {});
-      stack.reset();
-
-      expect(stack.get('123')).toBeTruthy();
-      expect(stack.get('456')).toBeFalsy();
-      expect(stack.getAll().size).toBe(1);
-    });
-
-    it('should correctly reset to a given id and entry', () => {
-      stack.add('123', {});
-      stack.add('456', {});
-      stack.reset(['789', { a: 1 }]);
-
-      expect(stack.get('123')).toBeFalsy();
-      expect(stack.get('789')).toEqual({ a: 1 });
       expect(stack.getAll().size).toBe(1);
     });
   });
