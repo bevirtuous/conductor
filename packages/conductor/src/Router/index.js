@@ -492,10 +492,7 @@ class Router {
       return;
     }
 
-    route.state = {
-      ...route.state,
-      ...state,
-    };
+    route.state = Object.assign(route.state, state);
     route.updated = Date.now();
 
     stack.update(id, route);
