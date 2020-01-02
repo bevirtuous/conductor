@@ -16,12 +16,6 @@ describe('<Router />', () => {
     const child = app.find('p');
     expect(child.length).toBe(1);
     expect(app).toMatchSnapshot();
-
-    // TODO: Test Router context value
-  });
-
-  it('should re-render with children and context', () => {
-    // TODO: Test Router context value
   });
 
   it('should pass the history function to core', () => {

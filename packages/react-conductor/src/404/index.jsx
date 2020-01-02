@@ -1,13 +1,11 @@
-import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { router } from '@virtuous/conductor';
-import { RouterContext } from '../context';
+import useHistory from '../useHistory';
 
 function RouteNotFound({ children }) {
-  const { stack } = useContext(RouterContext);
-  const { pathname } = stack[router.routeIndex][1];
+  const { current } = useHistory();
 
-  if (router.match(pathname)) {
+  if (router.match(current.pathname)) {
     return null;
   }
 

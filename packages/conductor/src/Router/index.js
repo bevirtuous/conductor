@@ -193,7 +193,6 @@ class Router {
       }
 
       /**
-       * TODO: move to class function with params
        * The history event callback.
        */
       const callback = () => {
@@ -477,7 +476,6 @@ class Router {
   });
 
   /**
-   * // TODO: Refactor to take an object as a parameter.
    * @param {string} id The route id to update.
    * @param {Object} state The new state.
    * @param {boolean} emit When true, will emit when the state was updated.
