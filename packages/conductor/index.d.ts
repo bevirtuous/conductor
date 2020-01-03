@@ -90,14 +90,12 @@ export interface RouteParams {
   pathname: string;
   pattern?: string;
   state?: object;
-  transform?: Function;
 }
 
 /**
  * The instance of a *route* that the router will create.
  */
-export class Route {
-  constructor(params: RouteParams)
+export type Route = {
   id: RouteId;
   pathname: string;
   pattern: string;
@@ -113,7 +111,7 @@ export class Route {
 /**
  * The *stack* holds all route instances.
  */
-export type Stack {
+export type Stack = {
   add: (id: RouteId, entry: Route) => void;
   first: () => void;
   get: (id: RouteId) => Route;
@@ -147,12 +145,11 @@ export class Router {
   routeIndex: number;
   action: Actions;
   handleNativeEvent: (location: Route, action: Actions) => void;
-  createId: () => void;
   addInitialRoute: () => void;
   handlePop: (params: ActionParams) => Promise<object>;
   handlePush: (params: ActionParams, override?: boolean) => Promise;
   findPattern: (pathname: string) => string | null;
-  register: (pattern: string, transform: Function | null) => void;
+  register: (pattern: string) => void;
   handleReplace: (params: ActionParams) => Promise;
   push: (params: ActionParams) => Promise;
   pop: (params: ActionParams) => Promise;

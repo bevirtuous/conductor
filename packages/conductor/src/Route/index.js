@@ -1,62 +1,49 @@
 import queryString from 'query-string';
 import matcher from '../matcher';
 
-class Route {
-  /**
-   * @param {Object} params The route parameters.
-   */
-  constructor(params) {
-    const {
-      id,
-      pathname,
-      pattern = null,
-      state = {},
-      transform = null,
-    } = params;
-    const [path, hash = null] = pathname.split('#');
-    const { query, url } = queryString.parseUrl(path);
+function setId() {
+  return Math.random().toString(36).substr(2, 5);
+}
 
-    this.matcher = matcher(pattern || '');
+function setParams(u, match) {
+  return match(u) || {};
+}
 
-    this.id = id;
-    this.pathname = url;
-    this.pattern = pattern;
-    this.location = pathname;
+function Route(options) {
+  const { pathname: location, state = {} } = options;
+  const id = setId();
 
-    this.params = this.matcher(url) || {};
-    this.query = query;
-    this.hash = hash;
-    this.state = state;
+  const splitPath = location.split('#');
+  const path = splitPath[0];
+  const hash = splitPath[1] || null;
+  const { query, url: pathname } = queryString.parseUrl(path);
 
-    this.created = Date.now();
-    this.updated = null;
+  const pattern = options.pattern || null;
+  const match = matcher(pattern || '');
 
-    this.transform = transform;
-    this.runTransform();
+  const params = setParams(pathname, match);
+
+  const created = Date.now();
+  const updated = null;
+
+  function setPattern(newPattern) {
+    this.pattern = newPattern;
+    this.params = setParams(this.pathname, matcher(this.pattern)) || {};
   }
 
-  runTransform() {
-    if (typeof this.transform === 'function') {
-      const transformed = this.transform(this);
-
-      this.params = Object.assign(this.params, transformed.params);
-      this.state = Object.assign(this.state, transformed.state);
-    }
-  }
-
-  /**
-   * @param {string} pattern The pattern to set for this route.
-   * @param {Function} transform The transformer function.
-   */
-  setPattern(pattern, transform) {
-    this.matcher = matcher(pattern);
-
-    this.pattern = pattern;
-    this.params = this.matcher(this.pathname) || {};
-
-    this.transform = transform;
-    this.runTransform();
-  }
+  return {
+    id,
+    hash,
+    location,
+    pathname,
+    pattern,
+    params,
+    query,
+    state,
+    created,
+    updated,
+    setPattern,
+  };
 }
 
 export default Route;

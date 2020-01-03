@@ -12,16 +12,11 @@ class Route extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     path: PropTypes.string.isRequired,
-    transform: PropTypes.func,
-  }
-
-  static defaultProps = {
-    transform: null,
   }
 
   constructor(props) {
     super(props);
-    router.register(props.path, props.transform);
+    router.register(props.path);
   }
 
   render() {
@@ -32,11 +27,10 @@ class Route extends React.Component {
       return null;
     }
 
-    const { transform, ...rest } = route;
     const key = `${route.id}-${route.pathname}`;
 
     return (
-      <RouteContext.Provider key={key} value={rest}>
+      <RouteContext.Provider key={key} value={route}>
         {children}
       </RouteContext.Provider>
     );

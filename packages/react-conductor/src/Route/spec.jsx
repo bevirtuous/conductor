@@ -7,19 +7,18 @@ import Route from './index';
 
 const path = '/myroute/:id';
 const spy = jest.spyOn(router, 'register');
-const transform = route => route;
 
 describe('<Route />', () => {
   it('should render component', () => {
     mount((
       <Router>
-        <Route path={path} transform={transform}>
+        <Route path={path}>
           <div />
         </Route>
       </Router>
     ));
 
-    expect(spy).toHaveBeenCalledWith(path, transform);
+    expect(spy).toHaveBeenCalledWith(path);
   });
 
   it('should correctly set the RouteContext value', () => {

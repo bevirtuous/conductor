@@ -3,15 +3,15 @@ import { router } from '@virtuous/conductor';
 import { RouteContext } from '../context';
 
 /**
- * @returns {Object|null}
+ * @returns {Object}
  */
 function useRoute() {
-  const { transform, ...rest } = useContext(RouteContext);
+  const route = useContext(RouteContext);
 
   return {
-    ...rest,
+    ...route,
     update: (state) => {
-      router.update(rest.id, state);
+      router.update(route.id, state);
     },
   };
 }

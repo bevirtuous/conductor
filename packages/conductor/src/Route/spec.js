@@ -2,7 +2,7 @@ import Route from './index';
 
 Date.now = () => 123456789;
 
-describe('Stack', () => {
+describe('Route', () => {
   describe('constructor()', () => {
     it('should correctly initialise', () => {
       const route = new Route({
@@ -12,12 +12,6 @@ describe('Stack', () => {
           a: 1,
           b: 2,
         },
-        transform: () => ({
-          state: {
-            b: 3,
-            c: 4,
-          },
-        }),
       });
 
       expect(route.location).toBe('/myroute/123?search=hello#headline');
@@ -26,7 +20,7 @@ describe('Stack', () => {
       expect(route.params).toEqual({ id: '123' });
       expect(route.query).toEqual({ search: 'hello' });
       expect(route.hash).toBe('headline');
-      expect(route.state).toEqual({ a: 1, b: 3, c: 4 });
+      expect(route.state).toEqual({ a: 1, b: 2 });
       expect(route.created).toEqual(123456789);
       expect(route.updated).toBeNull();
     });

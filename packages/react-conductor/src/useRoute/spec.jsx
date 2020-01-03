@@ -25,7 +25,7 @@ describe('useRoute()', () => {
       </Router>
     ));
 
-    const { transform, ...route } = stack.getByIndex(router.routeIndex);
+    const route = stack.getByIndex(router.routeIndex);
 
     expect(useRoute1).toMatchObject({
       ...route,

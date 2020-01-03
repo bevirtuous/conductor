@@ -47,16 +47,6 @@ describe('Conductor', () => {
       expect(typeof router.patterns[pattern1].match).toBe('function');
     });
 
-    it('should correctly register a pattern with a transform function', () => {
-      /**
-       * @returns {Object}
-       */
-      const transform = () => ({});
-      router.register('/test', transform);
-
-      expect(typeof router.patterns['/test'].transform).toBe('function');
-    });
-
     it('should not register with missing pattern', () => {
       expect(router.register).toThrowError(errors.EMISSINGPATTERN);
     });
@@ -67,16 +57,11 @@ describe('Conductor', () => {
 
     it('should update initial entry when matching pattern is registered', () => {
       router.constructor();
-      router.register(pattern1, ({ params }) => ({
-        params: {
-          ...params,
-          transformed: true,
-        },
-      }));
+      router.register(pattern1);
       const [, route] = stack.first();
 
       expect(route.pattern).toEqual(pattern1);
-      expect(route.params).toEqual({ id: '123', transformed: true });
+      expect(route.params).toEqual({ id: '123' });
     });
   });
 
@@ -118,31 +103,9 @@ describe('Conductor', () => {
 
         expect(didCallback).toHaveBeenCalledWith(result);
 
-        expect(result.prev.constructor.name === 'Route').toBeTruthy();
-        expect(result.next.constructor.name === 'Route').toBeTruthy();
         expect(router.history.location.pathname).toBe(pathname1);
         expect(router.history.location.search).toBe('?s=phrase');
       });
-    });
-
-    it('should transform the route when pushed', async () => {
-      const transform = route => ({
-        params: {
-          test: route.query.search,
-        },
-        state: {
-          searchActive: !!route.query.search,
-        },
-      });
-
-      router.register('/test', transform);
-
-      await router.push({ pathname: '/test?search=hello' });
-
-      const [, route] = stack.last();
-      expect(route.pathname).toBe('/test');
-      expect(route.params).toEqual({ test: 'hello' });
-      expect(route.state).toEqual({ searchActive: true });
     });
 
     it('should remove all forward routes from the stack', async () => {
@@ -193,7 +156,6 @@ describe('Conductor', () => {
       return router.push(params).then(async ({ next }) => {
         expect(next.pathname).toBe('/not-registered');
         expect(next.pattern).toBeNull();
-        expect(next.transform).toBeNull();
 
         // Pop to remove the non-matching route for the next set of tests.
         await router.pop();

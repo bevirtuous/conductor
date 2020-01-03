@@ -61,21 +61,15 @@ class Router {
   }
 
   /**
-   * @returns {string}
-   */
-  createId = () => (
-    Math.random().toString(36).substr(2, 5)
-  );
-
-  /**
    * Populate the stack with an initial entry to match the history module.
    * Note: we cannot match it against a pattern at this point.
    */
   addInitialRoute = () => {
     const { hash, pathname, search } = this.history.location;
     const fullPathname = `${pathname}${search}${hash}`;
-    const id = this.createId();
-    stack.add(id, new Route({ id, pathname: fullPathname }));
+    const route = new Route({ pathname: fullPathname });
+
+    stack.add(route.id, route);
   }
 
   /**
@@ -176,20 +170,16 @@ class Router {
         }
       }
 
-      const id = this.createId();
-      const { transform } = pattern ? this.patterns[pattern] : {};
       const prev = stack.getByIndex(this.routeIndex);
       const next = nativePush ? stack.getByIndex(this.routeIndex + 1) : new Route({
-        id,
         pathname,
         pattern,
         state,
-        transform,
       });
 
       if (!nativePush) {
         // Add item to the stack
-        stack.add(id, next);
+        stack.add(next.id, next);
       }
 
       /**
@@ -226,7 +216,7 @@ class Router {
           pathname,
           state: {
             ...state,
-            route: { id },
+            route: { id: next.id },
           },
         });
       } else {
@@ -248,9 +238,8 @@ class Router {
   /**
    * Registers a route pattern to match new pathnames against.
    * @param {string} pattern The pattern to register.
-   * @param {Function} transform The route transformer.
    */
-  register = (pattern, transform = null) => {
+  register = (pattern) => {
     if (!pattern) {
       throw new Error(errors.EMISSINGPATTERN);
     }
@@ -263,7 +252,6 @@ class Router {
 
     this.patterns[pattern] = {
       match,
-      transform,
     };
 
     // Find the pathname of the first route.
@@ -276,7 +264,7 @@ class Router {
 
     //
     if (match(route.pathname)) {
-      route.setPattern(pattern, transform);
+      route.setPattern(pattern);
 
       const end = { prev: null, next: route };
 
@@ -318,14 +306,12 @@ class Router {
     }
 
     const { id } = stack.getByIndex(this.routeIndex);
-    const { transform } = this.patterns[pattern];
     const prev = stack.get(id);
     const next = new Route({
       id,
       pathname,
       pattern,
       state,
-      transform,
     });
     const end = { prev, next };
 
