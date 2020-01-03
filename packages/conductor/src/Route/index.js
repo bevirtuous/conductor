@@ -38,14 +38,9 @@ class Route {
   runTransform() {
     if (typeof this.transform === 'function') {
       const transformed = this.transform(this);
-      this.params = {
-        ...this.params,
-        ...transformed.params,
-      };
-      this.state = {
-        ...this.state,
-        ...transformed.state,
-      };
+
+      this.params = Object.assign(this.params, transformed.params);
+      this.state = Object.assign(this.state, transformed.state);
     }
   }
 

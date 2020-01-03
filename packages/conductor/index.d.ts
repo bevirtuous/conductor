@@ -111,9 +111,9 @@ export class Route {
 }
 
 /**
- * The *stack* holds all active routes.
+ * The *stack* holds all route instances.
  */
-export class Stack {
+export type Stack {
   add: (id: RouteId, entry: Route) => void;
   first: () => void;
   get: (id: RouteId) => Route;
